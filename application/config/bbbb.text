@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title> Add Invoice</title>
+        <!-- Favicon and touch icons -->
+       <link rel="apple-touch-icon" type="image/x-icon" href="http://localhost/erpcloud/assets/dist/img/ico/apple-touch-icon-57-precomposed.png">
+        <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="http://localhost/erpcloud/assets/dist/img/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="http://localhost/erpcloud/assets/dist/img/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="http://localhost/erpcloud/assets/dist/img/ico/apple-touch-icon-144-precomposed.png">
+        <!-- Start Global Mandatory Style-->
+      <link rel="shortcut icon" href="http://localhost/erpcloud/assets/img/icons/2024-03-15/97b9aae7a01c0ef414080e515e67fa6b.png" type="image/x-icon">
+
+       <!-- jquery ui css -->
+        <link href="http://localhost/erpcloud/assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Bootstrap --> 
+        <link href="http://localhost/erpcloud/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+                <!-- Font Awesome 4.7.0 -->
+        <link href="http://localhost/erpcloud/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+  
+        <!-- sliderAccess css -->
+        <link href="http://localhost/erpcloud/assets/css/jquery-ui-timepicker-addon.min.css" rel="stylesheet" type="text/css"/> 
+        <link href="http://localhost/erpcloud/assets/css/wickedpicker.min.css" rel="stylesheet" type="text/css"/>
+        <!-- slider  -->
+        <link href="http://localhost/erpcloud/assets/css/select2.min.css" rel="stylesheet" type="text/css"/> 
+        <!-- DataTables CSS -->
+        <link href="http://localhost/erpcloud/assets/datatables/dataTables.min.css" rel="stylesheet" type="text/css"/> 
+          <!-- pe-icon-7-stroke -->
+        <link href="http://localhost/erpcloud/assets/css/pe-icon-7-stroke.css" rel="stylesheet" type="text/css"/> 
+        <!-- themify icon css -->
+        <link href="http://localhost/erpcloud/assets/css/themify-icons.css" rel="stylesheet" type="text/css"/> 
+        <!-- Pace css -->
+        <link href="http://localhost/erpcloud/assets/plugins/toastr/toastr.css" rel=stylesheet type="text/css"/>
+   
+        <link href="http://localhost/erpcloud/assets/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Theme style -->
+        <link href="http://localhost/erpcloud/assets/css/custom.min.css" rel="stylesheet" type="text/css"/>
+        <link href="http://localhost/erpcloud/assets/css/style.css" rel="stylesheet" type="text/css"/>
+      
+        
+        <link href="http://localhost/erpcloud/assets/js/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>
+        <!-- summernote css -->
+       
+                 <link href="http://localhost/erpcloud/assets/css/print.css" rel="stylesheet" type="text/css"/>
+        <!-- jQuery -->
+       <script src="http://localhost/erpcloud/assets/js/jquery-3.4.1.min.js?v=3.4.1" type="text/javascript"></script>
+       <script src="http://localhost/erpcloud/assets/js/wickedpicker.min.js" ></script>
+        <script src="http://localhost/erpcloud/assets/js/jquery.validate.min.js" type="text/javascript"></script>
+
+
+ 
+
+    </head>
+
+    <body class="hold-transition sidebar-mini">
+                 <div class="page-loader-wrapper">
+            <div class="loader">
+                <div class="preloader">
+                    <div class="spinner-layer pl-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+                <p>Please wait...</p>
+            </div>
+        </div> 
+      
+        <!-- Site wrapper -->
+        <div class="wrapper">
+ 
+            <header class="main-header"> 
+                
+<a href="http://localhost/erpcloud/home" class="logo"> 
+    <span class="logo-lg">
+        <img src="http://localhost/erpcloud/assets/img/icons/2024-03-15/06a4b513aac05da91966e9e7b412cf26.png" alt="">
+    </span>
+    <span class="logo-mini">
+
+<img src="http://localhost/erpcloud/assets/img/icons/2024-03-15/97b9aae7a01c0ef414080e515e67fa6b.png" alt="">
+</span>
+</a>
+<div class="se-pre-con"></div>
+<!-- Header Navbar -->
+ 
+<nav class="navbar navbar-static-top">
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"> <!-- Sidebar toggle button-->
+        <span class="sr-only">Toggle navigation</span>
+        <span class="pe-7s-keypad"></span>
+    </a>
+<span class="top-fixed-link">
+                 <a href="http://localhost/erpcloud/add_invoice" class="btn btn-success btn-outline"><i class="fa fa-balance-scale"></i> Sale</a>
+     
+     
+                   <a href="http://localhost/erpcloud/customer_receive" class="btn btn-success btn-outline"><i class="fa fa-money"></i> Customer Receive</a>
+             
+            <a href="http://localhost/erpcloud/supplier_payment" class="btn btn-success btn-outline"><i class="fa fa-money" aria-hidden="true"></i> Supplier Payment</a>
+      
+          <a href="http://localhost/erpcloud/add_purchase" class="btn btn-success btn-outline"><i class="ti-shopping-cart"></i> Purchase</a>
+ </span>
+
+    <div class="navbar-custom-menu">
+
+        <ul class="nav navbar-nav">
+            <!-- Messages -->
+                         <li>
+                    <a href="http://localhost/erpcloud/gui_pos" class="text-white  btn-success pos-btn"> <span class="fa fa-plus"></span> POS Sale</a>
+                </li>
+                                      <li class="dropdown notifications-menu">
+                    <a href="http://localhost/erpcloud/out_of_stock" >
+                        <i class="pe-7s-attention" title="Out Of Stock"></i>
+                        <span class="label label-danger">15</span>
+                    </a>
+                </li>
+            <!-- settings -->
+            <li class="dropdown dropdown-user">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="pe-7s-settings"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://localhost/erpcloud/edit_profile"><i class="pe-7s-users"></i> Edit Profile</a></li>
+                    <li><a href="http://localhost/erpcloud/change_password"><i class="pe-7s-settings"></i>Change Password</a></li>
+                    <li><a href="http://localhost/erpcloud/logout"><i class="pe-7s-key"></i>  Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+  
+</nav>
+            </header>
+
+ 
+            <!-- Left side column. contains the sidebar -->
+            <aside class="main-sidebar">
+                <!-- sidebar -->
+                <div class="sidebar">
+    <!-- Sidebar user panel -->
+
+    <div class="user-panel text-center">
+        <div class="image">
+                        <img src="http://localhost/erpcloud/./assets/img/user/2024-03-04/9bd8416dbcef83401dca8e48d46ffebd.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="info">
+            <p>Super Admin</p>
+            <a href="#"><i class="fa fa-circle text-success"></i>
+                Admin</a>
+        </div>
+    </div>
+
+
+
+
+    <!-- sidebar menu -->
+    <ul class="sidebar-menu">
+
+        <li class="treeview ">
+            <a href="http://localhost/erpcloud/home"> <i class="ti-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <!-- Invoice menu start -->
+                    <li class="treeview active">
+                <a href="#">
+                    <i class="fa fa-balance-scale"></i><span>Sale</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview active"><a href="http://localhost/erpcloud/add_invoice">New Sale</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/invoice_list">Manage Sale</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/gui_pos">POS Sale</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/terms_list">Sales Terms List</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/terms_add">Add Sales Terms</a></li>
+                                    </ul>
+            </li>
+        
+                    <li class="treeview ">
+
+                <a href="javascript:void(0)">
+
+                    <i class="metismenu-icon pe-7s-user"></i> <span>Customer</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+
+                                            <li class="">
+                            <a href="http://localhost/erpcloud/add_customer" class="">
+                                Add Customer
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/customer_list">
+
+                                Customer List
+                            </a>
+
+                        </li>
+                    
+
+                </ul>
+
+            </li>
+                <!-- supplier menu part -->
+                    <li class="treeview ">
+
+                <a href="javascript:void(0)">
+
+                    <i class="metismenu-icon fa fa-user-secret"></i> <span>Supplier</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+
+                                            <li class="">
+                            <a href="http://localhost/erpcloud/add_supplier" class="">
+                                Add Supplier
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/supplier_list">
+
+                                Supplier List
+                            </a>
+
+                        </li>
+                    
+
+
+                </ul>
+
+            </li>
+        
+        <!-- product menu part -->
+                    <li class="treeview ">
+
+                <a href="javascript:void(0)">
+
+                    <i class="metismenu-icon fa fa-cubes"></i> <span>Product</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+
+                                            <li class="">
+                            <a href="http://localhost/erpcloud/category_form"> Add Category
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/category_list">
+
+                                Category List
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/unit_form"> Add Unit
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/unit_list">
+
+                                Unit List
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/product_form">
+
+                                Add Product
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/bulk_products">
+
+                                Add Product (CSV)
+                            </a>
+
+                        </li>
+                                                                <li class="">
+                            <a href="http://localhost/erpcloud/product_list">
+
+                                Manage Product
+                            </a>
+
+                        </li>
+                    
+                </ul>
+
+            </li>
+        
+
+        <!-- cheque part -->
+                    <li class="treeview ">
+                <a href="javascript:void(0)">
+                    <i class="metismenu-icon fa fa-user-secret"></i> <span>Cheque</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+                                            <li class="">
+                            <a href="http://localhost/erpcloud/managecheque" class="">
+                                Manage Cheque
+
+                            </a>
+
+                        </li>
+                                                                 <li class="">
+                            <a href="http://localhost/erpcloud/chequeflowreport" class="">
+                               Cheque Flow Report
+
+                            </a>
+
+                        </li>
+                    
+                </ul>
+
+            </li>
+        
+
+
+        <!-- Purchase menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="ti-shopping-cart"></i><span>Purchase</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/add_purchase">Add Purchase</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/purchase_list">Manage Purchase</a></li>
+                                    </ul>
+            </li>
+                <!-- Purchase menu end -->
+
+
+
+        <!-- Stock menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="ti-bar-chart"></i><span>Stock</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/stock">Stock Report</a></]li>
+                        
+                </ul>
+            </li>
+                <!-- Stock menu end -->
+        <!-- Account part star -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-money"></i><span>Accounts</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/show_tree">Chart of Account</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/subaccount_list">Sub Account List</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/predefined_accounts">Predefined Accounts</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/financial_year">Financial Year</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/opening_balance">Opening Balance</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/debit_voucher">Debit Voucher</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/credit_voucher">Credit Voucher</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/contra_voucher">Contra Voucher</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/journal_voucher">Journal Voucher</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/bank_reconciliation">Bank Reconciliation</a>
+                        </li>
+                    
+
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/add_payment_method">Add Payment Method</a>
+                        </li>
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/payment_method_list">Payment Method List</a>
+                        </li>
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/supplier_payment">Supplier Payment</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/customer_receive">Customer Receive</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/service_payment">Service Payment</a>
+                        </li>
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/cash_adjustment">Cash Adjustment</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/aprove_v">Vouchar Approval</a>
+                        </li>
+                    
+                                            <li class="treeview  "><a href="">Report                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/cash_book">Cash Book</a></li>
+                                
+
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/bank_book">Bank Book</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/day_book">Day Book</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/general_ledger">General Ledger</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/sub_ledger">Sub Ledger</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/trial_balance">Trial Balance</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/income_statement_form">Income Statement</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/expenditure_statement">Expenditure Statement</a>
+                                    </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/profit_loss_report">Profit Loss</a>
+                                </li>
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/balance_sheet">Balance Sheet</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/fixedasset_schedule">Fixed Asset Schedule</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/receipt_payment">Receipt & Payment</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/bank_reconciliation_report">Bank Reconciliation Report</a>
+                                    </li>
+                                
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/coa_print">Coa Print</a></li>
+                                
+
+                            </ul>
+
+                        </li>
+                                    </ul>
+            </li>
+                <!--  Account End -->
+        <!-- Report menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="ti-book"></i><span>Report</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/closing_form">Closing</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/closing_report">Closing Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/todays_report">Todays Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/todays_customer_received">Todays Customer Receipt</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/sales_report">Sales Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/userwise_sales_report">User Wise Sales Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/invoice_wise_due_report">Due Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/shipping_cost_report">Shipping Cost Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/purchase_report">Purchase Report</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/purchase_report_categorywise">Purchase Report (Category wise)</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/product_wise_sales_report">Sales Report (Product Wise)</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/category_sales_report">Sales Report (Category wise)</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/sales_return">Sales Return</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/supplier_returns">Supplier Return</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/tax_report">TAX Report</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/profit_report">Profit Report (Sale Wise)</a>
+                        </li>
+                                    </ul>
+            </li>
+                <!-- Report menu end -->
+        <!-- human resource management menu start -->
+                    <!-- Supplier menu start -->
+            <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-users"></i><span>Human Resource</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <!-- Supplier menu start -->
+                        <li class="treeview  ">
+                            <a href="#">
+                                <i class="fa fa-users"></i><span>HRM</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/designation_form">Add Designation</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/designation_list">Manage Designation</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/employee_form">Add Employee</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/employee_list">Manage Employee</a>
+                                    </li>
+                                
+                            </ul>
+                        </li>
+                    
+
+                    <!-- ================== Attendance menu start ================= -->
+                                            <li class="treeview  ">
+                            <a href="#">
+                                <i class="fa fa-clock-o"></i><span>Attendance</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/add_attendance">Attendance</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/attendance_list">Manage Attendance</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/attendance_report">Attendance Report</a>
+                                    </li>
+                                                            </ul>
+                        </li>
+                                        <!-- ====================== Attendance menu end ================== -->
+
+                    <!-- ========================== Payroll menu start =================== -->
+                                            <!-- payroll menu start -->
+                        <li class="treeview  ">
+                            <a href="#">
+                                <i class="fa fa-paypal"></i><span>Payroll</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/salary_advance_view"> Salary Advance</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/employee_salary_generate"> Salary Generate</a></li>
+                                
+
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/employee_salary_payment_view"> Manage Employee Salary</a></li>
+                                
+
+                            </ul>
+                        </li>
+                                        <!-- =============================== Payroll menu end =================== -->
+
+                    <!--  Personal loan start -->
+
+                    <!-- loan end -->
+                </ul>
+            </li>
+                <!-- Human resource management menu end -->
+
+        <!-- Bank menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="ti-briefcase"></i><span>Bank</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/bank_form">Add New Bank (Own)</a></li>
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/bank_list">Manage Bank (Own)</a></li>
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/3rdpartybanks">Manage Bank (3rd Party)</a></li>
+                    
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/3rdpartybranches">Manage Branch (3rd Party)</a></li>
+                    
+
+
+
+
+                </ul>
+            </li>
+                <!-- Bank menu end -->
+
+        <!-- service menu start -->
+        
+            <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-asl-interpreting"></i><span>Service</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/add_service">Add Service</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/manage_service">Manage Service</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/add_service_invoice">Service Invoice</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/manage_service_invoice">Manage Service Invoice</a>
+                        </li>
+                                    </ul>
+            </li>
+        
+
+        <!-- Comission end -->
+        <!-- Quotation Menu Start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-book"></i><span>Quotation</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/add_quotation">Add Quotation</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/manage_quotation">Manage Quotation</a>
+                        </li>
+                                    </ul>
+            </li>
+                <!-- quotation Menu end -->
+        <!-- Tax menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-money"></i><span>TAX</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/vat_tax_setting">VAT & TAX Setting</a></li>
+                    
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/tax_setting">TAX Settings</a></li>
+                    
+
+                </ul>
+
+
+
+            </li>
+        
+        <!-- return menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="fa fa-retweet" aria-hidden="true"></i><span>Return</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                                            <li class="treeview  "><a href="http://localhost/erpcloud/return_form">Return</a></li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/invoice_return_list">Stock Return List</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/supplier_return_list">Supplier Return List</a>
+                        </li>
+                                                                <li class="treeview  "><a href="http://localhost/erpcloud/wastage_return_list">Wastage Return List</a>
+                        </li>
+                    
+                </ul>
+            </li>
+
+        
+        <!-- return menu end -->
+
+
+        <!-- Software Settings menu start -->
+                    <li class="treeview  ">
+                <a href="#">
+                    <i class="ti-settings"></i><span>Settings</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <!-- Software Settings menu start -->
+                                            <li class="treeview  ">
+                            <a href="#">
+                                <i class="ti-settings"></i> <span>Software Settings</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/company_list">Manage Company</a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/add_user">Add User</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/user_list">Manage Users </a></li>
+                                                                                                    <li class="">
+                                        <a href="http://localhost/erpcloud/language">
+
+                                            Language
+                                        </a>
+
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/currency_form">Currency </a></li>
+                                                                                                    <li class="treeview  ">
+                                        <a href="http://localhost/erpcloud/settings" class="">
+
+                                            Settings
+                                        </a>
+
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/print_setting">Print Setting </a>
+                                    </li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/mail_setting">Mail Setting </a>
+                                    </li>
+                                                            </ul>
+                        </li>
+                                        <!-- Role permission start -->
+                                            <li class="treeview  ">
+                            <a href="#">
+                                <i class="ti-key"></i> <span>Role Permission</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/add_role">Add Role</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/role_list">Role List</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/assign_role">User Assign Role</a>
+                                    </li>
+                                
+
+                            </ul>
+                        </li>
+                                        <!-- Role permission End -->
+
+                    <!-- sms menu end -->
+                    <!-- Synchronizer setting start -->
+                                            <li class="treeview  ">
+                            <a href="#">
+                                <i class="ti-reload"></i> <span>Data Synchronizer</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/restore">Restore</a></li>
+                                                                                                    <li class="treeview  "><a href="http://localhost/erpcloud/db_import">Import</a></li>
+                                
+                                <li class="treeview  "><a href="http://localhost/erpcloud/dashboard/backup_restore/download_backup">Back Up</a>
+                                </li>
+                            </ul>
+                        </li>
+                                        <!-- Synchronizer setting end -->
+
+                </ul>
+            </li>
+                <!-- Software Settings menu end -->
+        <!-- custom menu start-->
+
+        
+   
+   
+   
+   
+   
+   
+   
+   
+   
+        <!-- custom menu end -->
+
+
+
+
+    </ul>
+</div> <!-- /.sidebar -->            </aside>
+
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+       
+                <!-- Main content -->
+                <div class="content  ">
+
+
+
+       
+                <ol class="breadcrumb">
+                <li><a href="#"><i class="pe-7s-home"></i> Home</a></li>
+                <li><a href="#">invoice</a></li>
+                <li class="active">Add Invoice</li>
+            </ol>
+            
+                    <!-- load messages -->
+                    <div class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Successfully Approved</div>
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Please try again</div>
+                    <div class="se-pre-con"></div>
+                    <!-- load custom page -->
+                    <!-- Invoice js -->
+<script src="http://localhost/erpcloud/my-assets/js/admin_js/invoice.js" type="text/javascript"></script>
+
+
+
+<!--Add Invoice -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-bd lobidrag">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span>New Sale</span>
+                    <span class="padding-lefttitle">
+                                                    <a href="http://localhost/erpcloud/invoice_list" class="btn btn-info m-b-5 m-r-2"><i class="ti-align-justify"> </i> Manage Sale </a>
+                                                                            <a href="http://localhost/erpcloud/gui_pos" class="btn btn-primary m-b-5 m-r-2"><i class="ti-align-justify"> </i> POS Sale </a>
+                        </span>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <form action="http://localhost/erpcloud/invoice/invoice/bdtask_manual_sales_insert" class="form-vertical" id="insert_sale" name="insert_sale" onsubmit="return validateFormWrapper()" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <div class="row">
+
+                    <div class="col-sm-6" id="payment_from_1">
+                        <div class="form-group row">
+                            <label for="customer_name" class="col-sm-3 col-form-label">Customer Name/Phone <i class="text-danger">*</i></label>
+                            <div class="col-sm-6">
+                                <input type="text" size="100" name="customer_name" class=" form-control" placeholder='Customer Name/Phone' id="customer_name" tabindex="1" onkeyup="customer_autocomplete()" value="" />
+
+                                <input id="autocomplete_customer_id" class="customer_hidden_value abc" type="hidden" name="customer_id" value="">
+                            </div>
+                                                            <div class=" col-sm-3">
+                                    <a href="#" class="client-add-btn btn btn-success" aria-hidden="true" data-toggle="modal" data-target="#cust_info"><i class="ti-plus m-r-2"></i></a>
+                                </div>
+                                                    </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="date" class="col-sm-3 col-form-label">Date <i class="text-danger">*</i></label>
+                            <div class="col-sm-6">
+                                                                <input class="datepicker form-control" type="text" size="50" name="invoice_date" id="date" required value="2024-07-21" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6" id="bank_div">
+                        <div class="form-group row">
+                            <label for="bank" class="col-sm-3 col-form-label">Bank <i class="text-danger">*</i></label>
+                            <div class="col-sm-6">
+                                <select name="bank_id" class="form-control bankpayment" id="bank_id">
+                                    <option value="">Select Location</option>
+                                                                            <option value="1">
+                                            Commercial Bank</option>
+                                                                            <option value="IM2YUXMNIV">
+                                            Bank of Ceylon</option>
+                                                                    </select>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="normalinvoice">
+                        <thead>
+                            <tr>
+                                <th class="text-center product_field">Item Information <i class="text-danger">*</i></th>
+                                <th class="text-center">Desc</th>
+                                <th class="text-center">Batch No<i class="text-danger">*</i>
+                                </th>
+                                <th class="text-center">Av. Qnty.</th>
+                                <th class="text-center">Unit</th>
+                                <th class="text-center">Qnty <i class="text-danger">*</i>
+                                </th>
+                                <th class="text-center">Rate <i class="text-danger">*</i></th>
+
+                                                                    <th class="text-center invoice_fields">Discount %
+                                    </th>
+                                                                <th class="text-center invoice_fields">Dis. Value </th>
+                                <th class="text-center invoice_fields">Vat % </th>
+                                <th class="text-center invoice_fields">VAT Value </th>
+                                <th class="text-center invoice_fields">Total                                </th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addinvoiceItem">
+                            <tr>
+                                <td class="product_field">
+                                    <input type="text" required name="product_name" onkeypress="invoice_productList(1)" id="product_name_1" class="form-control productSelection" placeholder="Product Name" tabindex="5">
+
+                                    <input type="hidden" class="autocomplete_hidden_value product_id_1" name="product_id[]" id="SchoolHiddenId" />
+
+                                    <input type="hidden" class="baseUrl" value="http://localhost/erpcloud/" />
+                                </td>
+                                <td>
+                                    <input type="text" name="desc[]" class="form-control text-right " tabindex="6" />
+                                </td>
+                                <td class="invoice_fields">
+                                    <select class="form-control basic-single" onchange="invoice_product_batch(1)" id="serial_no_1" required name="serial_no[]" tabindex="7">
+                                        <option></option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" name="available_quantity[]" class="form-control text-right available_quantity_1" value="0" readonly="" />
+                                </td>
+                                <td>
+                                    <input name="" id="" class="form-control text-right unit_1 valid" value="None" readonly="" aria-invalid="false" type="text">
+                                </td>
+                                <td>
+                                    <input type="text" name="product_quantity[]" required="" onkeyup="bdtask_invoice_quantity_calculate(1);" onchange="bdtask_invoice_quantity_calculate(1);" class="total_qntt_1 form-control text-right" id="total_qntt_1" placeholder="0.00" min="0" tabindex="8" value="1" />
+                                </td>
+                                <td class="invoice_fields">
+                                    <input type="text" name="product_rate[]" id="price_item_1" class="price_item1 price_item form-control text-right" tabindex="9" required="" onkeyup="bdtask_invoice_quantity_calculate(1);" onchange="bdtask_invoice_quantity_calculate(1);" placeholder="0.00" min="0" />
+                                </td>
+                                <!-- Discount -->
+                                <td>
+                                    <input type="text" name="discount[]" onkeyup="bdtask_invoice_quantity_calculate(1);" onchange="bdtask_invoice_quantity_calculate(1);" id="discount_1" class="form-control text-right" min="0" tabindex="10" placeholder="0.00" />
+                                    <input type="hidden" value="1" name="discount_type" id="discount_type_1">
+
+                                </td>
+                                <td>
+                                    <input type="text" name="discountvalue[]" id="discount_value_1" class="form-control text-right" min="0" tabindex="18" placeholder="0.00" readonly />
+                                </td>
+
+                                <!-- VAT  -->
+                                <td>
+                                    <input type="text" name="vatpercent[]" onkeyup="bdtask_invoice_quantity_calculate(1);" onchange="bdtask_invoice_quantity_calculate(1);" id="vat_percent_1" class="form-control text-right" min="0" tabindex="19" placeholder="0.00" />
+
+                                </td>
+                                <td>
+                                    <input type="text" name="vatvalue[]" id="vat_value_1" class="form-control text-right total_vatamnt" min="0" tabindex="20" placeholder="0.00" readonly />
+                                </td>
+                                <!-- VAT end -->
+
+                                <td class="invoice_fields">
+                                    <input class="total_price form-control text-right" type="text" name="total_price[]" id="total_price_1" value="0.00" readonly="readonly" />
+                                </td>
+
+                                <td>
+
+
+                                    <!-- Discount calculate start-->
+                                    <input type="hidden" id="total_discount_1" class="" />
+                                    <input type="hidden" id="all_discount_1" class="total_discount dppr" name="discount_amount[]" />
+                                    <!-- Discount calculate end -->
+
+                                    <button class='btn btn-danger text-right' type='button' value='Delete' onclick='deleteRow_invoice(this)'><i class='fa fa-close'></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10" rowspan="2">
+                                    <center><label for="details" class="  col-form-label text-center">Sale Details</label>
+                                    </center>
+                                    <textarea name="inva_details" id="details" class="form-control" placeholder="Sale Details" tabindex="12"></textarea>
+                                </td>
+                                <td class="text-right" colspan="1"><b>Sale Discount:</b>
+                                </td>
+                                <td class="text-right">
+                                    <input type="text" onkeyup="bdtask_invoice_quantity_calculate(1);" onchange="bdtask_invoice_quantity_calculate(1);" id="invoice_discount" class="form-control text-right total_discount" name="invoice_discount" placeholder="0.00" tabindex="13" />
+                                    <input type="hidden" id="txfieldnum">
+                                </td>
+                                <td><a href="javascript:void(0)" id="add_invoice_item" class="btn btn-info" name="add-invoice-item" onClick="addInputField_invoice('addinvoiceItem');" tabindex="11"><i class="fa fa-plus"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="1"><b>Total Discount:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="total_discount_ammount" class="form-control text-right" name="total_discount" value="0.00" readonly="readonly" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="11"><b>Total VAT:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="total_vat_amnt" class="form-control text-right" name="total_vat_amnt" value="0.00" readonly="readonly" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                            <tr>
+                                <td class="text-right" colspan="11"><b>Shipping Cost:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="shipping_cost" class="form-control text-right" name="shipping_cost" onkeyup="bdtask_invoice_quantity_calculate(1);" onchange="bdtask_invoice_quantity_calculate(1);" placeholder="0.00" tabindex="14" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="11" class="text-right"><b>Grand Total:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="grandTotal" class="form-control text-right grandTotalamnt" name="grand_total_price" value="0.00" readonly="readonly" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="11" class="text-right"><b>Previous:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="previous" class="form-control text-right" name="previous" value="0.00" readonly="readonly" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="11" class="text-right"><b>Net Total:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="n_total" class="form-control text-right" name="n_total" value="0" readonly="readonly" placeholder="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="11"><b>Paid Amount:</b></td>
+                                <td class="text-right">
+                                    <input type="hidden" name="baseUrl" class="baseUrl" value="http://localhost/erpcloud/" />
+                                    <input type="text" id="paidAmount" onkeyup="invoice_paidamount();" class="form-control text-right" name="paid_amount" placeholder="0.00" tabindex="15" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="11"><b>Due:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="dueAmmount" class="form-control text-right" name="due_amount" value="0.00" readonly="readonly" />
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td colspan="11" class="text-right"><b>Change:</b></td>
+                                <td class="text-right">
+                                    <input type="text" id="change" class="form-control text-right" name="change" value="0" readonly="readonly" placeholder="" />
+                                    <input type="hidden" name="is_normal" value="1">
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <input type="hidden" name="finyear" value="1">
+                    <p hidden id="old-amount">0</p>
+                    <p hidden id="pay-amount"></p>
+                    <p hidden id="change-amount"></p>
+                    <div class="col-sm-6 table-bordered p-20">
+                        <div id="adddiscount" class="display-none">
+                            <div class="row no-gutters">
+                                <div class="form-group col-md-6">
+                                    <label for="payments" class="col-form-label pb-2">Payment Type</label>
+
+                                    <select name="multipaytype[]"  onchange = "check_creditsale(0)" class="card_typesl postform resizeselect form-control ">
+<option value="">Select Method</option>
+<option value="0">Credit Sale</option>
+<option value="1020101" selected="selected">Cash In Hand</option>
+<option value="1020102">Petty Cash</option>
+<option value="1020501">Commercial Bank</option>
+<option value="1020502">Bank of Ceylon</option>
+</select>
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="4digit" class="col-form-label pb-2">Paid Amount</label>
+
+                                    <input type="text" id="pamount_by_method" class="form-control number pay " name="pamount_by_method[]" value="" onkeyup="changedueamount()" placeholder="0" />
+
+                                </div>
+                            </div>
+                            <div class="form-group col-md-9">
+                                <div class="form-group row">
+                                    <div id="che_0" style="display:none;"> <input type="checkbox" id="checkbox_0" onclick="showHideDiv('0')"> Cheque Transaction</div>
+                                </div>
+                                <div id="myDiv_0" style="display:none;">
+                                    <div style="margin-top: 20px;">
+                                        <div class="form-group row">
+                                            <label for="cheque_no" class="col-sm-4 col-form-label">Cheque No
+                                                <i class="text-danger">*</i>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" tabindex="3" class="form-control" name="cheque_no[]" placeholder="Cheque No" id="cheque_no_0" onkeypress="handleKeyPress(event,'0')" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="date" class="col-sm-4 col-form-label">Draft Date
+
+                                            </label>
+                                            <div class="col-sm-8">
+                                                                                                <input type="date" tabindex="2" class="form-control" name="draft_date[]" value="" id="date" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="date" class="col-sm-4 col-form-label">Effective Date
+                                                <i class="text-danger">*</i>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                                                                <input type="date" required tabindex="2" class="form-control" name="effective_date[]" value="2024-07-21" id="date" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="description" class="col-sm-4 col-form-label">Description
+
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <textarea tabindex="3" class="form-control" name="description[]" placeholder="Description" id="description"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="" id="add_new_payment">
+
+
+
+                            </div>
+                            <div class="form-group text-right">
+                                <div class="col-sm-12 pr-0">
+
+                                    <button type="button" id="add_new_payment_type" class="btn btn-success w-md m-b-5">Add New Payment Method</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row text-right">
+                    <div class="col-sm-12 p-20">
+                        <input type="submit" id="add_invoice" class="btn btn-success" name="add-invoice" value="Submit" tabindex="17" />
+
+                    </div>
+                </div>
+                </form>            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<script>
+    function printRawHtml(view) {
+        printJS({
+            printable: view,
+            type: 'raw-html',
+
+        });
+
+    }
+
+    function handleKeyPress(event, id) {
+        const key = event.key;
+
+        var invoice_edit_page = $("#invoice_edit_page").val();
+        var is_credit_edit = $('#is_credit_edit').val();
+
+        var url = $('#base_url').val() + "invoice/invoice/checkCheque/" + $('#cheque_no_' + id).val() + key;
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {
+                is_credit_edit: is_credit_edit,
+                csrf_test_name: invoice_edit_page
+            },
+            success: function(data) {
+                var parsedData = JSON.parse(data);
+
+                if (parsedData.length > 0) {
+                    $('#cheque_no_' + id).val('')
+                    alert("This Cheque Number already exsist")
+                }
+
+
+            }
+        });
+
+    }
+
+    var i = 0;
+
+    async function checkCheque(id) {
+        return new Promise((resolve, reject) => {
+            let url = $('#base_url').val() + "invoice/invoice/checkCheque/" + $('#cheque_no_' + id).val();
+            $.ajax({
+                type: "get",
+                url: url,
+                success: function(data) {
+                    var parsedData = JSON.parse(data);
+                    if (parsedData.length > 0) {
+                        alert($('#cheque_no_' + id).val() + " Cheque Number already exists");
+                        $('#cheque_no_' + id).val('');
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+                },
+                error: function(err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    function validateFormWrapper() {
+        validateForm().then(function(result) {
+            if (result) {
+                document.getElementById('insert_sale').submit();
+            }
+        });
+        return false; // Prevent the form from submitting immediately
+    }
+
+    async function validateForm() {
+        const array = [];
+        for (var j = 0; j < i + 1; j++) {
+            let element = document.getElementById("myDiv_" + j);
+            let displayProperty = element.style.display;
+            if (displayProperty == '') {
+                if ($('#cheque_no_' + j).val() === '') {
+                    alert("Please enter the cheque no")
+                    return false;
+                } else {
+
+                    let a = await checkCheque(j);
+                    if (!a) {
+                        return false;
+                    } else {
+                        if (array.some(item => item === $('#cheque_no_' + j).val())) {
+                            alert("Can't use 1 perticular cheque number 2 times ");
+                            return false;
+                        } else {
+                            array.push($('#cheque_no_' + j).val())
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    // ******* new payment add start *******
+    $(document).on('click', '#add_new_payment_type', function() {
+        var base_url = $('#base_url').val();
+        var csrf_test_name = $('[name="csrf_test_name"]').val();
+        var gtotal = $("#paidAmount").val();
+
+        var total = 0;
+        $(".pay").each(function() {
+            total += parseFloat($(this).val()) || 0;
+        });
+
+
+        var is_credit_edit = $('#is_credit_edit').val();
+        if (total >= gtotal) {
+            alert("Paid amount is exceed to Total amount.");
+
+            return false;
+        }
+
+        i++;
+        var url = base_url + "invoice/invoice/bdtask_showpaymentmodal/" + i;
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {
+                is_credit_edit: is_credit_edit,
+                csrf_test_name: csrf_test_name
+            },
+            success: function(data) {
+                $($('#add_new_payment').append(data)).show("slow", function() {});
+                var length = $(".number").length;
+
+                var total3 = 0;
+                $(".pay").each(function() {
+                    total3 += parseFloat($(this).val()) || 0;
+                });
+
+                var nextamnt = gtotal - total3;
+
+
+                $(".number:eq(" + (length - 1) + ")").val(nextamnt.toFixed(2, 2));
+                var total2 = 0;
+                $(".number").each(function() {
+                    total2 += parseFloat($(this).val()) || 0;
+                });
+                var dueamnt = parseFloat(gtotal) - total2
+
+
+            }
+        });
+    });
+
+
+
+    function showHideDiv(id) {
+        var divId = "myDiv_" + id;
+        if ($('#checkbox_' + id).prop('checked')) {
+            $('#' + divId).show();
+        } else {
+            $('#' + divId).hide();
+            $('#cheque_no_' + id).val("");
+
+        }
+    }
+
+    function check_creditsale(id) {
+
+        debugger
+        var elements = document.getElementsByName("multipaytype[]");
+        if (elements[id].value != 0) {
+            var url = $('#base_url').val() + "purchase/purchase/bdtask_typeofthepayment/" + elements[id].value;
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {
+                    is_credit_edit: is_credit_edit,
+                    csrf_test_name: csrf_test_name
+                },
+                success: function(data) {
+                    var parsedData = JSON.parse(data);
+
+
+
+                    if (parsedData[0].HeadName === '3rd party cheque') {
+                        $('#' + "che_" + id).hide();
+                        $('#' + "myDiv_" + id).show();
+
+                    }
+                    //  else if (parsedData[0].PHeadName === 'Cash at Bank') {
+                    //     $('#' + "che_" + id).show();
+                    //     $('#' + "myDiv_" + id).hide();
+
+                    // } 
+                    else {
+                        $('#' + "che_" + id).hide();
+                        $('#' + "myDiv_" + id).hide();
+                        $('#cheque_no_' + id).val("");
+                    }
+
+
+                }
+            });
+        }
+
+        var card_typesl = $('.card_typesl').val();
+        if (card_typesl == 0) {
+            $("#add_new_payment").empty();
+            var gtotal = $(".grandTotalamnt").val();
+            $("#pamount_by_method").val(gtotal);
+            $("#paidAmount").val(0);
+            $("#dueAmmount").val(gtotal);
+            $(".number:eq(0)").val(0);
+            $("#add_new_payment_type").prop('disabled', true);
+
+        } else {
+            $("#add_new_payment_type").prop('disabled', false);
+        }
+        $("#pay-amount").text('0');
+
+        var invoice_edit_page = $("#invoice_edit_page").val();
+        var is_credit_edit = $('#is_credit_edit').val();
+        if (invoice_edit_page == 1 && card_typesl == 0) {
+            $("#add_new_payment").empty();
+
+            var base_url = $('#base_url').val();
+            var csrf_test_name = $('[name="csrf_test_name"]').val();
+            var gtotal = $(".grandTotalamnt").val();
+            var url = base_url + "invoice/invoice/bdtask_showpaymentmodal";
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {
+                    csrf_test_name: csrf_test_name,
+                    is_credit_edit: is_credit_edit
+                },
+                success: function(data) {
+                    $('#add_new_payment').append(data);
+                    $("#pamount_by_method").val(gtotal);
+                    $("#add_new_payment_type").prop('disabled', true);
+                }
+            });
+
+        }
+    }
+</script>                </div> <!-- /.content -->
+            </div> <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <input type="hidden" name="" id="base_url" value="http://localhost/erpcloud/">
+                <div class="pull-right hidden-xs">
+                     
+                </div>
+
+                <strong>
+                    Powered by iFleex Solutions (Pvt) Ltd                </strong>
+                    <a href="http://localhost/erpcloud/add_invoice">
+                    </a>
+    <input type="hidden" id="base_url" value="http://localhost/erpcloud/" name="">
+    <input type="hidden" name="dis_type" id="discount_type" value="1">
+    <input type ="hidden" name="csrf_test_name" id="CSRF_TOKEN" value="">
+     <input type="hidden" id="currency" value="LKR" name="">
+            </footer>
+        </div> <!-- ./wrapper -->
+ 
+        <!-- Start Core Plugins-->
+             <script src="http://localhost/erpcloud/assets/js/jquery-ui.min.js" type="text/javascript"></script> 
+        <!-- bootstrap js -->
+        <script src="http://localhost/erpcloud/assets/js/bootstrap.min.js" type="text/javascript"></script>  
+        <!-- pace js -->
+        <script src="http://localhost/erpcloud/assets/js/pace.min.js" type="text/javascript"></script>  
+        <!-- SlimScroll -->
+        <script src="http://localhost/erpcloud/assets/js/jquery.slimscroll.min.js" type="text/javascript"></script>  
+        <!-- bootstrap timepicker -->
+     
+        <script src="http://localhost/erpcloud/assets/js/jquery-ui-timepicker-addon.min.js" type="text/javascript"></script> 
+        <!-- select2 js -->
+        <script src="http://localhost/erpcloud/assets/js/select2.min.js" type="text/javascript"></script>
+    
+
+
+        <!-- ChartJs JavaScript -->
+        <script src="http://localhost/erpcloud/assets/js/Chart.min.js?v=2.5" type="text/javascript"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="http://localhost/erpcloud/assets/datatables/dataTables.min.js"></script>
+        <!-- Table Head Fixer -->
+        <script src="http://localhost/erpcloud/assets/js/tableHeadFixer.js" type="text/javascript"></script> 
+        <!-- Admin Script -->
+        <script src="http://localhost/erpcloud/assets/js/frame.js" type="text/javascript"></script> 
+        <script src="http://localhost/erpcloud/assets/js/bootstrap-toggle.min.js" type="text/javascript"></script> 
+        <script src="http://localhost/erpcloud/assets/plugins/toastr/toastr.min.js"></script>
+        <script src="http://localhost/erpcloud/assets/js/sweetalert/sweetalert.min.js" type="text/javascript"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="http://localhost/erpcloud/assets/js/custom.js" type="text/javascript"></script>
+        <!-- summernote js -->
+<script src="http://localhost/erpcloud/assets/js/mousetrap-master/mousetrap.js" ></script>
+<script src="http://localhost/erpcloud/assets/js/print.js" ></script>
+<script src="http://localhost/erpcloud/assets/js/jQuery-print/jQuery.print.min.js"></script>
+ <script src="http://localhost/erpcloud/assets/js/jstree.min.js" ></script>
+
+
+        
+       <!-- calculator modal -->
+    <div class="modal fade-scale" id="calculator" role="dialog">
+    <div class="modal-dialog" id="calculatorcontent">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+            <div class="calcontainer">
+         <div class="screen">
+      <h1 id="mainScreen">0</h1>
+    </div>
+    <table class="cal-table">
+      <tr>
+        <td><button value="7" id="7" class="cal-btn" onclick="InputSymbol(7)">7</button></td>
+        <td><button value="8" id="8" class="cal-btn" onclick="InputSymbol(8)">8</button></td>
+        <td><button value="9" id="9" class="cal-btn" onclick="InputSymbol(9)">9</button></td>
+        <td><button onclick="DeleteLastSymbol()" class="cal-btn">CE</button></td>
+      </tr>
+      <tr>
+        <td><button value="4" id="4" class="cal-btn" onclick="InputSymbol(4)">4</button></td>
+        <td><button value="5" id="5" class="cal-btn" onclick="InputSymbol(5)">5</button></td>
+        <td><button value="6" id="6" class="cal-btn" onclick="InputSymbol(6)">6</button></td>
+        <td><button value="/" id="104" class="cal-btn" onclick="InputSymbol(104)">/</button></td>
+      </tr>
+      <tr>
+        <td><button value="1" id="1" class="cal-btn" onclick="InputSymbol(1)">1</button></td>
+        <td><button value="2" id="2" class="cal-btn" onclick="InputSymbol(2)">2</button></td>
+        <td><button value="3" id="3" class="cal-btn" onclick="InputSymbol(3)">3</button></td>
+        <td><button value="*" id="103" class="cal-btn" onclick="InputSymbol(103)">*</button></td>
+      </tr>
+      <tr>
+        <td><button value="0" id="0" class="cal-btn" onclick="InputSymbol(0)">0</button></td>
+        <td><button value="." id="128" class="cal-btn" onclick="InputSymbol(128)">.</button></td>
+        <td><button value="-" id="102" class="cal-btn" onclick="InputSymbol(102)">-</button></td>
+        <td><button value="+" id="101" class="cal-btn" onclick="InputSymbol(101)">+</button></td>
+      </tr>
+      <tr>
+        <td colspan="2"><button onclick="ClearScreen()" class="cal-btn">C</button></td>
+        <td colspan="1"><button onclick="CalculateTotal()" class="cal-btn">=</button></td>
+        <td colspan="1"><button  data-dismiss="modal" class="cal-btn-danger"><i class="fa fa-power-off"></i></button></td>
+      </tr>
+    </table>
+</div>
+        </div>
+       
+      </div>
+      
+    </div>
+  </div>
+
+
+ 
+
+    <div class="modal fade modal-success" id="cust_info" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h3 class="modal-title">Add new customer</h3>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <div id="customeMessage" class="alert hide"></div>
+                       <form action="http://localhost/erpcloud/invoice/invoice/instant_customer" class="form-vertical" id="newcustomer" method="post" accept-charset="utf-8">
+                    <div class="panel-body">
+ <input type ="hidden" name="csrf_test_name" id="" value="">
+                        <div class="form-group row">
+                            <label for="customer_name" class="col-sm-4 col-form-label">Customer Name <i class="text-danger">*</i></label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name ="customer_name" id="m_customer_name" type="text" placeholder="Customer Name"  required="" tabindex="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-4 col-form-label">Customer Email</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name ="email" id="email" type="email" placeholder="Customer Email" tabindex="2"> 
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="mobile" class="col-sm-4 col-form-label">Customer Mobile</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name ="mobile" id="mobile" type="number" placeholder="Customer Mobile" min="0" tabindex="3">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="address " class="col-sm-4 col-form-label">Customer Address</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control" name="address" id="address " rows="3" placeholder="Customer Address" tabindex="4"></textarea>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    
+                        </div>
+
+                        <div class="modal-footer">
+                            
+                            <a href="#" class="btn btn-danger" tabindex="5" data-dismiss="modal">Close</a>
+                            
+                            <input type="submit" tabindex="6" class="btn btn-success" value="Submit">
+                        </div>
+                        </form>                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+    </body>
+</html>

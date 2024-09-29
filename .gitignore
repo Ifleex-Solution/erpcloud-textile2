@@ -1,0 +1,9 @@
+.htaccess
+.DS_Store
+composer.lock
+vendor
+.idea
+.project
+lib/fonts/*.afm.php
+lib/fonts/*.ufm.php
+lib/fonts/log.htm
