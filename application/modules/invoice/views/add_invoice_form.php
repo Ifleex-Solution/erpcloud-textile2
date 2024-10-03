@@ -1,5 +1,6 @@
 <!-- Invoice js -->
 <script src="<?php echo base_url() ?>my-assets/js/admin_js/invoice.js" type="text/javascript"></script>
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
 
 <style>
@@ -34,9 +35,7 @@
                         <?php if ($this->permission1->method('manage_invoice', 'read')->access()) { ?>
                             <a href="<?php echo base_url('invoice_list') ?>" class="btn btn-info m-b-5 m-r-2"><i class="ti-align-justify"> </i> <?php echo display('manage_invoice') ?> </a>
                         <?php } ?>
-                        <?php if ($this->permission1->method('pos_invoice', 'create')->access()) { ?>
-                            <a href="<?php echo base_url('gui_pos') ?>" class="btn btn-primary m-b-5 m-r-2"><i class="ti-align-justify"> </i> <?php echo display('pos_invoice') ?> </a>
-                        <?php } ?></span>
+                    </span>
                 </div>
             </div>
 
@@ -97,6 +96,8 @@
                             <tr>
                                 <th class="text-center product_field"><?php echo display('item_information') ?> <i class="text-danger">*</i></th>
                                 <th class="text-center invoice_fields"><?php echo display('unit') ?></th>
+                                <th class="text-center product_field">Emp Id</th>
+
                                 <th class="text-center invoice_fields"><?php echo display('quantity') ?> <i class="text-danger">*</i>
                                 </th>
                                 <th class="text-center product_field"><?php echo display('rate') ?> <i class="text-danger">*</i></th>
@@ -116,7 +117,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7" class="text-right"><b><?php echo display('grand_total') ?>:</b></td>
+                                <td colspan="8" class="text-right"><b><?php echo display('grand_total') ?>:</b></td>
                                 <td class="text-right">
                                     <input type="text" id="grandTotal" class="form-control text-right grandTotalamnt" name="grand_total_price" value="0.00" readonly="readonly" />
                                 </td>
@@ -133,15 +134,15 @@
                     <p hidden id="change-amount"></p>
 
                 </div>
-                <div class="form-group row text-left">
+                <!-- <div class="form-group row text-left">
                     <div class="col-sm-12 p-20">
                         <b>Employee Id:</b>
-                        <input type="text" id="searchInput" placeholder="Employee Id..." onkeyup="handleEmployeeKeyPress(event)" autocomplete="off"/>
+                        <input type="text" id="searchInput" placeholder="Employee Id..." onkeyup="handleEmployeeKeyPress(event)" autocomplete="off" />
                         <input type="text" id="employeeId" hidden />
 
                         <div id="searchResults" style="width: 270px;margin-left:90px"></div>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group row text-right">
                     <div class="col-sm-12 p-20">
                         <input type="submit" id="add_invoice" class="btn btn-success" name="add-invoice" value="<?php echo display('submit') ?>" tabindex="17" />
@@ -156,7 +157,288 @@
 
 
 </div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height: 900px;width: 1000px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Manage Sales</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-sm-15">
+                                    <?php echo form_open('', array('class' => 'form-inline', 'method' => 'get', 'autocomplete' => 'off')) ?>
+                                    <?php
+                                    date_default_timezone_set('Asia/Colombo');
+
+                                    $today = date('Y-m-d');
+                                    ?>
+                                    <div class="form-group">
+                                        <label class="" for="from_date"><?php echo display('start_date') ?></label>
+                                        <input type="text" name="from_date" class="form-control datepicker" id="from_date" value=""
+                                            placeholder="<?php echo display('start_date') ?>">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="" for="to_date"><?php echo display('end_date') ?></label>
+                                        <input type="text" name="to_date" class="form-control datepicker" id="to_date"
+                                            placeholder="<?php echo display('end_date') ?>" value="" autocomplete="off">
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <?php if ($this->permission1->method('manage_invoice', 'view')->access()) { ?>
+                                            <label for="empid" class="mr-2 mb-0">Emp Id</label>
+                                            <div class="input-group mr-4" style="width: 150px;">
+                                                <input type="password" tabindex="4" class="form-control" name="empid" id="empid" autocomplete="new-password">
+                                            </div>
+                                        <?php } ?>
+
+                                        <?php if (!$this->permission1->method('manage_invoice', 'view')->access()) { ?>
+                                            <input type="hidden" tabindex="4" class="form-control" name="empid" id="empid" value="123">
+                                        <?php } ?>
+                                    </div>
+
+
+
+
+                                    <button type="button" id="btn-filter"
+                                        class="btn btn-success"><?php echo display('find') ?></button>
+
+                                    <?php echo form_close() ?>
+                                </div>
+
+                                <div class="col-sm-4 text-right">
+
+                                    <span class="newtooltiop" data-toggle="tooltip" data-html="true" data-placement="left" title="** How to show invoice edit option ?<br><br>
+                    1. To show new invoice edit button in manage sales please go to 'Settings -> Software Setting -> Settings'. <br><br>
+
+                    2. Then uncheck 'Auto Approve Invoice Voucher' option from the setting list & click on save button.<br><br>
+
+                    3. Then create new invoice now you can edit your new invoice (For this you have to approve all your vouchers manually form Accounts -> Voucher Approval 
+                    otherwise you don't get those data in accounts report).<br><br>
+
+                    N:B: Please do not edit any auto generated voucher if you do your system calculations can be wrong.<br>">
+                                        <i class="fa fa-question-circle fa-2x" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <!-- Manage Invoice report -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-bd lobidrag">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span><?php echo display('manage_invoice') ?></span>
+                                    <span class="padding-lefttitle">
+                                        <?php if ($this->permission1->method('new_invoice', 'create')->access()) { ?>
+                                            <a href="<?php echo base_url('add_invoice') ?>" class="btn btn-info m-b-5 m-r-2"><i
+                                                    class="ti-plus"> </i> <?php echo display('new_invoice') ?> </a>
+                                        <?php } ?>
+
+
+                                        <?php if ($this->permission1->method('gui_pos', 'create')->access()) { ?>
+                                            <a href="<?php echo base_url('gui_pos') ?>" class="btn btn-success m-b-5 m-r-2"><i
+                                                    class="ti-plus"> </i> <?php echo display('pos_invoice') ?> </a>
+                                        <?php } ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered" cellspacing="0" width="100%" id="InvList">
+                                        <thead>
+                                            <tr>
+                                                <th><?php echo display('sl') ?></th>
+                                                <th><?php echo display('invoice_no') ?></th>
+                                                <th><?php echo display('sale_by') ?></th>
+                                                <th><?php echo display('date') ?></th>
+                                                <th><?php echo display('total_amount') ?></th>
+                                                <th class="text-center"><?php echo display('action') ?></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <th colspan="4" class="text-right"><?php echo display('total') ?>:</th>
+
+                                            <th></th>
+                                            <th></th>
+                                        </tfoot>
+                                    </table>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <input type="hidden" id="total_invoice" value="<?php echo $total_invoice; ?>" name="">
+
+                    </div>
+
+                    <div id="add0" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <strong><?php echo display('delivery_note') ?></strong>
+                                </div>
+                                <div class="modal-body" id="invoice_note_show">
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
+    var mode = "+"
+    document.addEventListener('keydown', function(event) {
+        console.log(event.key)
+        // Check if Shift is pressed and the key is '+'
+        if (event.shiftKey && event.key === '+') {
+            mode = "+"
+            alert("mode changed to +");
+        }
+
+        if (event.shiftKey && event.key === '_') {
+            mode = "-"
+            alert("mode changed to -");
+        }
+
+        if (event.shiftKey && event.key === 'Enter') {
+            // Show the Bootstrap modal
+            $("#exampleModal").modal('show');
+
+        }
+        if (event.shiftKey && event.key === 'S') {
+            swal({
+                title: "",
+                text: "Do You Want To Proceed Further?",
+                type: "success",
+                showCancelButton: true,
+                cancelButtonText: "ESC",
+                cancelButtonColor: "red",
+                confirmButtonText: "Enter",
+                confirmButtonColor: "#008000"
+            }, function(proceedValue) {
+                if (proceedValue) {
+                    saverecord()
+
+                } else {
+                    // If the user cancels the first popup, reload the page
+                    location.reload();
+                }
+            });
+
+
+        }
+    });
+
+    function saverecord() {
+        setTimeout(function() {
+
+
+            var productIds = $("input[name='product_id[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var productQuantities = $("input[name='product_quantity[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var productRates = $("input[name='product_rate[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var discountTypes = $("input[name='discount_type[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var discounts = $("input[name='discount[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var discountValues = $("input[name='discountvalue[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var totalPrices = $("input[name='total_price[]']").map(function() {
+                return $(this).val();
+            }).get();
+           var employeeIds = $("input[name='employee_id[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            $.ajax({
+                type: "post",
+                url: $('#base_url').val() + 'invoice/invoice/sales_insert',
+                data: {
+                    productIds: productIds,
+                    productQuantities: productQuantities,
+                    productRates: productRates,
+                    discountTypes: discountTypes,
+                    discounts: discounts,
+                    discountValues: discountValues,
+                    totalPrices: totalPrices,
+                    grandTotal: $('#grandTotal').val(),
+                    date: $('#date').val(),
+                    employeeIds: employeeIds,
+                },
+                success: function(data1) {
+
+                    datas = JSON.parse(data1);
+                    swal({
+                        title: "Success!",
+                        showCancelButton: true,
+                        cancelButtonText: "ESC",
+                        cancelButtonColor: "red",
+                        confirmButtonText: "Enter",
+                        confirmButtonColor: "#008000",
+                        text: "Do You Want To Print ?",
+                        type: "success",
+
+
+                    }, function(inputValue) {
+                        if (inputValue === true) {
+
+                            printRawHtml(datas.details);
+                        } else {
+
+                            location.reload();
+                        }
+
+                    });
+
+                }
+            });
+
+        }, 1000); //
+    }
+
     var count = 0;
     let arr = [];
     var tabindex = 1;
@@ -196,28 +478,73 @@
             tab8 = tabindex + 8;
             tabindex = tabindex + 9;
 
+            if (mode === "+") {
+                e.innerHTML = "<td '><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
+                    "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
+                    "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
+                    " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
+                    "<td><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 200px;'></div></td>" +
+                    "<td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
+                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
+                    count + " form-control text-right' required placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab5 +
+                    "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab6 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
+                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab7 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
+                    count + "' value='0.00' readonly='readonly'/></td><td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
+                    "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
+                    "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
+                    document.getElementById(t).appendChild(e);
 
-            e.innerHTML = "<td><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
-                "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
-                "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
-                " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td><td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
-                count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
-                count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
-                count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
-                count + " form-control text-right' required placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
-                count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab5 +
-                "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab6 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
-                "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab7 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
-                count + "' value='0.00' readonly='readonly'/></td><td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
-                "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
-                "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
-                document.getElementById(t).appendChild(e),
-                document.getElementById("total_qntt_" + count).focus();
+            } else {
+                e.innerHTML = "<td style='background-color:#f9f9c1;'><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
+                    "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
+                    "' name='product_id[]'  id='product_id_" + count + "'/></td><td style='background-color:#f9f9c1;'><input class='form-control text-right common_name unit_" + count +
+                    " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
+                    "<td style='background-color:#f9f9c1;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")' autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 200px;'></div></td>" +
+                    "<td style='background-color:#f9f9c1;'> <input type='text' name='product_quantity[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
+                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td style='background-color:#f9f9c1;'><input type='text' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
+                    count + " form-control text-right' required placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td><td style='background-color:#f9f9c1;'><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab5 +
+                    "' /></td><td style='background-color:#f9f9c1;'><input type='text' class='form-control text-right common_discount'  tabindex='" + tab6 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td style='background-color:#f9f9c1;'><input type='text' name='discountvalue[]'  id='discount_value_" + count +
+                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab7 + "' readonly /></td><td class='text-right' style='background-color:#f9f9c1;'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
+                    count + "' value='0.00' readonly='readonly'/></td><td style='background-color:#f9f9c1;'>" + tbfild + "<input type='hidden' id='all_discount_" + count +
+                    "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
+                    "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
+                    document.getElementById(t).appendChild(e);
+            }
+
+
+
+
+            let element2 = document.getElementById("searchInput_" + count);
+            $("#discount_type_" + count).val("Percentage");
+            $("#discount_" + count).val(0)
+            $("searchInput_" + count).val($("searchInput_" + (count - 1)).val(0))
+            element2.focus();
+            element2.select();
             $("#price_item_" + count).val(data.price);
             $("#product_id_" + count).val(data.product_id);
             $("#unit_type_" + count).val(data.unit);
             $("#product_name_" + count).val(data.product_name);
-            $('#add_item_m').val("")
+
+            var quantity = $("#total_qntt_" + count).val();
+            var price_item = $("#price_item_" + count).val();
+            var price = quantity * price_item;
+
+
+            $("#total_price_" + count).val(price);
+            $('#add_item_m').val("");
+
+            var total = 0;
+            arr.forEach(function(element) {
+                total = parseFloat($("#total_price_" + element).val()) + total;
+            });
+
+            $("#grandTotal").val(total);
 
         }
     }
@@ -297,6 +624,10 @@
         if (e.keyCode == 32) {
             document.getElementById("add_item_m").focus();
 
+        } else
+        if (e.keyCode == 13) {
+           
+
         } else {
             var quantity = $("#total_qntt_" + item).val();
             var price_item = $("#price_item_" + item).val();
@@ -305,7 +636,7 @@
             var total_discount = $("#total_discount_" + item).val();
             var dis_type = $("#discount_type_" + item).val();
 
-            
+
             if (e.keyCode == 9) {
                 if (dis_type === "p")
                     $("#discount_type_" + item).val("Percentage");
@@ -373,14 +704,7 @@
 <script>
     // Sample data to search through
     let employees = [
-        // 'Apple',
-        // 'Banana',
-        // 'Orange',
-        // 'Mango',
-        // 'Pineapple',
-        // 'Grapes',
-        // 'Strawberry',
-        // 'Watermelon'
+
     ];
 
     let currentIndex = -1;
@@ -407,83 +731,13 @@
         });
     }
 
-    function handleEmployeeKeyPress(event) {
-
+    function handleEmployeeKeyPress(event, count) {
+        console.log(event.code)
         if (event.code === "Space") {
-
-
-            var productIds = $("input[name='product_id[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var productQuantities = $("input[name='product_quantity[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var productRates = $("input[name='product_rate[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var discountTypes = $("input[name='discount_type[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var discounts = $("input[name='discount[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var discountValues = $("input[name='discountvalue[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var totalPrices = $("input[name='total_price[]']").map(function() {
-                return $(this).val();
-            }).get();
-            $.ajax({
-                type: "post",
-                url: $('#base_url').val() + 'invoice/invoice/sales_insert',
-                data: {
-                    productIds: productIds,
-                    productQuantities: productQuantities,
-                    productRates: productRates,
-                    discountTypes: discountTypes,
-                    discounts: discounts,
-                    discountValues: discountValues,
-                    totalPrices: totalPrices,
-                    grandTotal: $('#grandTotal').val(),
-                    date: $('#date').val(),
-                    employeeId: $('#employeeId').val(),
-                },
-                success: function(data1) {
-
-                    datas = JSON.parse(data1);
-                    swal({
-                        title: "Success!",
-                        showCancelButton: true,
-                        cancelButtonText: "NO",
-                        cancelButtonColor: "red",
-                        confirmButtonText: "Yes",
-                        confirmButtonColor: "#008000",
-                        text: "Do You Want To Print ?",
-                        type: "success",
-
-
-                    }, function(inputValue) {
-                        if (inputValue === true) {
-
-                            printRawHtml(datas.details);
-                        } else {
-
-                            // location.reload();
-                        }
-
-                    });
-
-                }
-            });
+            document.getElementById("add_item_m").focus();
 
         } else {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput_' + count).value.toLowerCase();
             const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
 
 
@@ -503,15 +757,18 @@
                 // Select the highlighted item
                 if (currentIndex >= 0 && currentIndex < results.length) {
                     // Place the selected item in the input box
-                    document.getElementById('searchInput').value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
-                    document.getElementById('employeeId').value = results[currentIndex].id;
+                    document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
+                    document.getElementById('searchInput_' + count).select()
+                    document.getElementById('employeeId_' + count).value = results[currentIndex].id;
                     // Clear the search results
-                    clearResults();
+                    clearResults(count);
                 }
+            } else if (event.key === "ArrowRight") {
+
             } else {
                 // For other keys, just filter and show results
-                currentIndex = -1; // Reset the index
-                displayResults(results);
+                currentIndex = -1;
+                displayResults(results, count);
 
             }
         }
@@ -519,8 +776,8 @@
 
     }
 
-    function displayResults(results) {
-        const searchResultsDiv = document.getElementById('searchResults');
+    function displayResults(results, count) {
+        const searchResultsDiv = document.getElementById('searchResults_' + count);
         searchResultsDiv.innerHTML = ''; // Clear previous results
         if (results.length === 0) {
             searchResultsDiv.innerHTML = '<p>No results found</p>';
@@ -533,7 +790,7 @@
                 searchResultsDiv.appendChild(resultItem);
             });
         }
-        currentIndex=0
+        currentIndex = 0
         highlightItem(0);
 
     }
@@ -563,8 +820,8 @@
 
     }
 
-    function clearResults() {
+    function clearResults(count) {
         // Clear the results div
-        document.getElementById('searchResults').innerHTML = '';
+        document.getElementById('searchResults_' + count).innerHTML = '';
     }
 </script>

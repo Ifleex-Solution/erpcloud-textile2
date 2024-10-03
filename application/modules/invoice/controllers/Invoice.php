@@ -44,8 +44,8 @@ class Invoice extends MX_Controller
 
     public function bdtask_invoice_list()
     {
-        $data['title']        = display('manage_invoice');
-        $data['total_invoice'] = $this->invoice_model->count_invoice();
+        //$data['title']        = display('manage_invoice');
+       // $data['total_invoice'] = $this->invoice_model->count_invoice();
         $data['module']       = "invoice";
         $data['page']         = "invoice";
         echo modules::run('template/layout', $data);
@@ -822,7 +822,7 @@ class Invoice extends MX_Controller
             'date'            => (!empty($this->input->post('date', TRUE)) ? $this->input->post('date', TRUE) : date('Y-m-d')),
             'total_amount'    => $this->input->post('grandTotal', TRUE),
             'status'          => 1,
-            'employee_id'     =>$this->input->post('employeeId', TRUE)
+            // 'employee_id'     =>$this->input->post('employeeId', TRUE)
 
         );
         $this->db->insert('invoice', $datainv);
@@ -835,6 +835,8 @@ class Invoice extends MX_Controller
         $discounts       = $this->input->post('discounts', TRUE);
         $discountValues          = $this->input->post('discountValues', TRUE);
         $totalPrices = $this->input->post('totalPrices', TRUE);
+        $employeeIds = $this->input->post('employeeIds', TRUE);
+
         for ($i = 0, $n = count($this->input->post('productIds', true)); $i < $n; $i++) {
 
             $data1 = array(
@@ -846,6 +848,7 @@ class Invoice extends MX_Controller
                 'discount'           => $discounts[$i],
                 'discount_per'       => $discountValues[$i],
                 'total_price'        => $totalPrices[$i],
+                'employeeId'        => $employeeIds[$i],
                 'status'             => 1
             );
 
