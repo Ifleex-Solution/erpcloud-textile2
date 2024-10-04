@@ -124,7 +124,7 @@ class Auth extends MX_Controller {
 					redirect('home');
                 }else{
                     if($permission['new_invoice']['create'] == 1 || $permission['gui_pos']['create']==1){
-                       redirect('gui_pos'); 
+                       redirect('add_invoice'); 
                    }else{
                     redirect('home');
                    }

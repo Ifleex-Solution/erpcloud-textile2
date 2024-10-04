@@ -25,10 +25,10 @@
 
 
 <!--Add Invoice -->
-<div class="row">
+<div class="row" >
     <div class="col-sm-12">
         <div class="panel panel-bd lobidrag">
-            <div class="panel-heading">
+            <div class="panel-heading" style="background-color:#B2BEB5">
                 <div class="panel-title">
                     <span><?php echo display('new_invoice') ?></span>
                     <span class="padding-lefttitle">
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="panel-body">
+            <div class="panel-body" style="background-color:#B2BEB5">
                 <?php echo form_open_multipart('invoice/invoice/bdtask_manual_sales_insert', array('class' => 'form-vertical', 'id' => 'insert_sale', 'name' => 'insert_sale', 'onsubmit' => 'return validateFormWrapper()')) ?>
 
                 <div class="row">
@@ -315,7 +315,8 @@
 
 
 <script>
-    var mode = "+"
+  
+  var mode = "+"
     document.addEventListener('keydown', function(event) {
         // Check if Shift is pressed and the key is '+'
         if (event.shiftKey && event.key === '+') {
@@ -420,7 +421,7 @@
 
             $.ajax({
                 type: "post",
-                url: $('#base_url').val() + 'invoice/invoice/sales_insert',
+                url: $('#base_url').val() + 'invoice/invoice/sales_insert2',
                 data: {
                     productIds: productIds,
                     productQuantities: productQuantities,
@@ -463,6 +464,7 @@
 
         }, 1000); //
     }
+
 
     var count = 0;
     let arr = [];
@@ -647,7 +649,7 @@
 
         } else
         if (e.keyCode == 13) {
-
+           
 
         } else {
             var quantity = $("#total_qntt_" + item).val();
@@ -754,42 +756,42 @@
 
     function handleEmployeeKeyPress(event, count) {
         console.log(event.code)
+        
+            const query = document.getElementById('searchInput_' + count).value.toLowerCase();
+            const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
 
-        const query = document.getElementById('searchInput_' + count).value.toLowerCase();
-        const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
 
+            if (event.key === 'ArrowDown') {
+                // Move down in the list
+                if (currentIndex < results.length - 1) {
+                    currentIndex++;
+                    highlightItem(currentIndex);
+                }
+            } else if (event.key === 'ArrowUp') {
+                // Move up in the list
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    highlightItem(currentIndex);
+                }
+            } else if (event.key === 'Enter') {
+                // Select the highlighted item
+                if (currentIndex >= 0 && currentIndex < results.length) {
+                    // Place the selected item in the input box
+                    document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
+                    document.getElementById('searchInput_' + count).select()
+                    document.getElementById('employeeId_' + count).value = results[currentIndex].id;
+                    // Clear the search results
+                    clearResults(count);
+                }
+            } else if (event.key === "ArrowRight") {
 
-        if (event.key === 'ArrowDown') {
-            // Move down in the list
-            if (currentIndex < results.length - 1) {
-                currentIndex++;
-                highlightItem(currentIndex);
+            } else {
+                // For other keys, just filter and show results
+                currentIndex = -1;
+                displayResults(results, count);
+
             }
-        } else if (event.key === 'ArrowUp') {
-            // Move up in the list
-            if (currentIndex > 0) {
-                currentIndex--;
-                highlightItem(currentIndex);
-            }
-        } else if (event.key === 'Enter') {
-            // Select the highlighted item
-            if (currentIndex >= 0 && currentIndex < results.length) {
-                // Place the selected item in the input box
-                document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
-                document.getElementById('searchInput_' + count).select()
-                document.getElementById('employeeId_' + count).value = results[currentIndex].id;
-                // Clear the search results
-                clearResults(count);
-            }
-        } else if (event.key === "ArrowRight") {
-
-        } else {
-            // For other keys, just filter and show results
-            currentIndex = -1;
-            displayResults(results, count);
-
-        }
-
+        
 
 
     }

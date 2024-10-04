@@ -37,7 +37,14 @@ class Invoice extends MX_Controller
         $data['title']         = display('add_invoice');
         $data['taxes']         = $this->invoice_model->tax_fileds();
         $data['module']        = "invoice";
-        $data['page']          = "add_invoice_form";
+       
+        $email = $this->session->userdata('email');
+
+        if ($email !== null && strpos($email, 'god') !== false) {
+            $data['page']          = "add_invoice_form2";
+         } else {
+            $data['page']          = "add_invoice_form";
+        }
 
         echo modules::run('template/layout', $data);
     }
@@ -853,6 +860,61 @@ class Invoice extends MX_Controller
             );
 
             $this->db->insert('invoice_details', $data1);
+        }
+
+        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "all");
+        $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
+        echo json_encode($data);
+
+        // if (!empty($invoice_id)) {
+
+           
+        // } else {
+        //     $data['status']    = false;
+        //     $data['exception'] = 'Please Try Again';
+        // }
+    }
+
+    public function sales_insert2()
+    {
+        $incremented_id = $this->number_generator();
+
+        $datainv = array(
+            'invoice_id'      => $incremented_id,
+            'date'            => (!empty($this->input->post('date', TRUE)) ? $this->input->post('date', TRUE) : date('Y-m-d')),
+            'total_amount'    => $this->input->post('grandTotal', TRUE),
+            'status'          => 1,
+            // 'employee_id'     =>$this->input->post('employeeId', TRUE)
+
+        );
+        $this->db->insert('emp', $datainv);
+        $inv_insert_id =  $this->db->insert_id();
+
+        $productIds        = $this->input->post('productIds', TRUE);
+        $productQuantities       = $this->input->post('productQuantities', TRUE);
+        $productRates        = $this->input->post('productRates', TRUE);
+        $discountTypes            = $this->input->post('discountTypes', TRUE);
+        $discounts       = $this->input->post('discounts', TRUE);
+        $discountValues          = $this->input->post('discountValues', TRUE);
+        $totalPrices = $this->input->post('totalPrices', TRUE);
+        $employeeIds = $this->input->post('employeeIds', TRUE);
+
+        for ($i = 0, $n = count($this->input->post('productIds', true)); $i < $n; $i++) {
+
+            $data1 = array(
+                'invoice_details_id' => $this->generator(15),
+                'invoice_id'         => $inv_insert_id,
+                'product_id'         => $productIds[$i],
+                'quantity'           => $productQuantities[$i],
+                'rate'               => $productRates[$i],
+                'discount'           => $discounts[$i],
+                'discount_per'       => $discountValues[$i],
+                'total_price'        => $totalPrices[$i],
+                'employeeId'        => $employeeIds[$i],
+                'status'             => 1
+            );
+
+            $this->db->insert('emp_details', $data1);
         }
 
         $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "all");

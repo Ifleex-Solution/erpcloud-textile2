@@ -236,9 +236,9 @@ class Invoice_model extends CI_Model
 
             $button .= '  <a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('invoice') . '"><i class="fa fa-window-restore" aria-hidden="true"></i></a>';
 
-            $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
+            // $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
 
-            $button .= '  <a href="' . $base_url . 'pos_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pos_invoice') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
+            // $button .= '  <a href="' . $base_url . 'pos_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pos_invoice') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
             // if ($this->permission1->method('manage_invoice', 'update')->access()) {
             //     $approve = $this->db->select('status,referenceNo')->from('acc_vaucher')->where('referenceNo', $record->invoice_id)->where('status', 1)->get()->num_rows();
             //     if ($approve == 0) {
@@ -388,9 +388,9 @@ class Invoice_model extends CI_Model
 
             $button .= '  <a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . $type . display('invoice') . '"><i class="fa fa-window-restore" aria-hidden="true"></i></a>';
 
-            $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
+            // $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
 
-            $button .= '  <a href="' . $base_url . 'pos_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pos_invoice') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
+            // $button .= '  <a href="' . $base_url . 'pos_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pos_invoice') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
             // if ($this->permission1->method('manage_invoice', 'update')->access()) {
             //     $approve = $this->db->select('status,referenceNo')->from('acc_vaucher')->where('referenceNo', $record->invoice_id)->where('status', 1)->get()->num_rows();
             //     if ($approve == 0) {
@@ -1530,7 +1530,7 @@ class Invoice_model extends CI_Model
         $this->db->select('
 
     a.*,
-    b.*,
+    
     c.*,
     d.product_id,
     d.product_name,
@@ -1540,7 +1540,7 @@ class Invoice_model extends CI_Model
 ');
         $this->db->from('invoice a');
         $this->db->join('invoice_details c', 'c.invoice_id = a.id');
-        $this->db->join('employee_history b', 'b.id = a.employee_id');
+        // $this->db->join('employee_history b', 'b.id = a.employee_id');
         $this->db->join('product_information d', 'd.product_id = c.product_id');
         $this->db->where('a.invoice_id', $invoice_id);
         $query = $this->db->get();
