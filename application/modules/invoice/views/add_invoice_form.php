@@ -21,6 +21,11 @@
         background-color: #007BFF;
         color: white;
     }
+    .modal-dialog {
+      position: absolute;
+      left: 0; /* Aligns the modal to the left */
+      margin-left: 250px; /* Removes any margin on the left */
+  }
 </style>
 
 
@@ -134,15 +139,6 @@
                     <p hidden id="change-amount"></p>
 
                 </div>
-                <!-- <div class="form-group row text-left">
-                    <div class="col-sm-12 p-20">
-                        <b>Employee Id:</b>
-                        <input type="text" id="searchInput" placeholder="Employee Id..." onkeyup="handleEmployeeKeyPress(event)" autocomplete="off" />
-                        <input type="text" id="employeeId" hidden />
-
-                        <div id="searchResults" style="width: 270px;margin-left:90px"></div>
-                    </div>
-                </div> -->
                 <div class="form-group row text-right">
                     <div class="col-sm-12 p-20">
                         <input type="submit" id="add_invoice" class="btn btn-success" name="add-invoice" value="<?php echo display('submit') ?>" tabindex="17" />
@@ -242,23 +238,11 @@
                             <div class="panel-heading">
                                 <div class="panel-title">
                                     <span><?php echo display('manage_invoice') ?></span>
-                                    <span class="padding-lefttitle">
-                                        <?php if ($this->permission1->method('new_invoice', 'create')->access()) { ?>
-                                            <a href="<?php echo base_url('add_invoice') ?>" class="btn btn-info m-b-5 m-r-2"><i
-                                                    class="ti-plus"> </i> <?php echo display('new_invoice') ?> </a>
-                                        <?php } ?>
-
-
-                                        <?php if ($this->permission1->method('gui_pos', 'create')->access()) { ?>
-                                            <a href="<?php echo base_url('gui_pos') ?>" class="btn btn-success m-b-5 m-r-2"><i
-                                                    class="ti-plus"> </i> <?php echo display('pos_invoice') ?> </a>
-                                        <?php } ?>
-                                    </span>
                                 </div>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-bordered" cellspacing="0" width="100%" id="InvList">
+                                    <table class="table table-hover table-bordered" cellspacing="0" width="100%" id="InvList2">
                                         <thead>
                                             <tr>
                                                 <th><?php echo display('sl') ?></th>
@@ -272,12 +256,7 @@
                                         <tbody>
 
                                         </tbody>
-                                        <tfoot>
-                                            <th colspan="4" class="text-right"><?php echo display('total') ?>:</th>
 
-                                            <th></th>
-                                            <th></th>
-                                        </tfoot>
                                     </table>
 
 
@@ -330,6 +309,8 @@
 
         if (event.shiftKey && event.key === 'Enter') {
             // Show the Bootstrap modal
+            dataTable().ajax.reload();
+
             $("#exampleModal").modal('show');
 
         }
@@ -842,4 +823,83 @@
         // Clear the results div
         document.getElementById('searchResults_' + count).innerHTML = '';
     }
+
+    // function viewResult() {
+        $(document).ready(function() {
+            "use strict";
+            
+            var invoicedatatable = dataTable();
+           
+
+        });
+
+        $('#btn-filter').click(function() {
+            var invoicedatatable = dataTable();
+
+            });
+
+        function dataTable(){
+            $('#InvList2').DataTable().destroy();
+            var csrf_test_name = $('[name="csrf_test_name"]').val();
+            var base_url = $('#base_url').val();
+            var total_invoice = $("#total_invoice").val();
+            var currency = $("#currency").val();
+            return $('#InvList2').DataTable({
+                responsive: true,
+
+                "aaSorting": [
+                    [1, "desc"]
+                ],
+                "columnDefs": [{
+                        "bSortable": false,
+                        "aTargets": [0, 2, 3, 4, 5]
+                    },
+
+                ],
+                'processing': true,
+                'serverSide': true,
+
+
+                'lengthMenu': [
+                    [10, 25, 50, 100, 250, 500, 1000],
+                    [10, 25, 50, 100, 250, 500, 1000]
+                ],
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': base_url + 'invoice/invoice/CheckInvoiceList',
+                    "data": function(data) {
+                        data.fromdate = $('#from_date').val();
+                        data.todate = $('#to_date').val();
+                        data.empid = $('#empid').val();
+                        data.csrf_test_name = csrf_test_name;
+                    }
+                },
+                'columns': [{
+                        data: 'sl'
+                    },
+                    {
+                        data: 'invoice'
+                    },
+                    {
+                        data: 'salesman'
+                    },
+                    {
+                        data: 'final_date'
+                    },
+                    {
+                        data: 'total_amount',
+                        class: "total_sale text-right",
+                        render: $.fn.dataTable.render.number(',', '.', 2, currency)
+                    },
+                    {
+                        data: 'button'
+                    },
+                ],
+
+
+            });
+
+
+        }
+    // }
 </script>

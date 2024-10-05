@@ -61,6 +61,8 @@ class Invoice extends MX_Controller
     public function CheckInvoiceList()
     {
         $empid   = $this->input->post('empid', TRUE);
+
+
         $postData = $this->input->post();
         if ($empid == "all") {
             $data1     = $this->invoice_model->getInvoiceListForAll($postData, "god", 1);
@@ -83,6 +85,13 @@ class Invoice extends MX_Controller
         }
     }
 
+    public function CheckInvoiceListemp()
+    {
+
+        $postData = $this->input->post();
+        $data     = $this->invoice_model->getInvoiceList($postData, "god", 1);
+        echo json_encode($data);
+    }
     public function delivery_note()
     {
 
@@ -875,7 +884,7 @@ class Invoice extends MX_Controller
         // }
     }
 
-    public function sales_insert2()
+    public function sales_insertemp()
     {
         $incremented_id = $this->number_generator();
 

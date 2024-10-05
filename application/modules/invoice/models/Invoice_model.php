@@ -234,7 +234,9 @@ class Invoice_model extends CI_Model
             $base_url = base_url();
             $jsaction = "return confirm('Are You Sure ?')";
 
-            $button .= '  <a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('invoice') . '"><i class="fa fa-window-restore" aria-hidden="true"></i></a>';
+            $button .= '<a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" target="_blank" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . $type . display('invoice') . '">
+            <i class="fa fa-window-restore" aria-hidden="true"></i>
+        </a>';
 
             // $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
 
@@ -254,7 +256,7 @@ class Invoice_model extends CI_Model
 
 
 
-            $details = '  <a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" class="" >' . $type . $record->invoice_id . '</a>';
+            $details = '<a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" target="_blank">' . $type . $record->invoice_id . '</a>';
 
             $data[] = array(
                 'sl'               => $sl,
@@ -301,8 +303,8 @@ class Invoice_model extends CI_Model
         $start        = $postData['start'];
         $rowperpage   = $postData['length']; // Rows display per page
         $columnIndex  = $postData['order'][0]['column']; // Column index
-        $columnName   = $postData['columns'][$columnIndex]['data'];
-        $columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+        $columnName   = 'id';
+        $columnSortOrder = "desc"; // asc or desc
         $searchValue  = $postData['search']['value']; // Search value
 
 
@@ -386,7 +388,9 @@ class Invoice_model extends CI_Model
             $base_url = base_url();
             $jsaction = "return confirm('Are You Sure ?')";
 
-            $button .= '  <a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . $type . display('invoice') . '"><i class="fa fa-window-restore" aria-hidden="true"></i></a>';
+            $button .= '<a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" target="_blank" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . $type . display('invoice') . '">
+            <i class="fa fa-window-restore" aria-hidden="true"></i>
+        </a>';
 
             // $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
 
@@ -406,7 +410,7 @@ class Invoice_model extends CI_Model
 
 
 
-            $details = '  <a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" class="" >' . $type . $record->invoice_id . '</a>';
+            $details = '<a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" target="_blank">' . $type . $record->invoice_id . '</a>';
 
             $data[] = array(
                 'sl'               => $sl,
@@ -1555,7 +1559,6 @@ class Invoice_model extends CI_Model
         $this->db->select('
     a.total_tax,
     a.*,
-    b.*,
     c.*,
     d.product_id,
     d.product_name,
@@ -1567,7 +1570,7 @@ class Invoice_model extends CI_Model
 ');
         $this->db->from('emp a');
         $this->db->join('emp_details c', 'c.invoice_id = a.id');
-        $this->db->join('employee_history b', 'b.id = a.employee_id');
+        // $this->db->join('employee_history b', 'b.id = a.employee_id');
         $this->db->join('product_information d', 'd.product_id = c.product_id');
         $this->db->where('a.invoice_id', $invoice_id);
         $this->db->where('c.quantity >', 0);

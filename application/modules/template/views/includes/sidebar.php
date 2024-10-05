@@ -19,12 +19,6 @@
     <!-- sidebar menu -->
     <ul class="sidebar-menu">
 
-        <li class="treeview <?php echo (($this->uri->segment(1) == "home") ? "active" : null) ?>">
-            <a href="<?php echo base_url('home') ?>"> <i class="ti-dashboard"></i>
-                <span><?php echo display('dashboard') ?></span>
-            </a>
-        </li>
-
         <!-- Invoice menu start -->
         <?php if ($this->permission1->method('new_invoice', 'create')->access() || $this->permission1->method('manage_invoice', 'read')->access() || $this->permission1->method('pos_invoice', 'create')->access() || $this->permission1->method('gui_pos', 'create')->access() || $this->permission1->method('terms_list', 'read')->access()  || $this->permission1->method('terms_add', 'read')->access()) { ?>
             <li class="treeview <?php

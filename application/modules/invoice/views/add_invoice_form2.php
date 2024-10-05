@@ -10,7 +10,7 @@
 
     .resultItem {
         padding: 5px;
-        border: 1px solid #ccc;
+        border: 1px solid #ccc;S
         margin-top: 5px;
         background-color: #f9f9f9;
         color: black;
@@ -21,6 +21,11 @@
         background-color: #007BFF;
         color: white;
     }
+    .modal-dialog {
+      position: absolute;
+      left: 0; /* Aligns the modal to the left */
+      margin-left: 250px; /* Removes any margin on the left */
+  }
 </style>
 
 
@@ -242,23 +247,11 @@
                             <div class="panel-heading">
                                 <div class="panel-title">
                                     <span><?php echo display('manage_invoice') ?></span>
-                                    <span class="padding-lefttitle">
-                                        <?php if ($this->permission1->method('new_invoice', 'create')->access()) { ?>
-                                            <a href="<?php echo base_url('add_invoice') ?>" class="btn btn-info m-b-5 m-r-2"><i
-                                                    class="ti-plus"> </i> <?php echo display('new_invoice') ?> </a>
-                                        <?php } ?>
-
-
-                                        <?php if ($this->permission1->method('gui_pos', 'create')->access()) { ?>
-                                            <a href="<?php echo base_url('gui_pos') ?>" class="btn btn-success m-b-5 m-r-2"><i
-                                                    class="ti-plus"> </i> <?php echo display('pos_invoice') ?> </a>
-                                        <?php } ?>
-                                    </span>
                                 </div>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-bordered" cellspacing="0" width="100%" id="InvList">
+                                    <table class="table table-hover table-bordered" cellspacing="0" width="100%" id="InvList2">
                                         <thead>
                                             <tr>
                                                 <th><?php echo display('sl') ?></th>
@@ -315,8 +308,7 @@
 
 
 <script>
-  
-  var mode = "+"
+    var mode = "+"
     document.addEventListener('keydown', function(event) {
         // Check if Shift is pressed and the key is '+'
         if (event.shiftKey && event.key === '+') {
@@ -331,6 +323,8 @@
 
         if (event.shiftKey && event.key === 'Enter') {
             // Show the Bootstrap modal
+            dataTable().ajax.reload();
+
             $("#exampleModal").modal('show');
 
         }
@@ -421,7 +415,7 @@
 
             $.ajax({
                 type: "post",
-                url: $('#base_url').val() + 'invoice/invoice/sales_insert2',
+                url: $('#base_url').val() + 'invoice/invoice/sales_insertemp',
                 data: {
                     productIds: productIds,
                     productQuantities: productQuantities,
@@ -464,7 +458,6 @@
 
         }, 1000); //
     }
-
 
     var count = 0;
     let arr = [];
@@ -649,7 +642,7 @@
 
         } else
         if (e.keyCode == 13) {
-           
+
 
         } else {
             var quantity = $("#total_qntt_" + item).val();
@@ -756,42 +749,42 @@
 
     function handleEmployeeKeyPress(event, count) {
         console.log(event.code)
-        
-            const query = document.getElementById('searchInput_' + count).value.toLowerCase();
-            const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
+
+        const query = document.getElementById('searchInput_' + count).value.toLowerCase();
+        const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
 
 
-            if (event.key === 'ArrowDown') {
-                // Move down in the list
-                if (currentIndex < results.length - 1) {
-                    currentIndex++;
-                    highlightItem(currentIndex);
-                }
-            } else if (event.key === 'ArrowUp') {
-                // Move up in the list
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    highlightItem(currentIndex);
-                }
-            } else if (event.key === 'Enter') {
-                // Select the highlighted item
-                if (currentIndex >= 0 && currentIndex < results.length) {
-                    // Place the selected item in the input box
-                    document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
-                    document.getElementById('searchInput_' + count).select()
-                    document.getElementById('employeeId_' + count).value = results[currentIndex].id;
-                    // Clear the search results
-                    clearResults(count);
-                }
-            } else if (event.key === "ArrowRight") {
-
-            } else {
-                // For other keys, just filter and show results
-                currentIndex = -1;
-                displayResults(results, count);
-
+        if (event.key === 'ArrowDown') {
+            // Move down in the list
+            if (currentIndex < results.length - 1) {
+                currentIndex++;
+                highlightItem(currentIndex);
             }
-        
+        } else if (event.key === 'ArrowUp') {
+            // Move up in the list
+            if (currentIndex > 0) {
+                currentIndex--;
+                highlightItem(currentIndex);
+            }
+        } else if (event.key === 'Enter') {
+            // Select the highlighted item
+            if (currentIndex >= 0 && currentIndex < results.length) {
+                // Place the selected item in the input box
+                document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
+                document.getElementById('searchInput_' + count).select()
+                document.getElementById('employeeId_' + count).value = results[currentIndex].id;
+                // Clear the search results
+                clearResults(count);
+            }
+        } else if (event.key === "ArrowRight") {
+
+        } else {
+            // For other keys, just filter and show results
+            currentIndex = -1;
+            displayResults(results, count);
+
+        }
+
 
 
     }
@@ -844,4 +837,82 @@
         // Clear the results div
         document.getElementById('searchResults_' + count).innerHTML = '';
     }
+
+    // function viewResult() {
+        $(document).ready(function() {
+            "use strict";
+            
+            var invoicedatatable = dataTable();
+            
+
+        });
+
+        $('#btn-filter').click(function() {
+            var invoicedatatable = dataTable();
+            });
+
+        function dataTable(){
+            $('#InvList2').DataTable().destroy();
+            var csrf_test_name = $('[name="csrf_test_name"]').val();
+            var base_url = $('#base_url').val();
+            var total_invoice = $("#total_invoice").val();
+            var currency = $("#currency").val();
+            return $('#InvList2').DataTable({
+                responsive: true,
+
+                "aaSorting": [
+                    [1, "desc"]
+                ],
+                "columnDefs": [{
+                        "bSortable": false,
+                        "aTargets": [0, 2, 3, 4, 5]
+                    },
+
+                ],
+                'processing': true,
+                'serverSide': true,
+
+
+                'lengthMenu': [
+                    [10, 25, 50, 100, 250, 500, 1000],
+                    [10, 25, 50, 100, 250, 500, 1000]
+                ],
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': base_url + 'invoice/invoice/CheckInvoiceListemp',
+                    "data": function(data) {
+                        data.fromdate = $('#from_date').val();
+                        data.todate = $('#to_date').val();
+                        data.empid = $('#empid').val();
+                        data.csrf_test_name = csrf_test_name;
+                    }
+                },
+                'columns': [{
+                        data: 'sl'
+                    },
+                    {
+                        data: 'invoice'
+                    },
+                    {
+                        data: 'salesman'
+                    },
+                    {
+                        data: 'final_date'
+                    },
+                    {
+                        data: 'total_amount',
+                        class: "total_sale text-right",
+                        render: $.fn.dataTable.render.number(',', '.', 2, currency)
+                    },
+                    {
+                        data: 'button'
+                    },
+                ],
+
+
+            });
+
+
+        }
+    // }
 </script>
