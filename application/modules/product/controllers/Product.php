@@ -15,7 +15,8 @@ class Product extends MX_Controller
         parent::__construct();
 
         $this->load->model(array(
-            'product_model', 'supplier/supplier_model'
+            'product_model',
+            'supplier/supplier_model'
         ));
         $this->load->library('ciqrcode');
         if (!$this->session->userdata('isLogIn'))
@@ -86,8 +87,6 @@ class Product extends MX_Controller
         }
     }
 
-
-
     public function bdtask_deletecategory($id = null)
     {
         if ($this->product_model->delete_category($id)) {
@@ -97,6 +96,162 @@ class Product extends MX_Controller
         }
 
         redirect("category_list");
+    }
+
+
+    // brandcode part
+    function bdtask_brandcode_list()
+    {
+        $data['title']      = "Manage Brandcode";
+        $data['module']     = "product";
+        $data['page']       = "brandcode_list";
+        $data["brandcode_list"] = $this->product_model->brandcode_list();
+        echo modules::run('template/layout', $data);
+    }
+
+    public function bdtask_brandcode_form($id = null)
+    {
+        $data['title'] = 'Add Brandcode';
+        #-------------------------------#
+        $this->form_validation->set_rules('brandcode_name', display('brandcode_name'), 'required|max_length[200]');
+        $this->form_validation->set_rules('status', display('status'), 'max_length[2]');
+        #-------------------------------#
+        $data['brandcode'] = (object)$postData = [
+            'brandcode_id'      => $id,
+            'brandcode_name'    => $this->input->post('brandcode_name', true),
+            'status'           => $this->input->post('status', true),
+        ];
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                if ($this->product_model->create_brandcode($postData)) {
+                    #set success message
+                    $this->session->set_flashdata('message', display('save_successfully'));
+                } else {
+                    $this->session->set_flashdata('exception', display('please_try_again'));
+                }
+                if (isset($_POST['add-another'])) {
+                    redirect(base_url('brandcode_form'));
+                    exit;
+                } else {
+                    redirect("brandcode_list");
+                }
+            } else {
+                if ($this->product_model->update_brandcode($postData)) {
+                    $this->session->set_flashdata('message', display('update_successfully'));
+                } else {
+                    $this->session->set_flashdata('exception', display('please_try_again'));
+                }
+                if (isset($_POST['add-another'])) {
+                    redirect(base_url('brandcode_form'));
+                    exit;
+                } else {
+                    redirect("brandcode_list");
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Brandcode";
+                $data['brandcode'] = $this->product_model->single_brandcode_data($id);
+            }
+            $data['module']   = "product";
+            $data['page']     = "brandcode_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+
+    public function bdtask_deletebrandcode($id = null)
+    {
+        if ($this->product_model->delete_brandcode($id)) {
+            $this->session->set_flashdata('message', display('delete_successfully'));
+        } else {
+            $this->session->set_flashdata('exception', display('please_try_again'));
+        }
+
+        redirect("brandcode_list");
+    }
+
+
+    // countercode part
+    function bdtask_countercode_list()
+    {
+        $data['title']      = "Manage Countercode";
+        $data['module']     = "product";
+        $data['page']       = "countercode_list";
+        $data["countercode_list"] = $this->product_model->countercode_list();
+        echo modules::run('template/layout', $data);
+    }
+
+    public function bdtask_countercode_form($id = null)
+    {
+        $data['title'] = 'Add Countercode';
+        #-------------------------------#
+        $this->form_validation->set_rules('countercode_name', display('countercode_name'), 'required|max_length[200]');
+        $this->form_validation->set_rules('status', display('status'), 'max_length[2]');
+        #-------------------------------#
+        $data['countercode'] = (object)$postData = [
+            'countercode_id'      => $id,
+            'countercode_name'    => $this->input->post('countercode_name', true),
+            'status'           => $this->input->post('status', true),
+        ];
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                if ($this->product_model->create_countercode($postData)) {
+                    #set success message
+                    $this->session->set_flashdata('message', display('save_successfully'));
+                } else {
+                    $this->session->set_flashdata('exception', display('please_try_again'));
+                }
+                if (isset($_POST['add-another'])) {
+                    redirect(base_url('countercode_form'));
+                    exit;
+                } else {
+                    redirect("countercode_list");
+                }
+            } else {
+                if ($this->product_model->update_countercode($postData)) {
+                    $this->session->set_flashdata('message', display('update_successfully'));
+                } else {
+                    $this->session->set_flashdata('exception', display('please_try_again'));
+                }
+                if (isset($_POST['add-another'])) {
+                    redirect(base_url('countercode_form'));
+                    exit;
+                } else {
+                    redirect("countercode_list");
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Countercode";
+                $data['countercode'] = $this->product_model->single_countercode_data($id);
+            }
+            $data['module']   = "product";
+            $data['page']     = "countercode_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+
+    public function bdtask_deletecountercode($id = null)
+    {
+        if ($this->product_model->delete_countercode($id)) {
+            $this->session->set_flashdata('message', display('delete_successfully'));
+        } else {
+            $this->session->set_flashdata('exception', display('please_try_again'));
+        }
+
+        redirect("countercode_list");
     }
 
     // unit part
@@ -190,10 +345,10 @@ class Product extends MX_Controller
         $sup_price = $this->input->post('supplier_price', TRUE);
         // $s_id      = $this->input->post('supplier_id',TRUE);
         $product_model = $this->input->post('model', TRUE);
-        $taxfield = $this->db->select('tax_name,default_value')
-            ->from('tax_settings')
-            ->get()
-            ->result_array();
+        // $taxfield = $this->db->select('tax_name,default_value')
+        //     ->from('tax_settings')
+        //     ->get()
+        //     ->result_array();
 
 
         $image_url = $this->fileupload->do_upload(
@@ -217,19 +372,10 @@ class Product extends MX_Controller
             'product_vat'    => $this->input->post('product_vat', TRUE),
             'image'          => (!empty($image) ? $image : 'my-assets/image/product.png'),
             'status'         => 1,
-        ];
+            'countercode_id'      => $this->input->post('countercode_id', TRUE),
+            'brandcode_id'      => $this->input->post('brandcode_id', TRUE),
 
-        $tablecolumn = $this->db->list_fields('tax_collection');
-        $num_column = count($tablecolumn) - 4;
-        if ($num_column > 0) {
-            $txf = [];
-            for ($i = 0; $i < $num_column; $i++) {
-                $txf[$i] = 'tax' . $i;
-            }
-            foreach ($txf as $key => $value) {
-                $postData[$value] = (!empty($this->input->post($value)) ? $this->input->post($value) : 0) / 100;
-            }
-        }
+        ];
 
         #-------------------------------#
         if ($this->form_validation->run() === true) {
@@ -310,13 +456,17 @@ class Product extends MX_Controller
                 $data['product']       = $this->product_model->single_product_data($id);
             }
             $data['supplier']      = $this->product_model->supplier_list();
-            $data['vattaxinfo']    = $this->product_model->vat_tax_setting();
+            // $data['vattaxinfo']    = $this->product_model->vat_tax_setting();
             $data['id']            =  $id;
             $data['category_list'] = $this->product_model->active_category();
+            $data['brandcode_list'] = $this->product_model->active_brandcode();
+            $data['countercode_list'] = $this->product_model->active_countercode();
+
+
             $data['unit_list']     = $this->product_model->active_unit();
             $data['supplier_pr']   = $this->product_model->supplier_product_list($id);
             $data['product_open']   = $this->product_model->product_opening($id);
-            $data['taxfield']      = $taxfield;
+            // $data['taxfield']      = $taxfield;
             $data['module']        = "product";
             $data['page']          = "product_form";
             echo Modules::run('template/layout', $data);

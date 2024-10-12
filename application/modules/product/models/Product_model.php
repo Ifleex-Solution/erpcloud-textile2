@@ -18,10 +18,36 @@ class Product_model extends CI_Model
             ->result();
     }
 
+    public function brandcode_list()
+    {
+        return $this->db->select('*')
+            ->from('brandcode')
+            ->get()
+            ->result();
+    }
+
+    public function countercode_list()
+    {
+        return $this->db->select('*')
+            ->from('countercode')
+            ->get()
+            ->result();
+    }
+
 
     public function create_category($data = [])
     {
         return $this->db->insert('product_category', $data);
+    }
+
+    public function create_brandcode($data = [])
+    {
+        return $this->db->insert('brandcode', $data);
+    }
+
+    public function create_countercode($data = [])
+    {
+        return $this->db->insert('countercode', $data);
     }
 
     public function vat_tax_setting()
@@ -40,6 +66,17 @@ class Product_model extends CI_Model
             ->update('product_category', $data);
     }
 
+    public function update_brandcode($data = [])
+    {
+        return $this->db->where('brandcode_id', $data['brandcode_id'])
+            ->update('brandcode', $data);
+    }
+    public function update_countercode($data = [])
+    {
+        return $this->db->where('countercode_id', $data['countercode_id'])
+            ->update('countercode', $data);
+    }
+
     public function single_category_data($id)
     {
         return $this->db->select('*')
@@ -49,10 +86,49 @@ class Product_model extends CI_Model
             ->row();
     }
 
+    public function single_brandcode_data($id)
+    {
+        return $this->db->select('*')
+            ->from('brandcode')
+            ->where('brandcode_id', $id)
+            ->get()
+            ->row();
+    }
+
+    public function single_countercode_data($id)
+    {
+        return $this->db->select('*')
+            ->from('countercode')
+            ->where('countercode_id', $id)
+            ->get()
+            ->row();
+    }
+
     public function delete_category($id)
     {
         $this->db->where('category_id', $id)
             ->delete("product_category");
+        if ($this->db->affected_rows()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function delete_brandcode($id)
+    {
+        $this->db->where('brandcode_id', $id)
+            ->delete("brandcode");
+        if ($this->db->affected_rows()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function delete_countercode($id)
+    {
+        $this->db->where('countercode_id', $id)
+            ->delete("countercode");
         if ($this->db->affected_rows()) {
             return true;
         } else {
@@ -120,6 +196,29 @@ class Product_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('product_category');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+    public function active_brandcode()
+    {
+        $this->db->select('*');
+        $this->db->from('brandcode');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
+    public function active_countercode()
+    {
+        $this->db->select('*');
+        $this->db->from('countercode');
         $this->db->where('status', 1);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -235,7 +334,7 @@ class Product_model extends CI_Model
                    a.image, 
                    ps.category_name");
         $this->db->from('product_information a');
-        $this->db->join('product_category ps', 'ps.category_id = a.category_id', 'inner');
+        $this->db->join('product_category ps', 'ps.category_id = a.category_id', 'left');
         if ($searchValue != '')
             $this->db->where($searchQuery);
         $this->db->order_by($columnName, $columnSortOrder);

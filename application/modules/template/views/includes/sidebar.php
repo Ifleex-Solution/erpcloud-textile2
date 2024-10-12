@@ -79,8 +79,8 @@
        
 
         <!-- product menu part -->
-        <?php if ($this->permission1->method('create_product', 'create')->access() || $this->permission1->method('add_product_csv', 'create')->access() || $this->permission1->method('manage_product', 'read')->access() || $this->permission1->method('create_category', 'create')->access() || $this->permission1->method('manage_category', 'read')->access() || $this->permission1->method('add_unit', 'create')->access() || $this->permission1->method('manage_unit', 'read')->access()) { ?>
-            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list" || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode" || $this->uri->segment(1) == "bulk_products" || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
+        <?php if ($this->permission1->method('create_product', 'create')->access() || $this->permission1->method('add_product_csv', 'create')->access() || $this->permission1->method('manage_product', 'read')->access() || $this->permission1->method('create_category', 'create')->access() || $this->permission1->method('manage_category', 'read')->access() || $this->permission1->method('add_unit', 'create')->access() || $this->permission1->method('manage_unit', 'read')->access()||$this->permission1->method('add_brancode', 'create')->access() || $this->permission1->method('manage_brandcode', 'read')->access()||$this->permission1->method('add_countercode', 'create')->access() || $this->permission1->method('manage_countercode', 'read')->access()) { ?>
+            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "brandcode_form" || $this->uri->segment(1) == "brandcode_list"||$this->uri->segment(1) == "countercode_form" || $this->uri->segment(1) == "countercode_list" ||$this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list"  || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode" || $this->uri->segment(1) == "bulk_products" || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
 
                 <a href="javascript:void(0)">
 
@@ -105,6 +105,42 @@
                             <a href="<?php echo base_url('category_list') ?>">
 
                                 <?php echo display('category_list') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('countercode', 'create')->access() || $this->permission1->method('countercode', 'update')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "countercode_form") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('countercode_form') ?>">Add Countercode
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('manage_countercode', 'create')->access() || $this->permission1->method('manage_countercode', 'read')->access() || $this->permission1->method('manage_countercode', 'delete')->access() || $this->permission1->method('manage_countercode', 'update')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "countercode_list") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('countercode_list') ?>">
+
+                                Countercode List
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('brandcode', 'create')->access() || $this->permission1->method('brandcode', 'update')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "brandcode_form") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('brandcode_form') ?>">Add Brandcode
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('manage_brandcode', 'create')->access() || $this->permission1->method('manage_brandcode', 'read')->access() || $this->permission1->method('manage_brandcode', 'delete')->access() || $this->permission1->method('manage_brandcode', 'update')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "brandcode_list") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('brandcode_list') ?>">
+
+                                Brandcode List
 
                             </a>
 

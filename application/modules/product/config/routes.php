@@ -7,6 +7,21 @@ $route['category_form']        = "product/product/bdtask_category_form";
 $route['category_form/(:num)'] = 'product/product/bdtask_category_form/$1';
 $route['category_list']        = "product/product/bdtask_category_list";
 
+
+$route['brandcode_form']        = "product/product/bdtask_brandcode_form";
+$route['brandcode_form/(:num)'] = 'product/product/bdtask_brandcode_form/$1';
+$route['brandcode_list']        = "product/product/bdtask_brandcode_list";
+
+
+$route['countercode_form']        = "product/product/bdtask_countercode_form";
+$route['countercode_form/(:num)'] = 'product/product/bdtask_countercode_form/$1';
+$route['countercode_list']        = "product/product/bdtask_countercode_list";
+
+
+$route['category_form']        = "product/product/bdtask_category_form";
+$route['category_form/(:num)'] = 'product/product/bdtask_category_form/$1';
+$route['category_list']        = "product/product/bdtask_category_list";
+
 $route['unit_form']            = "product/product/bdtask_unit_form";
 $route['unit_form/(:num)']     = 'product/product/bdtask_unit_form/$1';
 $route['unit_list']            = "product/product/bdtask_unit_list";

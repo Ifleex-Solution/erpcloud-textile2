@@ -1,4 +1,4 @@
- <div class="row">
+<div class="row">
      <div class="col-sm-12">
          <div class="panel panel-bd lobidrag">
              <div class="panel-heading">
@@ -8,15 +8,15 @@
              </div>
 
              <div class="panel-body">
-                 <?php echo form_open('category_form/' . $category->category_id, 'class="" id="category_form"') ?>
+                 <?php echo form_open('countercode_form/' . $countercode->countercode_id, 'class="" id="countercode_form"') ?>
 
-                 <input type="hidden" name="category_id" id="category_id" value="<?php echo $category->category_id ?>">
+                 <input type="hidden" name="countercode_id" id="countercode_id" value="<?php echo $countercode->countercode_id ?>">
                  <div class="form-group row">
-                     <label for="category_name" class="col-sm-2 text-right col-form-label"><?php echo display('category_name') ?> <i class="text-danger"> * </i>:</label>
+                     <label for="countercode_name" class="col-sm-2 text-right col-form-label">Countercode Name <i class="text-danger"> * </i>:</label>
                      <div class="col-sm-4">
 
 
-                         <input type="text" name="category_name" class="form-control" id="category_name" placeholder="<?php echo display('category_name') ?>" value="<?php echo $category->category_name ?>">
+                         <input type="text" name="countercode_name" class="form-control" id="countercode_name" placeholder="Countercode Name" value="<?php echo $countercode->countercode_name ?>">
                      </div>
                  </div>
                  <div class="form-group row">
@@ -24,11 +24,11 @@
                      <div class="col-sm-4">
 
                          <select name="status" id="status" class="form-control" required>
-                             <?php if (!empty($category->category_name)) { ?>
-                                 <option value="1" <?php if ($category->status == 1) {
+                             <?php if (!empty($countercode->countercode_name)) { ?>
+                                 <option value="1" <?php if ($countercode->status == 1) {
                                                         echo 'selected';
                                                     } ?>><?php echo display('active') ?></option>
-                                 <option value="0" <?php if ($category->status == 0) {
+                                 <option value="0" <?php if ($countercode->status == 0) {
                                                         echo 'selected';
                                                     } ?>><?php echo display('inactive') ?></option>
                              <?php } else { ?>
@@ -45,9 +45,9 @@
 
 
                          <button type="submit" class="btn btn-success ">
-                             <?php echo (empty($category->category_id) ? display('save') : display('update')) ?></button>
+                             <?php echo (empty($countercode->countercode_id) ? display('save') : display('update')) ?></button>
 
-                         <?php if (empty($category->category_id)) { ?>
+                         <?php if (empty($countercode->countercode_id)) { ?>
                              <button type="submit" class="btn btn-success" name="add-another"><?php echo display('save_and_add_another') ?></button>
                          <?php } ?>
 

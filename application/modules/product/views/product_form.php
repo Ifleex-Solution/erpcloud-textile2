@@ -34,10 +34,25 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group row">
-                            <label for="serial_no" class="col-sm-4 col-form-label"><?php echo display('serial_no') ?>
-                            </label>
+                            <label for="countercode_id" class="col-sm-4 col-form-label">Counter Code
+                                <i class="text-danger">*</i></label>
                             <div class="col-sm-8">
-                                <input type="text" tabindex="" class="form-control " id="serial_no" name="serial_no" placeholder="111,abc,XYz" value="<?php echo $product->serial_no ?>" />
+                                <select class="form-control" id="countercode_id" required name="countercode_id" tabindex="3">
+                                    <option value=""></option>
+
+                                    <?php if ($countercode_list) { ?>
+                                        <?php foreach ($countercode_list as $categories) { ?>
+                                            <option value="<?php echo $categories['countercode_id'] ?>">
+                                               
+
+                                                <option value="<?php echo $categories['countercode_id'] ?>" <?php if ($product->countercode_id == $categories['countercode_id']) {
+                                                                                                            echo 'selected';
+                                                                                                        } ?>>
+                                                <?php echo $categories['countercode_name'] ?></option>
+
+                                    <?php }
+                                    } ?>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -107,12 +122,35 @@
                             </div>
                         </div>
                     </div>
-                   
+
                     <div class="col-sm-6">
                         <div class="form-group row">
                             <label for="serial_no" class="col-sm-4 col-form-label"><?php echo display('product_details') ?> </label>
                             <div class="col-sm-8">
                                 <textarea class="form-control" name="description" id="description" rows="1" placeholder="<?php echo display('product_details') ?>" tabindex="2"><?php echo $product->product_details ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="brandcode_id" class="col-sm-4 col-form-label">Brand Code
+                                <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="brandcode_id" required name="brandcode_id" tabindex="3">
+                                    <option value=""></option>
+
+                                    <?php if ($brandcode_list) { ?>
+                                        <?php foreach ($brandcode_list as $categories) { ?>
+                                            
+
+                                            <option value="<?php echo $categories['brandcode_id'] ?>" <?php if ($product->brandcode_id == $categories['brandcode_id']) {
+                                                                                                            echo 'selected';
+                                                                                                        } ?>>
+                                                <?php echo $categories['brandcode_name'] ?></option>
+
+                                    <?php }
+                                    } ?>
+                                </select>
                             </div>
                         </div>
                     </div>

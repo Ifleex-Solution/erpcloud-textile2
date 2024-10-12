@@ -4,28 +4,22 @@
 
 
 <style>
-    /* #searchResults {
-        margin-top: 10px;
-    }
-
-    .resultItem {
-        padding: 5px;
-        border: 1px solid #ccc;
-        margin-top: 5px;
-        background-color: #f9f9f9;
-        color: black;
-        cursor: pointer;
-    } */
-
     .highlight {
         background-color: #007BFF;
         color: white;
     }
+
     .modal-dialog {
-      position: absolute;
-      left: 0; /* Aligns the modal to the left */
-      margin-left: 250px; /* Removes any margin on the left */
-  }
+        position: absolute;
+        left: 0;
+        margin-left: 250px;
+    }
+
+    .modal-dialog1 {
+        position: absolute;
+        left: 0;
+        margin-left: 500px;
+    }
 </style>
 
 
@@ -33,59 +27,28 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-bd lobidrag">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <span><?php echo display('new_invoice') ?></span>
-                    <span class="padding-lefttitle">
-                        <?php if ($this->permission1->method('manage_invoice', 'read')->access()) { ?>
-                            <a href="<?php echo base_url('invoice_list') ?>" class="btn btn-info m-b-5 m-r-2"><i class="ti-align-justify"> </i> <?php echo display('manage_invoice') ?> </a>
-                        <?php } ?>
-                    </span>
-                </div>
-            </div>
 
             <div class="panel-body">
                 <?php echo form_open_multipart('invoice/invoice/bdtask_manual_sales_insert', array('class' => 'form-vertical', 'id' => 'insert_sale', 'name' => 'insert_sale', 'onsubmit' => 'return validateFormWrapper()')) ?>
 
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group row">
-                            <label for="date" class="col-sm-3 col-form-label"><?php echo display('date') ?> <i class="text-danger">*</i></label>
-                            <div class="col-sm-6">
-                                <?php
-                                date_default_timezone_set('Asia/Colombo');
-
-                                $date = date('Y-m-d');
-                                ?>
-                                <input class="datepicker form-control" type="text" size="50" name="invoice_date" id="date" required value="<?php echo html_escape($date); ?>" tabindex="4" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6" id="bank_div">
-                        <div class="form-group row">
-                            <label for="bank" class="col-sm-3 col-form-label"><?php
-                                                                                echo display('bank');
-                                                                                ?> <i class="text-danger">*</i></label>
-                            <div class="col-sm-6">
-                                <select name="bank_id" class="form-control bankpayment" id="bank_id">
-                                    <option value="">Select Location</option>
-                                    <?php foreach ($bank_list as $bank) { ?>
-                                        <option value="<?php echo html_escape($bank['bank_id']) ?>">
-                                            <?php echo html_escape($bank['bank_name']); ?></option>
-                                    <?php } ?>
-                                </select>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <form class="form-inline" style="display: flex; align-items: center; width: 100%;">
-                        <div class="col-sm-3">
-                            <input type="text" id="add_item" class="form-control" placeholder="Barcode or QR-code scan here">
+                        <div class="col-sm-1">
+
+                            <label for="date" class="col-sm-3 col-form-label"><?php echo display('date') ?> <i class="text-danger">*</i></label>
                         </div>
+                        <div class="col-sm-2">
+
+                            <?php
+                            date_default_timezone_set('Asia/Colombo');
+
+                            $date = date('Y-m-d');
+                            ?>
+                            <input class="datepicker form-control" type="text" size="50" name="invoice_date" id="date" required value="<?php echo html_escape($date); ?>" tabindex="4" />
+                        </div>
+                        <!-- <div class="col-sm-2">
+                            <input type="text" id="add_item" class="form-control" placeholder="Barcode or QR-code scan here">
+                        </div> -->
                         <!-- <div class="col-sm-2">
                             <label class="mr-3 ml-3">OR</label>
                         </div> -->
@@ -94,49 +57,85 @@
                         </div>
                     </form>
                 </div>
-                <br>
+
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="normalinvoice">
-                        <thead>
-                            <tr>
-                                <th class="text-center product_field"><?php echo display('item_information') ?> <i class="text-danger">*</i></th>
-                                <th class="text-center invoice_fields"><?php echo display('unit') ?></th>
-                                <th class="text-center product_field">Emp Id</th>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <table class="table-bordered" id="normalinvoice">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center product_field"><?php echo display('item_information') ?> <i class="text-danger">*</i></th>
+                                        <th class="text-center invoice_fields"><?php echo display('unit') ?></th>
+                                        <th class="text-center product_field">Sold By</th>
 
-                                <th class="text-center invoice_fields"><?php echo display('quantity') ?> <i class="text-danger">*</i>
-                                </th>
-                                <th class="text-center product_field"><?php echo display('rate') ?> <i class="text-danger">*</i></th>
-                                <th class="text-center product_field">Discount type </th>
+                                        <th class="text-center invoice_fields"><?php echo display('quantity') ?> <i class="text-danger">*</i>
+                                        </th>
+                                        <th class="text-center product_field"><?php echo display('rate') ?> <i class="text-danger">*</i></th>
+                                        <th class="text-center product_field">Discount type </th>
 
-                                <th class="text-center product_field">Dis LKR / Percentage </th>
+                                        <th class="text-center product_field">Dis LKR / Percentage </th>
 
 
-                                <th class="text-center product_field"><?php echo display('dis_val') ?> </th>
-                                <th class="text-center product_field"><?php echo display('total') ?>
-                                </th>
-                                <th class="text-center"><?php echo display('action') ?></th>
-                            </tr>
-                        </thead>
-                        <tbody id="addinvoiceItem">
+                                        <th class="text-center product_field"><?php echo display('dis_val') ?> </th>
+                                        <th class="text-center product_field"><?php echo display('total') ?>
+                                        </th>
 
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="8" class="text-right"><b><?php echo display('grand_total') ?>:</b></td>
-                                <td class="text-right">
-                                    <input type="text" id="grandTotal" class="form-control text-right grandTotalamnt" name="grand_total_price" value="0.00" readonly="readonly" />
-                                </td>
-                            </tr>
+                                    </tr>
+                                </thead>
+                                <tbody id="addinvoiceItem">
 
-                            <tr>
+                                </tbody>
 
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <input type="hidden" name="finyear" value="<?php echo financial_year(); ?>">
-                    <p hidden id="old-amount"><?php echo 0; ?></p>
-                    <p hidden id="pay-amount"></p>
-                    <p hidden id="change-amount"></p>
+                            </table>
+                            <br />
+                            <table class="table-bordered" id="invoiceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Item No</th>
+                                        <th>Description</th>
+                                        <th>S/B</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>Dis T</th>
+                                        <th>Dis L/ P</th>
+                                        <th>Dis. Value</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Rows will be inserted here -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="8" class="text-right"><b><?php echo display('grand_total') ?>:</b></td>
+                                        <td class="text-right">
+                                            <input type="text" id="grandTotal" class="form-control text-right grandTotalamnt" name="grand_total_price" value="0.00" />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <input type="hidden" name="finyear" value="<?php echo financial_year(); ?>">
+                            <p hidden id="old-amount"><?php echo 0; ?></p>
+                            <p hidden id="pay-amount"></p>
+                            <p hidden id="change-amount"></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <P><b>SPACE-PAYMENTS</P>
+                            <P>F2-REPRINT</P>
+                            <P>F3-REFRESH</P>
+                            <P>F4-MODIFY EMPLOYEE</P>
+                            <P>F5-SALES SUMMARY</P>
+                            <P>F6-EXCHANGE ITEMMODE</P>
+
+                        </div>
+                    </div>
+                    <br />
+
+
 
                 </div>
                 <div class="form-group row text-right">
@@ -176,14 +175,14 @@
                                     ?>
                                     <div class="form-group">
                                         <label class="" for="from_date"><?php echo display('start_date') ?></label>
-                                        <input type="text" name="from_date" class="form-control datepicker" id="from_date" value=""
+                                        <input type="text" name="from_date" class="form-control datepicker" id="from_date" value="<?php echo html_escape($today); ?>"
                                             placeholder="<?php echo display('start_date') ?>">
                                     </div>
 
                                     <div class="form-group">
                                         <label class="" for="to_date"><?php echo display('end_date') ?></label>
                                         <input type="text" name="to_date" class="form-control datepicker" id="to_date"
-                                            placeholder="<?php echo display('end_date') ?>" value="" autocomplete="off">
+                                            placeholder="<?php echo display('end_date') ?>" value="<?php echo html_escape($today); ?>" autocomplete="off">
                                     </div>
 
                                     <div class="form-group">
@@ -293,161 +292,333 @@
 
 
 
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog1">
+        <div class="modal-content" style="height: 500px;width: 700px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Sales Summmary</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-sm-15">
+                                    <?php echo form_open('', array('class' => 'form-inline', 'method' => 'get', 'autocomplete' => 'off')) ?>
+                                    <?php
+                                    date_default_timezone_set('Asia/Colombo');
+                                    $today = date('Y-m-d');
+                                    ?>
+                                    <div class="form-group">
+                                        <label class="" for="from_date1"><?php echo display('start_date'); ?></label>
+                                        <input class="datepicker form-control" id="from_date1" name="from_date1" type="text" name="invoice_date" id="date" required value="<?php echo html_escape($date); ?>" />
+
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="" for="to_date1"><?php echo display('end_date'); ?></label>
+                                        <input class="datepicker form-control" id="to_date1" name="to_date1" type="text" name="invoice_date" id="date" required value="<?php echo html_escape($date); ?>" />
+
+                                    </div>
+
+
+
+
+
+
+                                    <button type="button" id="btn-gettotalsale"
+                                        class="btn btn-success"><?php echo display('find') ?></button>
+
+                                    <?php echo form_close() ?>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <!-- Manage Invoice report -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-bd lobidrag">
+                            <div class="panel-heading">
+
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered" cellspacing="0" width="100%" id="InvListTotalSales">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th>From Date</th>
+                                                <th>To Date</th> -->
+                                                <th>Total Invoice Count</th>
+                                                <th>Total Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+
+                                    </table>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <input type="hidden" id="total_invoice" value="<?php echo $total_invoice; ?>" name="">
+
+                    </div>
+
+                    <div id="add0" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <strong><?php echo display('delivery_note') ?></strong>
+                                </div>
+                                <div class="modal-body" id="invoice_note_show">
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
+    var count = 0;
+    let arr = [];
+    let arrItem = [];
+
+    var tabindex = 1;
+
+
+    function updateTable(arrItem) {
+        var tableBody = document.getElementById('invoiceTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Clear any existing rows
+
+        // First loop: populate the table rows with data from arrItem
+        let i = 1;
+        let total = 0;
+
+        arrItem.forEach(function(item) {
+            var row = document.createElement('tr');
+            if (item.qty > 0) {
+                row.innerHTML = `
+            <td style="padding: 2px; height: 20px;width:120px;">
+                <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:190px;">
+                <input type='text'  name='description[]' class='form-control' value='${item.productname}' readonly style='height: 20px;  font-size: 12px;  padding: 2px;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;">
+                <input type='text' name='sb[]' class='form-control' value='${item.sb}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:50px;">
+                <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;">
+                <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:40px;">
+                <input type='text' name='discount_type[]' class='form-control' value='${item.discount_type}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px; '>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;">
+                <input type='text' name='discount_lkr[]' class="form-control" value='${item.discount}'  readonly style='height: 20px;  font-size: 12px;  text-align: right;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;">
+                <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;">
+                <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;  '>
+            </td>
+        `;
+            } else {
+
+                row.innerHTML = `
+            <td style="padding: 2px; height: 20px;width:80px;background-color:#f9f9c1;">
+                <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:140px;background-color:#f9f9c1;">
+                <input type='text'  name='description[]' class='form-control' value='${item.productname}' readonly style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
+                <input type='text' name='sb[]' class='form-control' value='${item.sb}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
+                <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
+                <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:40px;background-color:#f9f9c1;">
+                <input type='text' name='discount_type[]' class='form-control' value='${item.discount_type}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1; '>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
+                <input type='text' name='discount_lkr[]' class="form-control" value='${item.discount}'  readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
+                <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
+                <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#f9f9c1;  '>
+            </td>
+        `;
+            }
+
+            tableBody.appendChild(row);
+            total = parseFloat(item.total) + total;
+
+            i++;
+        });
+
+
+
+        $("#grandTotal").val(parseFloat(total).toFixed(2));
+
+        // Second loop: create empty rows to make a total of 14 rows
+        for (i; i <= 14; i++) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+    <td style="padding: 2px; height: 20px;width:120px;">
+        <input type='text'   readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:190px;">
+        <input type='text' name='description[]' class='form-control' readonly style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:120px; ">
+        <input type='text' name='sb[]' class='form-control' readonly style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px; width:50px;">
+        <input type='number' name='qty[]' class='form-control' readonly min='0' style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:120px;">
+        <input type='number' name='rate[]' class='form-control' readonly min='0' style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:40px;">
+        <input type='text' name='discount_type[]' class='form-control' readonly style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:100px;">
+        <input type='text' name='discount_lkr[]' class='form-control' readonly style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:100px;">
+        <input type='number' name='discount_value[]' class='form-control' readonly style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px;width:120px;">
+        <input type='number' name='total[]' class='form-control'  readonly style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+`;
+            tableBody.appendChild(row);
+        }
+
+
+    }
+
+
+    window.onload = updateTable(arrItem);
+
+
+
     var mode = "+"
     document.addEventListener('keydown', function(event) {
         // Check if Shift is pressed and the key is '+'
-        if (event.shiftKey && event.key === '+') {
-            mode = "+"
-            alert("mode changed to +");
+        if (event.key === 'F6') {
+            if (mode == "-") {
+                mode = "+"
+                alert("mode changed to +");
+            } else {
+                mode = "-"
+                alert("mode changed to -");
+            }
+
         }
 
-        if (event.shiftKey && event.key === '_') {
-            mode = "-"
-            alert("mode changed to -");
-        }
-
-        if (event.shiftKey && event.key === 'Enter') {
+        if ( event.key === 'F5') {
             // Show the Bootstrap modal
             dataTable().ajax.reload();
+            $("#exampleModal2").modal('show');
 
-            $("#exampleModal").modal('show');
+        }
+        if ( event.key === 'F7') {
+            // Show the Bootstrap modal
+          
+            $("#exampleModal1").modal('show');
+
+        }
+        if ( event.key === 'F3') {
+            location.reload()
+
+        }
+        if (event.code === "Space") {
+            event.preventDefault();
+            let element2 = document.getElementById("grandTotal");
+            element2.focus();
+            element2.select();
+            // $("#exampleModal").modal('show');
 
         }
         if (event.shiftKey && event.key === 'S') {
-            swal({
-                title: "",
-                text: "Do You Want To Proceed Further?",
-                type: "success",
-                showCancelButton: true,
-                cancelButtonText: "ESC",
-                cancelButtonColor: "red",
-                confirmButtonText: "Enter",
-                confirmButtonColor: "#008000"
-            }, function(proceedValue) {
-                if (proceedValue) {
-                    setTimeout(function() {
 
-                        swal({
-                            title: "",
-                            showCancelButton: true,
-                            cancelButtonText: "ESC",
-                            cancelButtonColor: "red",
-                            confirmButtonText: "Enter",
-                            confirmButtonColor: "#008000",
-                            text: "Are you sure you want to save this record?",
-                            type: "success",
-
-
-                        }, function(inputValue) {
-                            if (inputValue === true) {
-
-                                saverecord()
-                            } else {
-
-                                location.reload();
-                            }
-
-                        });
-
-                    }, 1000);
-
-
-
-                } else {
-                    // If the user cancels the first popup, reload the page
-                    // location.reload();
-                }
-            });
 
 
         }
     });
 
+    $('#grandTotal').keydown(function(e) {
+
+        if (e.keyCode == 13) {
+            if (confirm("Do You Want To Proceed Further?")) {
+                if (confirm("Are you sure you want to save this record?")) {
+                    saverecord()
+                }
+            }
+        }
+    });
+
+
     function saverecord() {
         setTimeout(function() {
-
-
-            var productIds = $("input[name='product_id[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var productQuantities = $("input[name='product_quantity[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var productRates = $("input[name='product_rate[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var discountTypes = $("input[name='discount_type[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var discounts = $("input[name='discount[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var discountValues = $("input[name='discountvalue[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var totalPrices = $("input[name='total_price[]']").map(function() {
-                return $(this).val();
-            }).get();
-            var employeeIds = $("input[name='employee_id[]']").map(function() {
-                return $(this).val();
-            }).get();
 
             $.ajax({
                 type: "post",
                 url: $('#base_url').val() + 'invoice/invoice/sales_insert',
                 data: {
-                    productIds: productIds,
-                    productQuantities: productQuantities,
-                    productRates: productRates,
-                    discountTypes: discountTypes,
-                    discounts: discounts,
-                    discountValues: discountValues,
-                    totalPrices: totalPrices,
+                    items: arrItem,
                     grandTotal: $('#grandTotal').val(),
                     date: $('#date').val(),
-                    employeeIds: employeeIds,
+
                 },
                 success: function(data1) {
 
                     datas = JSON.parse(data1);
-                    swal({
-                        title: "Success!",
-                        showCancelButton: true,
-                        cancelButtonText: "ESC",
-                        cancelButtonColor: "red",
-                        confirmButtonText: "Enter",
-                        confirmButtonColor: "#008000",
-                        text: "Do You Want To Print ?",
-                        type: "success",
+                    if (confirm("Do You Want To Print?")) {
+                        dataTableForSale()
 
-
-                    }, function(inputValue) {
-                        if (inputValue === true) {
-
-                            printRawHtml(datas.details);
-                        } else {
-
-                            location.reload();
-                        }
-
-                    });
-
+                        printRawHtml(datas.details);
+                    }
                 }
             });
 
         }, 1000); //
     }
 
-    var count = 0;
-    let arr = [];
-    var tabindex = 1;
+
 
     function addinvoice(t, data) {
         var row = $("#normalinvoice tbody tr").length;
@@ -489,18 +660,17 @@
                     "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
                     "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
                     " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
-                    "<td><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 200px;'></div></td>" +
+                    "<td><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100px;'></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
-                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
-                    count + " form-control text-right' required placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
-                    count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab5 +
-                    "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab6 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
-                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab7 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
-                    count + "' value='0.00' readonly='readonly'/></td><td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
-                    "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
-                    "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
+                    count + " form-control text-right' required placeholder='0.00' min='0' /></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab4 +
+                    "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab5 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
+                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab6 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
+                    count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
+                    "' class='total_discount dppr' name='discount_amount[]'/></td>",
                     document.getElementById(t).appendChild(e);
 
             } else {
@@ -546,42 +716,37 @@
             $('#add_item_m').val("");
 
             var total = 0;
-            arr.forEach(function(element) {
-                total = parseFloat($("#total_price_" + element).val()) + total;
-            });
+            // arr.forEach(function(element) {
+            //     total = parseFloat($("#total_price_" + element).val()) + total;
+            // });
 
-            $("#grandTotal").val(total);
+            // $("#grandTotal").val(total);
 
         }
     }
 
     function deleteRow_invoice(t, count) {
-        var a = $("#normalinvoice > tbody > tr").length;
-        if (1 == a)
-            alert("There only one row you can't delete.");
-        else {
-            var e = t.parentNode.parentNode;
-            e.parentNode.removeChild(e);
-            let index = arr.indexOf(count);
-            if (index !== -1) {
-                arr.splice(index, 1);
-            }
-
-
-            var total = 0;
-            arr.forEach(function(element) {
-                total = parseFloat($("#total_price_" + element).val()) + total;
-            });
-
-            $("#grandTotal").val(total);
-
-
-
+        var e = t.parentNode.parentNode;
+        e.parentNode.removeChild(e);
+        let index = arr.indexOf(count);
+        if (index !== -1) {
+            arr.splice(index, 1);
         }
+
+
+        var total = 0;
+        arr.forEach(function(element) {
+            total = parseFloat($("#total_price_" + element).val()) + total;
+        });
+
+        $("#grandTotal").val(total);
+
     }
     $('#add_item_m').keydown(function(e) {
 
         if (e.keyCode == 13) {
+            var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
             var product_id = $(this).val();
             var invoice_edit_page = $("#invoice_edit_page").val();
 
@@ -610,6 +775,7 @@
     });
 
 
+
     function printRawHtml(view) {
         printJS({
             printable: view,
@@ -623,13 +789,28 @@
 
 
     function bdtask_invoice_quantitycalculate(item, e) {
+        console.log(e.keyCode)
         if (e.keyCode == 27) {
             document.getElementById("searchInput").focus();
 
         } else
         if (e.keyCode == 13) {
+            arrItem.push({
+                productid: $("#product_id_" + item).val(),
+                productname: $("#product_name_" + item).val(),
+                sb: $("#employeeId_" + item).val(),
+                qty: $("#total_qntt_" + item).val(),
+                rate: parseFloat($("#price_item_" + item).val()).toFixed(2),
+                discount_type: $("#discount_type_" + item).val() === "Percentage" ? "P" : "A",
+                discount: parseFloat($("#discount_" + item).val()).toFixed(2),
+                discount_value: parseFloat($("#discount_value_" + item).val()).toFixed(2),
+                total: parseFloat($("#total_price_" + item).val()).toFixed(2)
 
+            });
 
+            var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            updateTable(arrItem)
         } else {
             var quantity = $("#total_qntt_" + item).val();
             var price_item = $("#price_item_" + item).val();
@@ -681,12 +862,6 @@
 
 
 
-            var total = 0;
-            arr.forEach(function(element) {
-                total = parseFloat($("#total_price_" + element).val()) + total;
-            });
-
-            $("#grandTotal").val(total);
 
             var invoice_edit_page = $("#invoice_edit_page").val();
             var preload_pay_view = $("#preload_pay_view").val();
@@ -751,6 +926,16 @@
             if (currentIndex > 0) {
                 currentIndex--;
                 highlightItem(currentIndex);
+            }
+        } else if (event.code === 'Space') {
+
+            if (currentIndex >= 0 && currentIndex < results.length) {
+                // Place the selected item in the input box
+                document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
+                document.getElementById('searchInput_' + count).select()
+                document.getElementById('employeeId_' + count).value = results[currentIndex].id;
+                // Clear the search results
+                clearResults(count);
             }
         } else if (event.key === 'Enter') {
             // Select the highlighted item
@@ -825,81 +1010,138 @@
     }
 
     // function viewResult() {
-        $(document).ready(function() {
-            "use strict";
-            
-            var invoicedatatable = dataTable();
-           
+    $(document).ready(function() {
+        "use strict";
+
+        dataTable();
+        dataTableForSale();
+
+
+    });
+
+    $('#btn-filter').click(function() {
+        dataTable();
+
+    });
+
+    function dataTable() {
+        $('#InvList2').DataTable().destroy();
+        var csrf_test_name = $('[name="csrf_test_name"]').val();
+        var base_url = $('#base_url').val();
+        var total_invoice = $("#total_invoice").val();
+        var currency = $("#currency").val();
+        return $('#InvList2').DataTable({
+            responsive: true,
+
+            "aaSorting": [
+                [1, "desc"]
+            ],
+            "columnDefs": [{
+                    "bSortable": false,
+                    "aTargets": [0, 2, 3, 4, 5]
+                },
+
+            ],
+            'processing': true,
+            'serverSide': true,
+
+
+            'lengthMenu': [
+                [10, 25, 50, 100, 250, 500, 1000],
+                [10, 25, 50, 100, 250, 500, 1000]
+            ],
+            'serverMethod': 'post',
+            'ajax': {
+                'url': base_url + 'invoice/invoice/CheckInvoiceList',
+                "data": function(data) {
+                    data.fromdate = $('#from_date').val();
+                    data.todate = $('#to_date').val();
+                    data.empid = $('#empid').val();
+                    data.csrf_test_name = csrf_test_name;
+                }
+            },
+            'columns': [{
+                    data: 'sl'
+                },
+                {
+                    data: 'invoice'
+                },
+                {
+                    data: 'salesman'
+                },
+                {
+                    data: 'final_date'
+                },
+                {
+                    data: 'total_amount',
+                    class: "total_sale text-right",
+                    render: $.fn.dataTable.render.number(',', '.', 2, currency)
+                },
+                {
+                    data: 'button'
+                },
+            ],
+
 
         });
 
-        $('#btn-filter').click(function() {
-            var invoicedatatable = dataTable();
 
-            });
-
-        function dataTable(){
-            $('#InvList2').DataTable().destroy();
-            var csrf_test_name = $('[name="csrf_test_name"]').val();
-            var base_url = $('#base_url').val();
-            var total_invoice = $("#total_invoice").val();
-            var currency = $("#currency").val();
-            return $('#InvList2').DataTable({
-                responsive: true,
-
-                "aaSorting": [
-                    [1, "desc"]
-                ],
-                "columnDefs": [{
-                        "bSortable": false,
-                        "aTargets": [0, 2, 3, 4, 5]
-                    },
-
-                ],
-                'processing': true,
-                'serverSide': true,
+    }
 
 
-                'lengthMenu': [
-                    [10, 25, 50, 100, 250, 500, 1000],
-                    [10, 25, 50, 100, 250, 500, 1000]
-                ],
-                'serverMethod': 'post',
-                'ajax': {
-                    'url': base_url + 'invoice/invoice/CheckInvoiceList',
-                    "data": function(data) {
-                        data.fromdate = $('#from_date').val();
-                        data.todate = $('#to_date').val();
-                        data.empid = $('#empid').val();
-                        data.csrf_test_name = csrf_test_name;
-                    }
-                },
-                'columns': [{
-                        data: 'sl'
-                    },
-                    {
-                        data: 'invoice'
-                    },
-                    {
-                        data: 'salesman'
-                    },
-                    {
-                        data: 'final_date'
-                    },
-                    {
-                        data: 'total_amount',
-                        class: "total_sale text-right",
-                        render: $.fn.dataTable.render.number(',', '.', 2, currency)
-                    },
-                    {
-                        data: 'button'
-                    },
-                ],
+    $('#btn-gettotalsale').click(function() {
+        dataTableForSale();
+
+    });
 
 
-            });
+
+    function dataTableForSale() {
+        $('#InvListTotalSales').DataTable().destroy();
+        var csrf_test_name = $('[name="csrf_test_name"]').val();
+        var base_url = $('#base_url').val();
+        var total_invoice = $("#total_invoice").val();
+        var currency = $("#currency").val();
 
 
-        }
+        return $.ajax({
+            type: "POST",
+            url: base_url + 'invoice/invoice/getInvoiceSummary', // Call to get summary
+            data: {
+                csrf_test_name: csrf_test_name,
+                fromdate: $('#from_date1').val(),
+                todate: $('#to_date1').val(),
+            },
+            success: function(summary) {
+                console.log(summary)
+                var decodedSummary = JSON.parse(summary);
+                var invoiceCount = decodedSummary.invoice_count || 0;
+                var totalAmount = parseFloat(decodedSummary.total_amount) || 0.00;
+                $('#InvListTotalSales').DataTable({
+                    responsive: true,
+                    data: [{
+                        "total_invoice_count": invoiceCount,
+                        "total_amount": totalAmount
+                    }],
+                    columns: [{
+                            data: 'total_invoice_count',
+                            render: function(data) {
+                                return data;
+                            }
+                        },
+                        {
+                            data: 'total_amount',
+                            class: "text-right",
+                            render: $.fn.dataTable.render.number(',', '.', 2, currency) // Format the amount
+                        }
+                    ]
+                });
+            },
+            error: function() {
+                console.error('Could not fetch summary data.');
+            }
+        });
+
+    }
     // }
 </script>

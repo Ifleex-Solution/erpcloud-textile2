@@ -1,4 +1,4 @@
- <div class="row">
+<div class="row">
      <div class="col-sm-12">
          <div class="panel panel-bd lobidrag">
              <div class="panel-heading">
@@ -8,15 +8,15 @@
              </div>
 
              <div class="panel-body">
-                 <?php echo form_open('category_form/' . $category->category_id, 'class="" id="category_form"') ?>
+                 <?php echo form_open('brandcode_form/' . $brandcode->brandcode_id, 'class="" id="brandcode_form"') ?>
 
-                 <input type="hidden" name="category_id" id="category_id" value="<?php echo $category->category_id ?>">
+                 <input type="hidden" name="brandcode_id" id="brandcode_id" value="<?php echo $brandcode->brandcode_id ?>">
                  <div class="form-group row">
-                     <label for="category_name" class="col-sm-2 text-right col-form-label"><?php echo display('category_name') ?> <i class="text-danger"> * </i>:</label>
+                     <label for="brandcode_name" class="col-sm-2 text-right col-form-label">Brandcode Name <i class="text-danger"> * </i>:</label>
                      <div class="col-sm-4">
 
 
-                         <input type="text" name="category_name" class="form-control" id="category_name" placeholder="<?php echo display('category_name') ?>" value="<?php echo $category->category_name ?>">
+                         <input type="text" name="brandcode_name" class="form-control" id="brandcode_name" placeholder="<?php echo display('brandcode_name') ?>" value="<?php echo $brandcode->brandcode_name ?>">
                      </div>
                  </div>
                  <div class="form-group row">
@@ -24,11 +24,11 @@
                      <div class="col-sm-4">
 
                          <select name="status" id="status" class="form-control" required>
-                             <?php if (!empty($category->category_name)) { ?>
-                                 <option value="1" <?php if ($category->status == 1) {
+                             <?php if (!empty($brandcode->brandcode_name)) { ?>
+                                 <option value="1" <?php if ($brandcode->status == 1) {
                                                         echo 'selected';
                                                     } ?>><?php echo display('active') ?></option>
-                                 <option value="0" <?php if ($category->status == 0) {
+                                 <option value="0" <?php if ($brandcode->status == 0) {
                                                         echo 'selected';
                                                     } ?>><?php echo display('inactive') ?></option>
                              <?php } else { ?>
@@ -45,9 +45,9 @@
 
 
                          <button type="submit" class="btn btn-success ">
-                             <?php echo (empty($category->category_id) ? display('save') : display('update')) ?></button>
+                             <?php echo (empty($brandcode->brandcode_id) ? display('save') : display('update')) ?></button>
 
-                         <?php if (empty($category->category_id)) { ?>
+                         <?php if (empty($brandcode->brandcode_id)) { ?>
                              <button type="submit" class="btn btn-success" name="add-another"><?php echo display('save_and_add_another') ?></button>
                          <?php } ?>
 
