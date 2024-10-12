@@ -127,16 +127,16 @@ class Invoice extends MX_Controller
         $invoice_detail = $invoice_array[1] == "A" ? $this->invoice_model->retrieve_invoice_html_data($invoice_array[0]) :
             $this->invoice_model->retrieve_empinvoice_html_data($invoice_array[0]);
 
-        $taxfield = $this->db->select('*')
-            ->from('tax_settings')
-            ->where('is_show', 1)
-            ->get()
-            ->result_array();
-        $txregname = '';
-        foreach ($taxfield as $txrgname) {
-            $regname = $txrgname['tax_name'] . ' Reg No  - ' . $txrgname['reg_no'] . ', ';
-            $txregname .= $regname;
-        }
+        // $taxfield = $this->db->select('*')
+        //     ->from('tax_settings')
+        //     ->where('is_show', 1)
+        //     ->get()
+        //     ->result_array();
+        // $txregname = '';
+        // foreach ($taxfield as $txrgname) {
+        //     $regname = $txrgname['tax_name'] . ' Reg No  - ' . $txrgname['reg_no'] . ', ';
+        //     $txregname .= $regname;
+        // }
         $subTotal_quantity = 0;
         $subTotal_cartoon  = 0;
         $subTotal_discount = 0;
@@ -217,7 +217,7 @@ class Invoice extends MX_Controller
             'am_inword'         => $amount_inword,
             'is_discount'       => $invoice_detail[0]['total_discount'] - $invoice_detail[0]['invoice_discount'],
             'users_name'        => $users->first_name . ' ' . $users->last_name,
-            'tax_regno'         => $txregname,
+            // 'tax_regno'         => $txregname,
             'is_desc'           => $descript,
             'is_dis_val'        => $is_dis_val,
             'vat_amnt_per'      => $vat_amnt_per,

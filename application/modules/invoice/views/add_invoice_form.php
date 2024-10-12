@@ -125,11 +125,10 @@
                         </div>
                         <div class="col-sm-2">
                             <P><b>SPACE-PAYMENTS</P>
-                            <P>F2-REPRINT</P>
-                            <P>F3-REFRESH</P>
-                            <P>F4-MODIFY EMPLOYEE</P>
-                            <P>F5-SALES SUMMARY</P>
-                            <P>F6-EXCHANGE ITEMMODE</P>
+                            <P>F2-SALES SUMMARY</P>
+                            <P>F4-MANAGE SALES</P>
+                            <P>F5-REFRESH</P>
+                            <P>F8-EXCHANGE ITEMMODE</P>
 
                         </div>
                     </div>
@@ -538,7 +537,7 @@
     var mode = "+"
     document.addEventListener('keydown', function(event) {
         // Check if Shift is pressed and the key is '+'
-        if (event.key === 'F6') {
+        if (event.key === 'F8') {
             if (mode == "-") {
                 mode = "+"
                 alert("mode changed to +");
@@ -549,19 +548,17 @@
 
         }
 
-        if ( event.key === 'F5') {
-            // Show the Bootstrap modal
-            dataTable().ajax.reload();
+        if (event.key === 'F2') {
+            dataTableForSale();
             $("#exampleModal2").modal('show');
 
         }
-        if ( event.key === 'F7') {
-            // Show the Bootstrap modal
-          
-            $("#exampleModal1").modal('show');
+        if (event.key === 'F4') {
+            dataTable().ajax.reload();
+            $("#exampleModal").modal('show');
 
         }
-        if ( event.key === 'F3') {
+        if (event.key === 'F5') {
             location.reload()
 
         }
@@ -670,24 +667,25 @@
                     "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab5 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
                     "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab6 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
                     count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
-                    "' class='total_discount dppr' name='discount_amount[]'/></td>",
+                    "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
+                    "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
                     document.getElementById(t).appendChild(e);
 
             } else {
-                e.innerHTML = "<td style='background-color:#f9f9c1;'><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
+                e.innerHTML = "<td '><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
                     "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
-                    "' name='product_id[]'  id='product_id_" + count + "'/></td><td style='background-color:#f9f9c1;'><input class='form-control text-right common_name unit_" + count +
+                    "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
                     " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
-                    "<td style='background-color:#f9f9c1;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")' autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 200px;'></div></td>" +
-                    "<td style='background-color:#f9f9c1;'> <input type='text' name='product_quantity[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    "<td><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100px;'></div></td>" +
+                    "<td> <input type='text' name='product_quantity[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
-                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td style='background-color:#f9f9c1;'><input type='text' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
-                    count + " form-control text-right' required placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td><td style='background-color:#f9f9c1;'><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
-                    count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab5 +
-                    "' /></td><td style='background-color:#f9f9c1;'><input type='text' class='form-control text-right common_discount'  tabindex='" + tab6 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td style='background-color:#f9f9c1;'><input type='text' name='discountvalue[]'  id='discount_value_" + count +
-                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab7 + "' readonly /></td><td class='text-right' style='background-color:#f9f9c1;'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
-                    count + "' value='0.00' readonly='readonly'/></td><td style='background-color:#f9f9c1;'>" + tbfild + "<input type='hidden' id='all_discount_" + count +
+                    count + " form-control text-right' required placeholder='0.00' min='0' /></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab4 +
+                    "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab5 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
+                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab6 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
+                    count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
                     "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
                     "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
                     document.getElementById(t).appendChild(e);
@@ -846,9 +844,17 @@
                     var dis = discount;
                     $("#discount_value_" + item).val(dis);
                     $("#all_discount_" + item).val(dis);
-                    var temp = price - dis;
-                    $("#total_price_" + item).val(temp);
-                    $("#discount_type_" + item).val("Amount");
+                    if (mode == "-") {
+                        var temp = parseFloat(price) + parseFloat(dis);
+                        $("#total_price_" + item).val(temp);
+                        $("#discount_type_" + item).val("Amount");
+                    } else {
+                        var temp = price - dis;
+                        $("#total_price_" + item).val(temp);
+                        $("#discount_type_" + item).val("Amount");
+                    }
+
+
 
                 } else {
                     var total_price = quantity * price_item;
