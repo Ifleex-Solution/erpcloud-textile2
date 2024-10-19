@@ -376,47 +376,72 @@ class Report extends MX_Controller
 
 
 
-        // if ($empid == "All") {
-        //     $data1     = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, "A");
-        //     $data2     = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, "B");
-        //     if ($data1 === null && $data2 === null) {
-        //         $report_data = null;
-        //     } elseif ($data1 === null) {
-        //         $report_data = $data2;
-        //     } elseif ($data2 === null) {
-        //         $report_data = $data1;
-        //     } else {
-        //         $report_data = array_merge($data1, $data2);
-        //     }
-        // } else {
+        if ($empid == "All") {
+            $sql = "SELECT id,first_name, last_name, SUM(total_price_sum) as total_price_sum, date FROM ( " .
+                "SELECT emp.id,emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date " .
+                "FROM invoice_details id " .
+                "LEFT JOIN employee_history emp ON emp.id = id.employeeId " .
+                "LEFT JOIN invoice i ON i.id = id.invoice_id " .
+                "GROUP BY i.date, emp.id " .
+                "UNION ALL " .
+                "SELECT emp.id,emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date " .
+                "FROM emp_details id " .
+                "LEFT JOIN employee_history emp ON emp.id = id.employeeId " .
+                "LEFT JOIN emp i ON i.id = id.invoice_id " .
+                "GROUP BY i.date, emp.id " .
+                ") as subquery ";
 
-        $sql = "
-        SELECT emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date
-        FROM invoice_details id
-        LEFT JOIN employee_history emp ON emp.id = id.employeeId
-        LEFT JOIN invoice i ON i.id = id.invoice_id
-    ";
+            $conditions = array();
+            if (!empty($from_date) && !empty($to_date)) {
+                $conditions[] = "subquery.date BETWEEN '$from_date' AND '$to_date'";
+            } elseif (!empty($from_date)) {
+                $conditions[] = "subquery.date >= '$from_date'";
+            } elseif (!empty($to_date)) {
+                $conditions[] = "subquery.date <= '$to_date'";
+            }
+            if (!empty($employeeid)) {
+                $conditions[] = "subquery.id = '$employeeid'";
+            }
+            if (!empty($conditions)) {
+                $sql .= " WHERE " . implode(' AND ', $conditions);
+            }
 
-        $conditions = array();
+            $sql .= "GROUP BY first_name, date " .
+                "ORDER BY date DESC;";
+        } else {
 
-        if (!empty($from_date) && !empty($to_date)) {
-            $conditions[] = "i.date BETWEEN '$from_date' AND '$to_date'";
-        } elseif (!empty($from_date)) {
-            $conditions[] = "i.date >= '$from_date'";
-        } elseif (!empty($to_date)) {
-            $conditions[] = "i.date <= '$to_date'";
+            $sql = "SELECT emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date ";
+
+            if ($empid == "A") {
+                $sql .= "FROM invoice_details id "
+                    . "LEFT JOIN employee_history emp ON emp.id = id.employeeId "
+                    . "LEFT JOIN invoice i ON i.id = id.invoice_id ";
+            } else {
+                $sql .= "FROM emp_details id "
+                    . "LEFT JOIN employee_history emp ON emp.id = id.employeeId "
+                    . "LEFT JOIN emp i ON i.id = id.invoice_id ";
+            }
+
+
+            $conditions = array();
+
+            if (!empty($from_date) && !empty($to_date)) {
+                $conditions[] = "i.date BETWEEN '$from_date' AND '$to_date'";
+            } elseif (!empty($from_date)) {
+                $conditions[] = "i.date >= '$from_date'";
+            } elseif (!empty($to_date)) {
+                $conditions[] = "i.date <= '$to_date'";
+            }
+            if (!empty($employeeid)) {
+                $conditions[] = "emp.id = '$employeeid'";
+            }
+            if (!empty($conditions)) {
+                $sql .= " WHERE " . implode(' AND ', $conditions);
+            }
+
+            $sql .= "GROUP BY i.date, emp.id ORDER BY i.date DESC";
         }
-        if (!empty($employeeid)) {
-            $conditions[] = "emp.id = '$employeeid'";
-        }
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
-        }
 
-        $sql .= "
-    GROUP BY i.date, emp.id
-    ORDER BY i.date DESC
-";
 
         $query = $this->db->query($sql);
         $data  = $query->result_array();

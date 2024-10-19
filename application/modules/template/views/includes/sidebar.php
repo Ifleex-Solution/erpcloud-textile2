@@ -44,15 +44,7 @@
                                             }
                                             ?>"><a href="<?php echo base_url('add_invoice') ?>"><?php echo display('new_invoice') ?></a></li>
                     <?php } ?>
-                    <?php if ($this->permission1->method('manage_invoice', 'read')->access()) { ?>
-                        <li class="treeview <?php
-                                            if ($this->uri->segment('1') == ("invoice_list")) {
-                                                echo "active";
-                                            } else {
-                                                echo " ";
-                                            }
-                                            ?>"><a href="<?php echo base_url('invoice_list') ?>"><?php echo display('manage_invoice') ?></a></li>
-                    <?php } ?>
+                   
                  
                     <?php if ($this->permission1->method('terms_list', 'create')->access()) { ?>
                         <li class="treeview <?php

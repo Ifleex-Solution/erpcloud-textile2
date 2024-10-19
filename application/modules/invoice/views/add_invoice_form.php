@@ -894,7 +894,7 @@
                     "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
                     "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
                     " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
-                    "<td><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100px;'></div></td>" +
+                    "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='  width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
                     count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
@@ -912,7 +912,7 @@
                     "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
                     "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
                     " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
-                    "<td><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100px;'></div></td>" +
+                    "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
                     count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
@@ -924,6 +924,7 @@
                     count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
                     "' class='total_discount dppr' name='discount_amount[]'/><button  style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
                     document.getElementById(t).appendChild(e);
+
             }
 
 
@@ -1174,27 +1175,6 @@
                 highlightItem(currentIndex);
             }
         } else if (event.key === 'Enter') {
-
-            // if (document.getElementById('employeeId_' + count).value != "") {
-            //     arrItem.push({
-            //         invoiceId: count,
-            //         productid: $("#product_id_" + count).val(),
-            //         productname: $("#product_name_" + count).val(),
-            //         sb: $("#employeeId_" + count).val(),
-            //         empId: $("#searchInput_" + count).val(),
-            //         qty: $("#total_qntt_" + count).val(),
-            //         rate: parseFloat($("#price_item_" + count).val()).toFixed(2),
-            //         discount_type: $("#discount_type_" + count).val() === "Percentage" ? "P" : "A",
-            //         discount: parseFloat($("#discount_" + count).val()).toFixed(2),
-            //         discount_value: parseFloat($("#discount_value_" + count).val()).toFixed(2),
-            //         total: parseFloat($("#total_price_" + count).val()).toFixed(2)
-
-            //     });
-            //     var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
-            //     tableBody.innerHTML = '';
-            //     updateTable(arrItem)
-
-            // }
             // Select the highlighted item
             if (currentIndex >= 0 && currentIndex < results.length) {
                 // Place the selected item in the input box
