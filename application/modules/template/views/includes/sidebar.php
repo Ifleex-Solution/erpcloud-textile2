@@ -46,24 +46,6 @@
                     <?php } ?>
                    
                  
-                    <?php if ($this->permission1->method('terms_list', 'create')->access()) { ?>
-                        <li class="treeview <?php
-                                            if ($this->uri->segment('1') == ("terms_list")) {
-                                                echo "active";
-                                            } else {
-                                                echo " ";
-                                            }
-                                            ?>"><a href="<?php echo base_url('terms_list') ?>"><?php echo display('terms_list') ?></a></li>
-                    <?php } ?>
-                    <?php if ($this->permission1->method('terms_add', 'create')->access()) { ?>
-                        <li class="treeview <?php
-                                            if ($this->uri->segment('1') == ("terms_add")) {
-                                                echo "active";
-                                            } else {
-                                                echo " ";
-                                            }
-                                            ?>"><a href="<?php echo base_url('terms_add') ?>"><?php echo display('terms_add') ?></a></li>
-                    <?php } ?>
                 </ul>
             </li>
         <?php } ?>

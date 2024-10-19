@@ -1119,7 +1119,10 @@
             $("#pay-amount").text('0');
             $("#dueAmmount").val(0);
         }
-
+        if (mode === "-") {
+            if ($("#total_qntt_" + item).val() === "")
+                $("#total_qntt_" + item).val("-")
+        }
 
 
 

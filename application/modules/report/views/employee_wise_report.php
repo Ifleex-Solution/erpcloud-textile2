@@ -67,7 +67,7 @@
                             </select>
                         </div>
                     <?php } else { ?>
-                        <input type="hidden" tabindex="4" class="form-control" name="empid" id="empid" value="123">
+                        <input type="hidden" tabindex="4" class="form-control" name="empid" id="empid" value="A">
                     <?php } ?>
                 </div>
 

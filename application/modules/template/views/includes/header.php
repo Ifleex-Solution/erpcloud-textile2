@@ -39,12 +39,7 @@
                 <li> <blink><a href="<?php echo base_url('autoupdate/Autoupdate')?>" class="text-white  btn-danger update-btn"> <?php echo $max_version.' Version Available'; ?></a></blink>
                 </li>
               <?php }?>
-          <li class="dropdown notifications-menu">
-                    <a href="<?php echo base_url('out_of_stock') ?>" >
-                        <i class="pe-7s-attention" title="<?php echo display('out_of_stock') ?>"></i>
-                        <span class="label label-danger"><?php  echo html_escape($out_of_stocks) ?></span>
-                    </a>
-                </li>
+         
             <!-- settings -->
             <li class="dropdown dropdown-user">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="pe-7s-settings"></i></a>
