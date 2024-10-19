@@ -12,6 +12,7 @@
                                 <thead>
                         <tr>
                             <th><?php echo display('sl')?></th>
+                            <th class="text-center">Group Code</th>
                             <th class="text-center"><?php echo display('category_name') ?></th>
                             <th class="text-center"><?php echo display('status') ?></th>
                             <th class="text-center"><?php echo display('action') ?></th>
@@ -26,6 +27,8 @@
                                     
                                         <tr>
                                    <td><?php echo $sl++;?></td>
+                                   <td class="text-center"><?php echo $categories->category_code?></td>
+
                                     <td class="text-center"><?php echo $categories->category_name?></td>
                                   <td class="text-center"><?php if($categories->status ==1){echo display('active');}else{
                                   	echo display('inactive');
@@ -49,7 +52,7 @@
                                 }else{?>
 
                                 	<tr>
-                                		<td colspan="4" class="text-center"><?php echo display('no_record_found')?></td>
+                                		<td colspan="5" class="text-center"><?php echo display('no_record_found')?></td>
                                 	</tr>
                                 <?php }?>
                                 </tbody>

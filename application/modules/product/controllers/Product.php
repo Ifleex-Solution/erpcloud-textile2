@@ -26,7 +26,7 @@ class Product extends MX_Controller
     // category part
     function bdtask_category_list()
     {
-        $data['title']      = display('manage_category');
+        $data['title']      ="Manage Group";
         $data['module']     = "product";
         $data['page']       = "category_list";
         $data["category_list"] = $this->product_model->category_list();
@@ -43,6 +43,7 @@ class Product extends MX_Controller
         #-------------------------------#
         $data['category'] = (object)$postData = [
             'category_id'      => $id,
+            'category_code'    => $this->input->post('category_code', true),
             'category_name'    => $this->input->post('category_name', true),
             'status'           => $this->input->post('status', true),
         ];
@@ -118,6 +119,7 @@ class Product extends MX_Controller
         #-------------------------------#
         $data['brandcode'] = (object)$postData = [
             'brandcode_id'      => $id,
+            'brand_code'    => $this->input->post('brand_code', true),
             'brandcode_name'    => $this->input->post('brandcode_name', true),
             'status'           => $this->input->post('status', true),
         ];
@@ -196,6 +198,7 @@ class Product extends MX_Controller
         #-------------------------------#
         $data['countercode'] = (object)$postData = [
             'countercode_id'      => $id,
+            'counter_code'    => $this->input->post('counter_code', true),
             'countercode_name'    => $this->input->post('countercode_name', true),
             'status'           => $this->input->post('status', true),
         ];
@@ -341,7 +344,7 @@ class Product extends MX_Controller
         $this->form_validation->set_rules('category_id', display('category'), 'required|max_length[20]');
         $this->form_validation->set_rules('price', display('price'), 'max_length[12]');
 
-        $product_id = (!empty($this->input->post('product_id', TRUE)) ? $this->input->post('product_id', TRUE) : $this->generator(8));
+        $product_id = null;
         $sup_price = $this->input->post('supplier_price', TRUE);
         // $s_id      = $this->input->post('supplier_id',TRUE);
         $product_model = $this->input->post('model', TRUE);
@@ -350,17 +353,9 @@ class Product extends MX_Controller
         //     ->get()
         //     ->result_array();
 
-
-        $image_url = $this->fileupload->do_upload(
-            './my-assets/image/product/',
-            'image'
-
-        );
-
-        $image  = (!empty($image_url) ? $image_url : $this->input->post('old_image', TRUE));
         #-------------------------------#
         $data['product'] = (object)$postData = [
-            'product_id'     => (!empty($id) ? $id : $product_id),
+            'product_id'     => $this->input->post('product_id', TRUE),
             'product_name'   => $this->input->post('product_name', TRUE),
             'category_id'    => $this->input->post('category_id', TRUE),
             'unit'           => $this->input->post('unit', TRUE),
@@ -370,7 +365,6 @@ class Product extends MX_Controller
             'product_model'  => $this->input->post('model', TRUE),
             'product_details' => $this->input->post('description', TRUE),
             'product_vat'    => $this->input->post('product_vat', TRUE),
-            'image'          => (!empty($image) ? $image : 'my-assets/image/product.png'),
             'status'         => 1,
             'countercode_id'      => $this->input->post('countercode_id', TRUE),
             'brandcode_id'      => $this->input->post('brandcode_id', TRUE),

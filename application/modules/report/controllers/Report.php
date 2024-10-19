@@ -166,6 +166,274 @@ class Report extends MX_Controller
         echo modules::run('template/layout', $data);
     }
 
+    public function generate_invoicesummary()
+    {
+        require_once('tcpdf/tcpdf.php');
+        $page = 1;
+        $data = isset($_SESSION['invoice_summary']) ? $_SESSION['invoice_summary'] : [];
+        // if (count($data) + 1 <= 1000) {
+        //     for ($i = count($data) + 1; $i <= 1000; $i++) {
+        //         $data[] = ['invoice_id' => $i, 'total_amount' => 1000];
+        //     }
+        // }
+        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Name');
+        $pdf->SetTitle('INVOICE SUMMARY REPORT');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, columns, example');
+        $top_margin = 5;
+        $pdf->SetMargins(15, $top_margin, 10);
+        $pdf->SetFooterMargin(10);
+        $pdf->SetAutoPageBreak(TRUE, 20);
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        $col_width_id = 30;
+        $col_width_name = 30;
+        $row_height = 7;
+
+        $this->addHeaders($page, $pdf, $col_width_id, $col_width_name, $row_height);
+        $y = $pdf->GetY();
+        $total = 0;
+        for ($i = 0; $i < count($data); $i++) {
+            $section = intval(($i % 90) / 30);
+            $section_offset_x = 15 + $section * ($col_width_id + $col_width_name);
+            $item = $data[$i];
+
+            $row_in_section = $i % 30;
+            $current_y = $y + ($row_in_section * $row_height);
+            if ($i > 0 && $i % 90 == 0) {
+                $page = $page + 1;
+
+                $pdf->AddPage();
+                $this->addHeaders($page, $pdf, $col_width_id, $col_width_name, $row_height); // Add headers again
+                $y = $pdf->GetY();
+
+                $current_y = $y;
+            }
+            $pdf->SetY(100);
+
+            $pdf->MultiCell($col_width_id, $row_height, $item['invoice_id'], 1, 'C', 0, 0, $section_offset_x, $current_y);
+            $formatted_amount = number_format($item['total_amount'], 2, '.', ',');
+            $total = $total + $item['total_amount'];
+            $pdf->MultiCell($col_width_name, $row_height, $formatted_amount, 1, 'C', 0, 0, $section_offset_x + $col_width_id, $current_y);
+            if (($i + 1) % 30 == 0) {
+                $pdf->Ln();
+            }
+        }
+        $pdf->Ln(25);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 0, 'C', 0, '', 1);
+        $pdf->SetFont('', 'B');
+        $pdf->Cell($col_width_name, $row_height, "TOTAL SALES:", 0, 0, 'L', 0, '', 1);
+        $pdf->SetFont('', '');
+        $pdf->Cell($col_width_name, $row_height, count($data), 0, 0, 'L', 0, '', 1);
+
+        $pdf->Ln(5);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, '', 0, 0, 'C', 0, '', 1);
+        $pdf->SetFont('', 'B');
+        $pdf->Cell($col_width_name, $row_height, "TOTAL AMOUNT:", 0, 0, 'L', 0, '', 1);
+        $pdf->SetFont('', '');
+        $pdf->Cell($col_width_name, $row_height, number_format($total, 2, '.', ','), 0, 0, 'L', 0, '', 1);
+
+
+        // $pdf->writeHTMLCell(0, 10, '', '', '<span style="font-size:11px; "><b>TOTAL SALES:  </b>' . count($_SESSION['invoice_summary']) . '</span>',  0, 1, 0, true, 'L', true);
+        // $pdf->writeHTMLCell(0, 10, '', '', '<span style="font-size:11px; "><b>TOTAL AMOUNT:  </b>' . number_format($total, 2, '.', ',')  . '</span>',  0, 1, 0, true, 'L', true);
+
+        $pdf->Output('columns_table_example.pdf', 'I');
+    }
+
+    private function addHeaders($page, $pdf, $col_width_id, $col_width_name, $row_height)
+    {
+        $pdf->SetFont('', 'B', 50);
+        $pdf->Cell(40, 10, $page, 0, 0, 'L', 0, '', 1);
+        $pdf->SetFont('helvetica', 'B', 20);
+        $pdf->Cell(100, 20, "INVOICE SUMMARY REPORT", 0, 0, 'L', 0, '', 1);
+        $pdf->Ln(30);
+
+
+        if (isset($_SESSION['is_istype']) && $_SESSION['is_istype'] === "false") {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(23, $row_height, "FROM DATE: ", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height,  $_SESSION['isfrom_date'], 0, 0, 'L', 0, '', 1);
+            $pdf->Cell(23, $row_height, "TO DATE:", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height, $_SESSION['isto_date'], 0, 0, 'L', 0, '', 1);
+            $pdf->Ln(10);
+        } else {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(23, $row_height, "DATE: ", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height,  $_SESSION['isfrom_date'], 0, 0, 'L', 0, '', 1);
+            $pdf->Ln(10);
+        }
+
+
+        $pdf->Cell($col_width_id, $row_height, 'Invoice No', 1, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, 'Amount', 1, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_id, $row_height, 'Invoice No', 1, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, 'Amount', 1, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_id, $row_height, 'Invoice No', 1, 0, 'C', 0, '', 1);
+        $pdf->Cell($col_width_name, $row_height, 'Amount', 1, 1, 'C', 0, '', 1);
+        $pdf->SetFont('helvetica', '', 10);
+    }
+
+
+    public function generate_employeesales()
+    {
+
+        $data = $_SESSION['employee_sales'];
+        require_once('tcpdf/tcpdf.php');
+
+        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Name');
+        $pdf->SetTitle('Employee Sales Report');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, columns, example');
+        $top_margin = 5;
+        $pdf->SetMargins(15, $top_margin, 10);
+        $pdf->SetFooterMargin(10);
+        $pdf->SetAutoPageBreak(TRUE, 20);
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+
+        $page = 1;
+        $pdf->SetFont('', 'B', 50);
+        $pdf->Cell(40, 10, $page, 0, 0, 'L', 0, '', 1);
+        $pdf->SetFont('helvetica', 'B', 20);
+        $pdf->Cell(100, 20, "Employee Sales Report", 0, 0, 'L', 0, '', 1);
+        $pdf->Ln(30);
+        $pdf->SetFont('', 'B', 12);
+
+        $pdf->Cell(50, 10, 'Emp No', 0, 0, 'L', 0, '', 1);
+        $pdf->Cell(70, 10, 'Name', 0, 0, 'L', 0, '', 1);
+        $pdf->Cell(30, 10, 'Amount', 0, 0, 'R', 0, '', 1);
+        $pdf->Ln(10);
+
+
+        $prevDate = null;
+
+
+        $maxY = 275;
+        $lineHeight = 10;
+        $total = 0;
+        foreach ($data as $row) {
+            if ($pdf->GetY() + $lineHeight > $maxY) {
+
+                $pdf->AddPage();
+                $page = $page + 1;
+
+                $pdf->SetFont('', 'B', 50);
+                $pdf->Cell(70, 10, $page, 0, 0, 'L', 0, '', 1);
+                $pdf->SetFont('helvetica', 'B', 20);
+                $pdf->Cell(100, 20, "Employee Sales Report", 0, 0, 'L', 0, '', 1);
+                $pdf->Ln(30);
+                $pdf->Cell(50, 10, 'Emp No', 0, 0, 'L', 0, '', 1);
+                $pdf->Cell(70, 10, 'Name', 0, 0, 'L', 0, '', 1);
+                $pdf->Cell(30, 10, 'Amount', 0, 0, 'R', 0, '', 1);
+                $pdf->Ln(10);
+            }
+            if ($prevDate !== $row['date']) {
+                if ($prevDate !== null) {
+                    $pdf->Ln(5);
+                }
+                $pdf->SetFont('', 'B', 12);
+                $pdf->Cell(0, 10, 'Date: ' . $row['date'], 0, 1, 'L');
+                $prevDate = $row['date'];
+            }
+            $pdf->SetFont('', '', 10);
+            $pdf->Cell(50, 10, $row['first_name'], 0, 0, 'L');
+            $pdf->Cell(70, 10,  $row['last_name'], 0, 0, 'L');
+            $total = $total + $row['total_price_sum'];
+
+            $pdf->Cell(30, 10, number_format($row['total_price_sum'], 2), 0, 1, 'R');
+        }
+        $pdf->Ln(10);
+
+        $pdf->SetFont('', 'B', 12);
+        $pdf->Cell(50, 10, "Grand Total:", 0, 0, 'L');
+        $pdf->Cell(70, 10,  "", 0, 0, 'L');
+        $pdf->Cell(30, 10, number_format($total, 2), 0, 1, 'R');
+        // Output PDF
+        $pdf->Output('employee_sales_report.pdf', 'I');
+    }
+
+    public function employeewisereport()
+    {
+        $from_date = $this->input->post('from_date');
+        $to_date  = $this->input->post('to_date');
+        $empid = $this->input->post('empid');
+        $employeeid = $this->input->post('employeeid');
+
+
+
+        // if ($empid == "All") {
+        //     $data1     = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, "A");
+        //     $data2     = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, "B");
+        //     if ($data1 === null && $data2 === null) {
+        //         $report_data = null;
+        //     } elseif ($data1 === null) {
+        //         $report_data = $data2;
+        //     } elseif ($data2 === null) {
+        //         $report_data = $data1;
+        //     } else {
+        //         $report_data = array_merge($data1, $data2);
+        //     }
+        // } else {
+
+        $sql = "
+        SELECT emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date
+        FROM invoice_details id
+        LEFT JOIN employee_history emp ON emp.id = id.employeeId
+        LEFT JOIN invoice i ON i.id = id.invoice_id
+    ";
+
+        $conditions = array();
+
+        if (!empty($from_date) && !empty($to_date)) {
+            $conditions[] = "i.date BETWEEN '$from_date' AND '$to_date'";
+        } elseif (!empty($from_date)) {
+            $conditions[] = "i.date >= '$from_date'";
+        } elseif (!empty($to_date)) {
+            $conditions[] = "i.date <= '$to_date'";
+        }
+        if (!empty($employeeid)) {
+            $conditions[] = "emp.id = '$employeeid'";
+        }
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(' AND ', $conditions);
+        }
+
+        $sql .= "
+    GROUP BY i.date, emp.id
+    ORDER BY i.date DESC
+";
+
+        $query = $this->db->query($sql);
+        $data  = $query->result_array();
+        $_SESSION['employee_sales'] =  $data;
+        $_SESSION['emp_istype'] =   $this->input->post('istype');
+        $_SESSION['empfrom_date'] = $from_date;
+        $_SESSION['empto_date'] =  $to_date;
+
+
+        echo json_encode($_SESSION['employee_sales']);
+    }
+
+
+
+
+
+
 
     //    ============ its for todays_customer_receipt =============
     public function bdtask_todays_customer_received()
@@ -250,6 +518,40 @@ class Report extends MX_Controller
         $data['module']   = "report";
         $data['page']     = "sales_report";
         echo modules::run('template/layout', $data);
+    }
+
+    public function sales_report()
+    {
+        $from_date = $this->input->post('from_date');
+        $to_date  = $this->input->post('to_date');
+        $empid = $this->input->post('empid');
+
+
+        if ($empid == "All") {
+            $data1     = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, "A");
+            $data2     = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, "B");
+            if ($data1 === null && $data2 === null) {
+                $report_data = null;
+            } elseif ($data1 === null) {
+                $report_data = $data2;
+            } elseif ($data2 === null) {
+                $report_data = $data1;
+            } else {
+                $report_data = array_merge($data1, $data2);
+            }
+        } else {
+            $report_data = $this->report_model->retrieve_dateWise_SalesReports($from_date, $to_date, $empid);
+        }
+
+
+
+        $_SESSION['invoice_summary'] =  $report_data;
+        $_SESSION['is_istype'] =   $this->input->post('istype');
+        $_SESSION['isfrom_date'] = $from_date;
+        $_SESSION['isto_date'] =  $to_date;
+
+
+        echo json_encode($_SESSION['invoice_summary']);
     }
 
     public function bdtask_userwise_sales_report()
@@ -534,7 +836,6 @@ class Report extends MX_Controller
             }
         } else {
             $sales_report_category_wise = $this->report_model->sales_report_category_wise($from_date, $to_date, $category, $empid, "");
-           
         }
 
         $data = array(

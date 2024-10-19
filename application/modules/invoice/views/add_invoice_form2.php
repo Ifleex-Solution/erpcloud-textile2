@@ -53,8 +53,13 @@
                             <label class="mr-3 ml-3">OR</label>
                         </div> -->
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="add_item_m" placeholder="Manual Input barcode">
+                            <input type="text" class="form-control" id="barcodeInput" placeholder="Scan barcode here..." autofocus>
                         </div>
+                        <p id="result"></p>
+
+                        <!-- <div class="col-sm-3">
+                            <input type="text" class="form-control" id="add_item_m" placeholder="Manual Input barcode" autofocus>
+                        </div> -->
                     </form>
                 </div>
 
@@ -100,6 +105,8 @@
                                         <th>Dis L/ P</th>
                                         <th>Dis. Value</th>
                                         <th>Total</th>
+                                        <th></th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,6 +136,7 @@
                             <P>F4-MANAGE SALES</P>
                             <P>F5-REFRESH</P>
                             <P>F8-EXCHANGE ITEMMODE</P>
+                            <P>F9-COMMISION MODE</P>
 
                         </div>
                     </div>
@@ -399,6 +407,75 @@
 </div>
 
 
+<div id="editInvoiceModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editInvoiceLabel" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editInvoiceLabel">Edit Invoice</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control" type="text" id="searchInput_100" placeholder="Employee Id..." onkeyup="handleEmployeeEditKeyPress(event,100)" autocomplete='off' />
+                <input type='text' name='employee_id[]' id='employeeId_100' hidden />
+                <input type='text' name='invoiceId[]' id='invoiceId_100' hidden />
+
+                <div id='searchResults_100' style='width: 400px; background-color: #f1f1f1; max-height: 150px; overflow-y: auto; border: 1px solid #ddd; position: absolute;'></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const barcodeInput = document.getElementById('barcodeInput');
+    const resultElement = document.getElementById('result');
+
+    barcodeInput.addEventListener('input', function() {
+
+        if (barcodeInput.value.length == 6) {
+            getItem(barcodeInput.value)
+
+        }
+
+    });
+
+    barcodeInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            let num = barcodeInput.value.toString().padStart(6, '0');
+            getItem(num)
+
+
+            // alert(`product not found`);
+        }
+    });
+
+    function getItem(product_id) {
+        var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+        var invoice_edit_page = $("#invoice_edit_page").val();
+
+        $.ajax({
+            type: "post",
+            async: false,
+            url: $('#base_url').val() + 'invoice/invoice/invoice_setup',
+            data: {
+                product_id: product_id,
+                csrf_test_name: invoice_edit_page
+            },
+            success: function(data) {
+                if (data != "") {
+                    addinvoice('addinvoiceItem', JSON.parse(data));
+                }
+
+
+            },
+            error: function() {
+                alert('Request Failed, Please check your code and try again!');
+            }
+        });
+    }
+</script>
+
+
 
 <script>
     var count = 0;
@@ -418,8 +495,9 @@
 
         arrItem.forEach(function(item) {
             var row = document.createElement('tr');
-            if (item.qty > 0) {
-                row.innerHTML = `
+            if (item.commisionmode === "no") {
+                if (item.qty > 0) {
+                    row.innerHTML = `
             <td style="padding: 2px; height: 20px;width:120px;">
                 <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;'>
             </td>
@@ -446,11 +524,19 @@
             </td>
             <td style="padding: 2px; height: 20px;width:120px;">
                 <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;  '>
-            </td>
-        `;
-            } else {
+            </td> `;
+                    if (invoice_ID == 0) {
+                        row.innerHTML = row.innerHTML + `<td></td>`
+                    } else {
+                        row.innerHTML = row.innerHTML + `<td style="padding: 2px; height: 20px; width: 50px;">
+    <a href="#" style="margin-left: 5px;" onclick="editRow(${item.invoiceId})">
+        <i class="fa fa-edit" style="font-size: 14px; color: blue;"></i>
+    </a>
+</td>`
+                    }
+                } else {
 
-                row.innerHTML = `
+                    row.innerHTML = `
             <td style="padding: 2px; height: 20px;width:80px;background-color:#f9f9c1;">
                 <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
             </td>
@@ -478,8 +564,102 @@
             <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
                 <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#f9f9c1;  '>
             </td>
-        `;
+                    `;
+
+                    if (invoice_ID == 0) {
+                        row.innerHTML = row.innerHTML + `<td></td>`
+                    } else {
+                        row.innerHTML = row.innerHTML + `<td style="padding: 2px; height: 20px; width: 50px;">
+    <a href="#" style="margin-left: 5px;" onclick="editRow(${item.invoiceId})">
+        <i class="fa fa-edit" style="font-size: 14px; color: blue;"></i>
+    </a>
+</td>`
+                    }
+                }
+            } else {
+                if (item.qty > 0) {
+                    row.innerHTML = `
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#b2e0b2;">
+                <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:190px;background-color:#b2e0b2;">
+                <input type='text'  name='description[]' class='form-control' value='${item.productname}' readonly style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#b2e0b2;">
+                <input type='text' name='sb[]' class='form-control' value='${item.sb}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#b2e0b2;">
+                <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#b2e0b2;">
+                <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:40px;background-color:#b2e0b2;">
+                <input type='text' name='discount_type[]' class='form-control' value='${item.discount_type}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#b2e0b2; '>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#b2e0b2;">
+                <input type='text' name='discount_lkr[]' class="form-control" value='${item.discount}'  readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#b2e0b2;">
+                <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#b2e0b2;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#b2e0b2;">
+                <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#b2e0b2;  '>
+            </td> `;
+                    if (invoice_ID == 0) {
+                        row.innerHTML = row.innerHTML + `<td></td>`
+                    } else {
+                        row.innerHTML = row.innerHTML + `<td style="padding: 2px; height: 20px; width: 50px;">
+    <a href="#" style="margin-left: 5px;" onclick="editRow(${item.invoiceId})">
+        <i class="fa fa-edit" style="font-size: 14px; color: blue;"></i>
+    </a>
+</td>`
+                    }
+                } else {
+
+                    row.innerHTML = `
+            <td style="padding: 2px; height: 20px;width:80px;background-color:#f9c1c1;">
+                <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:140px;background-color:#f9f9c1;">
+                <input type='text'  name='description[]' class='form-control' value='${item.productname}' readonly style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
+                <input type='text' name='sb[]' class='form-control' value='${item.sb}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
+                <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
+                <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:40px;background-color:#f9f9c1;">
+                <input type='text' name='discount_type[]' class='form-control' value='${item.discount_type}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1; '>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
+                <input type='text' name='discount_lkr[]' class="form-control" value='${item.discount}'  readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
+                <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
+            </td>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
+                <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#f9f9c1;  '>
+            </td>
+                    `;
+
+                    if (invoice_ID == 0) {
+                        row.innerHTML = row.innerHTML + `<td></td>`
+                    } else {
+                        row.innerHTML = row.innerHTML + `<td style="padding: 2px; height: 20px; width: 50px;">
+    <a href="#" style="margin-left: 5px;" onclick="editRow(${item.invoiceId})">
+        <i class="fa fa-edit" style="font-size: 14px; color: blue;"></i>
+    </a>
+</td>`
+                    }
+                }
+
             }
+
 
             tableBody.appendChild(row);
             total = parseFloat(item.total) + total;
@@ -522,9 +702,27 @@
     <td style="padding: 2px; height: 20px;width:120px;">
         <input type='number' name='total[]' class='form-control'  readonly style='height: 20px; font-size: 12px; padding: 2px;'>
     </td>
+    <td></td>
 `;
             tableBody.appendChild(row);
         }
+
+
+    }
+
+    function editRow(invoiceId) {
+        let item = arrItem.find(item => item.invoiceId == invoiceId);
+        $("#searchInput_100").val(item.sb);
+        $("#editInvoiceModel").modal('show');
+
+        $('#editInvoiceModel').on('shown.bs.modal', function() {
+            let element2 = document.getElementById("searchInput_100");
+            $("#invoiceId_100").val(item.invoiceId);
+            document.getElementById('employeeId_100').value = "";
+
+            element2.focus();
+            element2.select();
+        });
 
 
     }
@@ -535,15 +733,17 @@
 
 
     var mode = "+"
+    var commisionmode = false;
+
     document.addEventListener('keydown', function(event) {
         // Check if Shift is pressed and the key is '+'
         if (event.key === 'F8') {
             if (mode == "-") {
                 mode = "+"
-                alert("mode changed to +");
+                alert("Mode Changed to +");
             } else {
                 mode = "-"
-                alert("mode changed to -");
+                alert("Mode Changed to -");
             }
 
         }
@@ -562,6 +762,16 @@
             location.reload()
 
         }
+        if (event.key === 'F9') {
+            if (commisionmode) {
+                commisionmode = false;
+                alert("Commission Mode Disabled ");
+            } else {
+                commisionmode = true;
+                alert("Commission Mode Enabled");
+            }
+
+        }
         if (event.code === "Space") {
             event.preventDefault();
             let element2 = document.getElementById("grandTotal");
@@ -578,20 +788,28 @@
     });
 
     $('#grandTotal').keydown(function(e) {
-
-        if (e.keyCode == 13) {
+        if (invoice_ID == 0) {
+            if (e.key === "Enter") {
+                if (confirm("Do You Want To Proceed Further?")) {
+                    if (confirm("Are you sure you want to save this record?")) {
+                        saverecord()
+                    }
+                }
+            }
+        } else {
             if (confirm("Do You Want To Proceed Further?")) {
-                if (confirm("Are you sure you want to save this record?")) {
+                if (confirm("Are you sure you want to update this record?")) {
                     saverecord()
                 }
             }
         }
+
     });
 
 
     function saverecord() {
-        setTimeout(function() {
-
+        // setTimeout(function() {
+        if (invoice_ID == 0) {
             $.ajax({
                 type: "post",
                 url: $('#base_url').val() + 'invoice/invoice/sales_insertemp',
@@ -612,7 +830,27 @@
                 }
             });
 
-        }, 1000); //
+        } else {
+            $.ajax({ 
+                type: "post",
+                url: $('#base_url').val() + 'invoice/invoice/sales_updateemp',
+                data: {
+                    items: arrItem,
+
+                },
+                success: function(data1) {
+
+                    datas = JSON.parse(data1);
+                    if (confirm("Do You Want To Print?")) {
+                        dataTableForSale()
+
+                        printRawHtml(datas.details);
+                    }
+                }
+            });
+        }
+
+        // }, 1000); //
     }
 
 
@@ -665,10 +903,9 @@
                     count + " form-control text-right' required placeholder='0.00' min='0' /></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab4 +
                     "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab5 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
-                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab6 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
+                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
                     count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
-                    "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
-                    "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
+                    "' class='total_discount dppr' name='discount_amount[]'/><button  style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
                     document.getElementById(t).appendChild(e);
 
             } else {
@@ -684,10 +921,9 @@
                     count + " form-control text-right' required placeholder='0.00' min='0' /></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab4 +
                     "' /></td><td><input type='text' class='form-control text-right common_discount'  tabindex='" + tab5 + "' placeholder='0.00' min='0' onkeyup='bdtask_invoice_quantitycalculate(" + count + ",event);'  value='' name='discount[]' id='discount_" + count + "'  ></td><td><input type='text' name='discountvalue[]'  id='discount_value_" + count +
-                    "' class='form-control text-right common_discount' placeholder='0.00' min='0' tabindex='" + tab6 + "' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
+                    "' class='form-control text-right common_discount' placeholder='0.00' min='0'  readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
                     count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
-                    "' class='total_discount dppr' name='discount_amount[]'/><button tabindex='" + tab8 +
-                    "' style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
+                    "' class='total_discount dppr' name='discount_amount[]'/><button  style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
                     document.getElementById(t).appendChild(e);
             }
 
@@ -711,15 +947,9 @@
 
 
             $("#total_price_" + count).val(price);
-            $('#add_item_m').val("");
+            $('#barcodeInput').val("");
 
             var total = 0;
-            // arr.forEach(function(element) {
-            //     total = parseFloat($("#total_price_" + element).val()) + total;
-            // });
-
-            // $("#grandTotal").val(total);
-
         }
     }
 
@@ -740,63 +970,51 @@
         $("#grandTotal").val(total);
 
     }
-    $('#add_item_m').keydown(function(e) {
+    // $('#add_item_m').keydown(function(e) {
 
-        if (e.keyCode == 13) {
-            var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';
-            var product_id = $(this).val();
-            var invoice_edit_page = $("#invoice_edit_page").val();
+    //     if (e.key == "Enter") {
+    //         var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+    //         tableBody.innerHTML = '';
+    //         var product_id = $(this).val();
+    //         var invoice_edit_page = $("#invoice_edit_page").val();
 
-
-            $.ajax({
-                type: "post",
-                async: false,
-                url: $('#base_url').val() + 'invoice/invoice/invoice_setup',
-                data: {
-                    product_id: product_id,
-                    csrf_test_name: invoice_edit_page
-                },
-                success: function(data) {
-                    if (data != "") {
-                        addinvoice('addinvoiceItem', JSON.parse(data));
-                    }
-
-
-                },
-                error: function() {
-                    alert('Request Failed, Please check your code and try again!');
-                }
-            });
-
-        }
-    });
+    //         $.ajax({
+    //             type: "post",
+    //             async: false,
+    //             url: $('#base_url').val() + 'invoice/invoice/invoice_setup',
+    //             data: {
+    //                 product_id: product_id,
+    //                 csrf_test_name: invoice_edit_page
+    //             },
+    //             success: function(data) {
+    //                 if (data != "") {
+    //                     addinvoice('addinvoiceItem', JSON.parse(data));
+    //                 }
 
 
+    //             },
+    //             error: function() {
+    //                 alert('Request Failed, Please check your code and try again!');
+    //             }
+    //         });
 
-    function printRawHtml(view) {
-        printJS({
-            printable: view,
-            type: 'raw-html',
-
-        });
-
-    }
-
-
+    //     }
+    // });
 
 
     function bdtask_invoice_quantitycalculate(item, e) {
-        console.log(e.keyCode)
-        if (e.keyCode == 27) {
+        if (e.keyCode === 'Escape') {
             document.getElementById("searchInput").focus();
 
         } else
-        if (e.keyCode == 13) {
+        if (e.key === 'Enter') {
             arrItem.push({
+                invoiceId: item,
                 productid: $("#product_id_" + item).val(),
                 productname: $("#product_name_" + item).val(),
-                sb: $("#employeeId_" + item).val(),
+                sb: $("#searchInput_" + item).val(),
+                empId: $("#employeeId_" + item).val(),
+                commisionmode: commisionmode ? "yes" : "no",
                 qty: $("#total_qntt_" + item).val(),
                 rate: parseFloat($("#price_item_" + item).val()).toFixed(2),
                 discount_type: $("#discount_type_" + item).val() === "Percentage" ? "P" : "A",
@@ -805,6 +1023,10 @@
                 total: parseFloat($("#total_price_" + item).val()).toFixed(2)
 
             });
+
+            let element2 = document.getElementById("barcodeInput");
+            element2.focus();
+            element2.select();
 
             var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';
@@ -818,7 +1040,7 @@
             var dis_type = $("#discount_type_" + item).val();
 
 
-            if (e.keyCode == 9) {
+            if (e.key === 'Tab') {
                 if (dis_type === "p")
                     $("#discount_type_" + item).val("Percentage");
                 else if (dis_type === "a")
@@ -834,8 +1056,15 @@
                     $("#discount_value_" + item).val(dis);
                     $("#all_discount_" + item).val(dis);
                     var temp = price - dis;
-                    $("#total_price_" + item).val(temp);
                     $("#discount_type_" + item).val("Percentage");
+
+                    if (commisionmode) {
+                        var temp = price + dis;
+                        $("#total_price_" + item).val(temp);
+                    } else {
+                        var temp = price - dis;
+                        $("#total_price_" + item).val(temp);
+                    }
 
 
 
@@ -844,15 +1073,29 @@
                     var dis = discount;
                     $("#discount_value_" + item).val(dis);
                     $("#all_discount_" + item).val(dis);
-                    if (mode == "-") {
-                        var temp = parseFloat(price) + parseFloat(dis);
-                        $("#total_price_" + item).val(temp);
-                        $("#discount_type_" + item).val("Amount");
+
+                    if (commisionmode) {
+                        if (mode == "-") {
+                            var temp = parseFloat(price) - parseFloat(dis);
+                            $("#total_price_" + item).val(temp);
+                            $("#discount_type_" + item).val("Amount");
+                        } else {
+                            var temp = parseFloat(price) + parseFloat(dis);
+                            $("#total_price_" + item).val(temp);
+                            $("#discount_type_" + item).val("Amount");
+                        }
                     } else {
-                        var temp = price - dis;
-                        $("#total_price_" + item).val(temp);
-                        $("#discount_type_" + item).val("Amount");
+                        if (mode == "-") {
+                            var temp = parseFloat(price) + parseFloat(dis);
+                            $("#total_price_" + item).val(temp);
+                            $("#discount_type_" + item).val("Amount");
+                        } else {
+                            var temp = parseFloat(price) - parseFloat(dis);
+                            $("#total_price_" + item).val(temp);
+                            $("#discount_type_" + item).val("Amount");
+                        }
                     }
+
 
 
 
@@ -915,7 +1158,68 @@
     }
 
     function handleEmployeeKeyPress(event, count) {
-        console.log(event.code)
+
+        const query = document.getElementById('searchInput_' + count).value.toLowerCase();
+        const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
+
+        if (event.key === 'ArrowDown') {
+            // Move down in the list
+            if (currentIndex < results.length - 1) {
+                currentIndex++;
+                highlightItem(currentIndex);
+            }
+        } else if (event.key === 'ArrowUp') {
+            // Move up in the list
+            if (currentIndex > 0) {
+                currentIndex--;
+                highlightItem(currentIndex);
+            }
+        } else if (event.key === 'Enter') {
+
+            // if (document.getElementById('employeeId_' + count).value != "") {
+            //     arrItem.push({
+            //         invoiceId: count,
+            //         productid: $("#product_id_" + count).val(),
+            //         productname: $("#product_name_" + count).val(),
+            //         sb: $("#employeeId_" + count).val(),
+            //         empId: $("#searchInput_" + count).val(),
+            //         qty: $("#total_qntt_" + count).val(),
+            //         rate: parseFloat($("#price_item_" + count).val()).toFixed(2),
+            //         discount_type: $("#discount_type_" + count).val() === "Percentage" ? "P" : "A",
+            //         discount: parseFloat($("#discount_" + count).val()).toFixed(2),
+            //         discount_value: parseFloat($("#discount_value_" + count).val()).toFixed(2),
+            //         total: parseFloat($("#total_price_" + count).val()).toFixed(2)
+
+            //     });
+            //     var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+            //     tableBody.innerHTML = '';
+            //     updateTable(arrItem)
+
+            // }
+            // Select the highlighted item
+            if (currentIndex >= 0 && currentIndex < results.length) {
+                // Place the selected item in the input box
+                document.getElementById('searchInput_' + count).value = results[currentIndex].first_name + " " + results[currentIndex].last_name;
+                document.getElementById('searchInput_' + count).select()
+                document.getElementById('employeeId_' + count).value = results[currentIndex].id;
+                // Clear the search results
+                clearResults(count);
+            }
+        } else if (event.key === "Backspace") {
+            document.getElementById('employeeId_' + count).value = "";
+
+        } else {
+            // For other keys, just filter and show results
+            currentIndex = -1;
+            displayResults(results, count);
+
+        }
+
+
+
+    }
+
+    function handleEmployeeEditKeyPress(event, count) {
 
         const query = document.getElementById('searchInput_' + count).value.toLowerCase();
         const results = employees.filter(employee => employee.first_name.toLowerCase().includes(query));
@@ -944,6 +1248,19 @@
                 clearResults(count);
             }
         } else if (event.key === 'Enter') {
+
+            if (document.getElementById('employeeId_' + count).value != "") {
+                let itemIndex = arrItem.findIndex(item => item.invoiceId == $("#invoiceId_100").val());
+                if (itemIndex !== -1) {
+                    arrItem[itemIndex].sb = document.getElementById('searchInput_' + count).value;
+                    arrItem[itemIndex].empId = document.getElementById('employeeId_' + count).value;
+                }
+                var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';
+                updateTable(arrItem);
+                $("#editInvoiceModel").modal('hide');
+
+            }
             // Select the highlighted item
             if (currentIndex >= 0 && currentIndex < results.length) {
                 // Place the selected item in the input box
@@ -953,7 +1270,8 @@
                 // Clear the search results
                 clearResults(count);
             }
-        } else if (event.key === "ArrowRight") {
+        } else if (event.key === "Backspace") {
+            document.getElementById('employeeId_' + count).value = "";
 
         } else {
             // For other keys, just filter and show results
@@ -1094,6 +1412,28 @@
 
     }
 
+    let invoice_ID = 0;
+
+    function editInvoice(invoiceId, type) {
+        $.ajax({
+            type: "post",
+            url: $('#base_url').val() + 'invoice/invoice/get_salesbyinvoiceidemp',
+            data: {
+                invoice_id: invoiceId,
+
+            },
+            success: function(data1) {
+                datas = JSON.parse(data1);
+                arrItem = datas;
+                invoice_ID = datas[0].invoice_id
+
+                updateTable(datas)
+                $("#exampleModal").modal('hide');
+
+            }
+        });
+    }
+
 
     $('#btn-gettotalsale').click(function() {
         dataTableForSale();
@@ -1119,7 +1459,6 @@
                 todate: $('#to_date1').val(),
             },
             success: function(summary) {
-                console.log(summary)
                 var decodedSummary = JSON.parse(summary);
                 var invoiceCount = decodedSummary.invoice_count || 0;
                 var totalAmount = parseFloat(decodedSummary.total_amount) || 0.00;

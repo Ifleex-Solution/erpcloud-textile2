@@ -9,18 +9,16 @@
             </div>
             <?php echo form_open_multipart('product_form/' . $id, array('class' => 'form-vertical', 'id' => 'insert_product', 'name' => 'insert_product', 'onsubmit' => 'return validateForm()')) ?>
             <div class="panel-body">
-                <?php if (empty($id)) { ?>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group row">
-                                <label for="barcode_or_qrcode" class="col-sm-2 col-form-label"><?php echo display('barcode_or_qrcode') ?> <i class="text-danger"></i></label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" name="product_id" type="text" id="product_id" placeholder="<?php echo display('barcode_or_qrcode') ?>" tabindex="1">
-                                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group row">
+                            <label for="barcode_or_qrcode" class="col-sm-2 col-form-label"><?php echo display('barcode_or_qrcode') ?> <i class="text-danger"></i></label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="product_id" type="text" id="product_id" placeholder="<?php echo display('barcode_or_qrcode') ?>" value="<?php echo $product->product_id ?>" tabindex="1">
                             </div>
                         </div>
                     </div>
-                <?php } ?>
+                </div>
 
 
                 <div class="row">
@@ -28,7 +26,7 @@
                         <div class="form-group row">
                             <label for="product_name" class="col-sm-4 col-form-label"><?php echo display('product_name') ?> <i class="text-danger">*</i></label>
                             <div class="col-sm-8">
-                                <input class="form-control" name="product_name" type="text" id="product_name" placeholder="<?php echo display('product_name') ?>" value="<?php echo $product->product_name ?>" required tabindex="1">
+                                <input class="form-control" name="product_name" type="text" id="product_name" placeholder="<?php echo display('product_name') ?>" value="<?php echo $product->product_name ?>" required tabindex="2">
                             </div>
                         </div>
                     </div>
@@ -43,12 +41,12 @@
                                     <?php if ($countercode_list) { ?>
                                         <?php foreach ($countercode_list as $categories) { ?>
                                             <option value="<?php echo $categories['countercode_id'] ?>">
-                                               
 
-                                                <option value="<?php echo $categories['countercode_id'] ?>" <?php if ($product->countercode_id == $categories['countercode_id']) {
+
+                                            <option value="<?php echo $categories['countercode_id'] ?>" <?php if ($product->countercode_id == $categories['countercode_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['countercode_name'] ?></option>
+                                                <?php echo $categories['counter_code'].'-'.$categories['countercode_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -65,14 +63,14 @@
                             <label for="category_id" class="col-sm-4 col-form-label"><?php echo display('category') ?>
                                 <i class="text-danger">*</i></label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="category_id" required name="category_id" tabindex="3">
+                                <select class="form-control" id="category_id" required name="category_id" tabindex="4">
                                     <option value=""></option>
                                     <?php if ($category_list) { ?>
                                         <?php foreach ($category_list as $categories) { ?>
                                             <option value="<?php echo $categories['category_id'] ?>" <?php if ($product->category_id == $categories['category_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['category_name'] ?></option>
+                                                <?php echo $categories['category_code'].'-'.$categories['category_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -84,7 +82,7 @@
                         <div class="form-group row">
                             <label for="product_model" class="col-sm-4 col-form-label"><?php echo display('model') ?> </label>
                             <div class="col-sm-8">
-                                <input type="text" tabindex="" class="form-control" id="product_model" name="model" placeholder="<?php echo display('model') ?>" value="<?php echo $product->product_model ?>" />
+                                <input type="text" tabindex="5" class="form-control" id="product_model" name="model" placeholder="<?php echo display('model') ?>" value="<?php echo $product->product_model ?>" />
                             </div>
                         </div>
                     </div>
@@ -95,10 +93,13 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group row">
-                            <label for="sell_price" class="col-sm-4 col-form-label"><?php echo display('sell_price') ?>
+                            <label for="sell_price" class="col-sm-4 col-form-label">Price
+                                <i class="text-danger">*</i></label>
                             </label>
+                            <!--  -->
+
                             <div class="col-sm-8">
-                                <input class="form-control text-right" id="sell_price" name="price" type="text" placeholder="0.00" tabindex="5" min="0" value="<?php echo $product->price ?>">
+                                <input class="form-control text-right" id="sell_price" required name="price" type="text" placeholder="0.00" tabindex="6" min="0" value="<?php echo $product->price ?>">
                             </div>
                         </div>
                     </div>
@@ -107,7 +108,7 @@
                         <div class="form-group row">
                             <label for="unit" class="col-sm-4 col-form-label"><?php echo display('unit') ?><i class="text-danger">*</i></label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="unit" name="unit" required tabindex="-1" aria-hidden="true">
+                                <select class="form-control" id="unit" name="unit" required tabindex="7" aria-hidden="true">
                                     <option value="">Select One</option>
                                     <?php if ($unit_list) { ?>
                                         <?php foreach ($unit_list as $units) { ?>
@@ -127,7 +128,7 @@
                         <div class="form-group row">
                             <label for="serial_no" class="col-sm-4 col-form-label"><?php echo display('product_details') ?> </label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" name="description" id="description" rows="1" placeholder="<?php echo display('product_details') ?>" tabindex="2"><?php echo $product->product_details ?></textarea>
+                                <textarea class="form-control" name="description" id="description" rows="7" placeholder="<?php echo display('product_details') ?>" tabindex="8"><?php echo $product->product_details ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -136,17 +137,17 @@
                             <label for="brandcode_id" class="col-sm-4 col-form-label">Brand Code
                                 <i class="text-danger">*</i></label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="brandcode_id" required name="brandcode_id" tabindex="3">
+                                <select class="form-control" id="brandcode_id" required name="brandcode_id" tabindex="9">
                                     <option value=""></option>
 
                                     <?php if ($brandcode_list) { ?>
                                         <?php foreach ($brandcode_list as $categories) { ?>
-                                            
+
 
                                             <option value="<?php echo $categories['brandcode_id'] ?>" <?php if ($product->brandcode_id == $categories['brandcode_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['brandcode_name'] ?></option>
+                                                <?php echo $categories['brand_code'].'-'.$categories['brandcode_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -175,15 +176,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="col-sm-6">
-                        <div class="form-group row">
-                            <label for="image" class="col-sm-4 col-form-label"><?php echo display('image') ?> </label>
-                            <div class="col-sm-8">
-                                <input type="file" name="image" class="form-control" id="image" tabindex="4">
-                                <input type="hidden" name="old_image" value="<?php echo $product->image; ?>">
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="col-sm-6" <?php if ($vattaxinfo->fixed_tax != 1) {
                                                 echo 'hidden';
                                             } ?>>
@@ -196,17 +189,7 @@
                     </div>
 
 
-                    <?php if ($supplier_pr) { ?>
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label for="image" class="col-sm-4 col-form-label"> </label>
-                                <div class="col-sm-8">
-                                    <img src="<?php echo base_url() . $product->image ?>" alt="" width="100" height="80">
 
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
                     <?php
                     $i = 0;
 

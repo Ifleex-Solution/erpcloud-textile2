@@ -843,12 +843,7 @@ class Invoice extends MX_Controller
         );
         $this->db->insert('invoice', $datainv);
         $inv_insert_id =  $this->db->insert_id();
-
-
-
-        // Get items array from the request
         $items = $this->input->post('items', TRUE);
-        // Loop through the items and insert each item into the 'invoice_details' table
         foreach ($items as $item) {
             $data1 = array(
                 'invoice_details_id' => $this->generator(15),
@@ -859,29 +854,112 @@ class Invoice extends MX_Controller
                 'discount'           => $item['discount'],
                 'dis_type'           => $item['discount_type'],
                 'discount_per'       => $item['discount_value'],
+                'commisionmode'     =>  $item['commisionmode'],
                 'total_price'        => $item['total'],
-                'employeeId'         => $item['sb'],
+                'employeeId'         => $item['empId'],
                 'status'             => 1
             );
             $this->db->insert('invoice_details', $data1);
         }
 
-        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "all");
+        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "a");
         $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
         echo json_encode($data);
+    }
 
-        // if (!empty($invoice_id)) {
+    public function sales_update()
+    {
+        $items = $this->input->post('items', TRUE);
+        foreach ($items as $item) {
+            $data1 = array(
+                'employeeId'     => $item['empId'],
+            );
+            
+            $this->db->where('id', $item['id']);
+            $this->db->update('invoice_details', $data1);
+        }
+        
+        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($items[0]['invoice_id'], "a");
+        $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
+        echo json_encode($data);
+    }
 
+    public function sales_updateemp()
+    {
+        $items = $this->input->post('items', TRUE);
+        foreach ($items as $item) {
+            $data1 = array(
+                'employeeId'     => $item['empId'],
+            );
+            
+            $this->db->where('id', $item['id']);
+            $this->db->update('emp_details', $data1);
+        }
+        
+        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($items[0]['invoice_id'], "god");
+        $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
+        echo json_encode($data);
+    }
 
-        // } else {
-        //     $data['status']    = false;
-        //     $data['exception'] = 'Please Try Again';
-        // }
+    public function get_salesbyinvoiceid()
+    {
+        $invoice_id = $this->input->post('invoice_id', TRUE);
+
+        $query = $this->db->query('
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY id.invoice_id) AS invoiceId, 
+        id.id,
+        id.invoice_id, 
+        id.product_id AS productid, 
+        p.product_name AS productname,
+        id.employeeId AS empId, 
+        CONCAT(emp.first_name, " ", emp.last_name) AS sb,
+        id.quantity AS qty,  
+        id.rate, 
+        id.discount AS discount, 
+        id.dis_type AS discount_type, 
+        id.discount_per AS discount_value, 
+        id.total_price AS total,
+        commisionmode AS commisionmode
+    FROM invoice_details id
+    LEFT JOIN employee_history emp ON emp.id = id.employeeId
+    LEFT JOIN product_information p ON p.product_id = id.product_id
+    where id.invoice_id=' . $invoice_id);
+        $results = $query->result_array();
+        echo json_encode($results);
+    }
+
+    public function get_salesbyinvoiceidemp()
+    {
+        $invoice_id = $this->input->post('invoice_id', TRUE);
+
+        $query = $this->db->query('
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY id.invoice_id) AS invoiceId, 
+        id.id,
+        id.invoice_id, 
+        id.product_id AS productid, 
+        p.product_name AS productname,
+        id.employeeId AS empId, 
+        CONCAT(emp.first_name, " ", emp.last_name) AS sb,
+        id.quantity AS qty,  
+        id.rate, 
+        id.discount AS discount, 
+        id.dis_type AS discount_type, 
+        id.discount_per AS discount_value, 
+        id.total_price AS total,
+        commisionmode AS commisionmode
+    FROM emp_details id
+    LEFT JOIN employee_history emp ON emp.id = id.employeeId
+    LEFT JOIN product_information p ON p.product_id = id.product_id
+    where id.invoice_id=' . $invoice_id);
+        $results = $query->result_array();
+        echo json_encode($results);
     }
 
     public function sales_insertemp()
     {
-        $incremented_id = $this->number_generator();
+        $incremented_id = $this->number_emp_generator();
 
         $datainv = array(
             'invoice_id'      => $incremented_id,
@@ -909,6 +987,7 @@ class Invoice extends MX_Controller
                 'discount'           => $item['discount'],
                 'dis_type'           => $item['discount_type'],
                 'discount_per'       => $item['discount_value'],
+                'commisionmode'     =>  $item['commisionmode'],
                 'total_price'        => $item['total'],
                 'employeeId'         => $item['sb'],
                 'status'             => 1
@@ -916,7 +995,7 @@ class Invoice extends MX_Controller
             $this->db->insert('emp_details', $data1);
         }
 
-        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "all");
+        $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "god");
         $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
         echo json_encode($data);
         // if (!empty($invoice_id)) {
@@ -1028,7 +1107,7 @@ class Invoice extends MX_Controller
         $endDate = $this->input->post('todate', TRUE);
         $this->db->select("COUNT(a.invoice_id) AS invoice_count, SUM(a.total_amount) AS total_amount");
         $this->db->from('invoice a');
-        $this->db->where('a.date >=', $startDate); 
+        $this->db->where('a.date >=', $startDate);
         $this->db->where('a.date <=', $endDate);
         $query = $this->db->get();
         $result = $query->row();

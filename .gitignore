@@ -7,3 +7,4 @@ vendor
 lib/fonts/*.afm.php
 lib/fonts/*.ufm.php
 lib/fonts/log.htm
+application/modules/report/controllers/TCPDF

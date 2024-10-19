@@ -8,126 +8,106 @@
 <div class="row">
     <div class="col-sm-15">
         <div class="panel panel-default">
-            <div class="panel-body">
-                <?php echo form_open('datewise_sales_report', array('class' => 'form-inline', 'method' => 'get')) ?>
+            <h3 style="margin-left: 30px;">Invoice Summary Report</h3>
+            <br />
+            <div class="panel-body" style="margin-left: 120px;">
+
+
                 <?php
                 date_default_timezone_set('Asia/Colombo');
 
                 $today = date('Y-m-d');
                 ?>
-                <div class="form-group">
-                    <label class="" for="from_date"><?php echo display('start_date') ?></label>
-                    <input type="text" name="from_date" class="form-control datepicker" id="from_date"
-                        placeholder="<?php echo display('start_date') ?>" value="<?php echo $today ?>">
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <input type="checkbox" id="single_date_checkbox" name="single_date_checkbox">
+                    <label for="single_date_checkbox">Single Date</label>
                 </div>
-
-                <div class="form-group">
-                    <label class="" for="to_date"><?php echo display('end_date') ?></label>
-                    <input type="text" name="to_date" class="form-control datepicker" id="to_date"
-                        placeholder="<?php echo display('end_date') ?>" value="<?php echo $today ?>">
-                </div>
-
-                <div class="form-group">
-
-                    <?php if ($this->permission1->method('sales_report', 'view')->access()) { ?>
-                        <label for="empid" class="mr-2 mb-0">Emp Id</label>
-                        <div class="input-group mr-4" style="width: 150px;">
-                            <input type="password" tabindex="4" class="form-control" name="empid" id="empid" autocomplete="new-password">
+                <div class="form-group" style="display: flex; gap: 20px;">
+                    <div>
+                        <label for="from_date">From Date: </label>
+                        <input type="text" name="from_date" class="form-control datepicker" id="from_date"
+                            placeholder="<?php echo display('start_date') ?>" value="<?php echo $today ?>" style="width: 200px;">
+                    </div>
+                    <div id="to_date_container">
+                        <div>
+                            <label for="to_date">To Date:</label>
+                            <input type="text" name="to_date" class="form-control datepicker" id="to_date"
+                                placeholder="<?php echo display('end_date') ?>" value="<?php echo $today ?>" style="width: 200px;">
                         </div>
-                    <?php } ?>
+                    </div>
+                </div>
 
-                    <?php if (!$this->permission1->method('sales_report', 'view')->access()) { ?>
+
+                <div class="form-group">
+                    <?php if ($this->session->userdata('email') !== null && strpos($this->session->userdata('email'), 'god') !== false) { ?>
+                        <label for="empid" class="mr-2 mb-0">Emp Id</label>
+                        <div class="input-group mr-4" style="width: 200px;">
+                            <select tabindex="4" class="form-control" name="empid" id="empid" style="width: 100%;">
+                                <option value="">Select Employee ID</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="All">All</option>
+                            </select>
+                        </div>
+                    <?php } else { ?>
                         <input type="hidden" tabindex="4" class="form-control" name="empid" id="empid" value="123">
                     <?php } ?>
                 </div>
 
-                <button type="button" id="btn-filter" class="btn btn-success"><?php echo display('find') ?></button>
-                <a class="btn btn-warning" href="#"
-                    onclick="printDiv('purchase_div')"><?php echo display('print') ?></a>
-                <?php echo form_close() ?>
+
+                <button type="button" id="btn-filter" class="btn btn-success" onclick="onFilterButtonClick()">
+                    <?php echo display('find') ?>
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="panel panel-bd lobidrag">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <span><?php echo display('sales_report') ?> </span>
-                    <span class="padding-lefttitle">
-                        <?php if ($this->permission1->method('all_report', 'read')->access()) { ?>
-                            <a class="btn btn-primary m-b-5 m-r-2"
-                                href="<?php echo base_url('todays_report') ?>"><?php echo display('todays_report') ?></a>
-                        <?php } ?>
-
-                        <?php if ($this->permission1->method('product_sales_reports_date_wise', 'read')->access()) { ?>
-                            <a href="<?php echo base_url('product_wise_sales_report') ?>"
-                                class="btn btn-primary m-b-5 m-r-2"><i class="ti-align-justify"> </i>
-                                <?php echo display('sales_report_product_wise') ?> </a>
-                        <?php } ?>
-                    </span>
-                </div>
-            </div>
-            <div class="panel-body">
-                <div id="purchase_div">
-                    <div class="paddin5ps">
-                        <table class="print-table" width="100%">
-
-                            <tr>
-                                <td align="left" class="print-table-tr">
-                                    <img style="width: 210px; height:79px;" src="<?php echo base_url() . $setting->invoice_logo; ?>" alt="logo">
-                                </td>
-                                <td align="center" class="print-cominfo">
-                                    <span class="company-txt">
-                                        <?php echo $company_info[0]['company_name']; ?>
-
-                                    </span><br>
-                                    <?php echo $company_info[0]['address']; ?>
-                                    <br>
-                                    <?php echo $company_info[0]['email']; ?>
-                                    <br>
-                                    <?php echo $company_info[0]['mobile']; ?>
-                                    <br>
-                                    <strong><?php echo display('sales_report') ?></strong>
-                                </td>
-
-                                <td align="right" class="print-table-tr">
-                                    <date>
-                                        <?php echo display('date') ?>: <?php
-                                                                        echo date('d-M-Y');
-                                                                        ?>
-                                    </date>
-
-                                </td>
-                            </tr>
-
-                        </table>
-                    </div>
-                    <div class="table-responsive paddin5ps">
-                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="reportlist">
-                            <thead>
-                                <tr>
-                                    <th><?php echo display('sales_date') ?></th>
-                                    <th><?php echo display('invoice_no') ?></th>
-                                    <th><?php echo display('total_amount') ?></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                                <th colspan="2" class="text-right"><?php echo display('total_purchase') ?>:</th>
-                                <th></th>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
+<input type="hidden" name="baseUrl2" id="baseUrl2" class="baseUrl" value="<?php echo base_url(); ?>" />
 
 <script src="<?php echo base_url('my-assets/js/admin_js/sales_report.js') ?>" type="text/javascript"></script>
+<script>
+    function onFilterButtonClick() {        
+        $.ajax({
+            type: "post",
+            url: $('#baseUrl2').val() + 'report/report/sales_report',
+            data: {
+                from_date: $('#from_date').val(),
+                to_date: document.getElementById('single_date_checkbox').checked?$('#from_date').val():$('#to_date').val(),
+                empid: $('#empid').val(),
+                istype: document.getElementById('single_date_checkbox').checked
+
+            },
+            success: function(data1) {
+                datas = JSON.parse(data1);
+                console.log(datas)
+                if (datas != null) {
+                    window.open(`generate_invoicesummary`, '_blank');
+
+                } else {
+                    alert("There is no data available for the selected parameters.")
+                }
+
+                // updateTable(datas)
+                // $("#exampleModal").modal('hide');
+
+            }
+        });
+
+    }
+</script>
+<script>
+    document.getElementById('single_date_checkbox').addEventListener('change', function() {
+        let fromDate = document.getElementById('from_date');
+        let toDate = document.getElementById('to_date');
+        let toDateContainer = document.getElementById('to_date_container');
+        if (this.checked) {
+            toDate.value = fromDate.value;
+            toDateContainer.style.display = 'none';
+        } else {
+            toDateContainer.style.display = 'block';
+        }
+    });
+
+    
+</script>

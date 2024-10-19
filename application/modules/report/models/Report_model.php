@@ -462,19 +462,24 @@ class Report_model extends CI_Model
     }
 
     //Retrieve all Report
-    public function retrieve_dateWise_SalesReports($from_date, $to_date)
+    public function retrieve_dateWise_SalesReports($from_date, $to_date,$empid)
     {
-        $this->db->select("a.*,b.*");
-        $this->db->from('invoice a');
-        $this->db->join('customer_information b', 'b.customer_id = a.customer_id');
+        if($empid=="B"){
+            $this->db->select("CONCAT('B', a.invoice_id) AS invoice_id,a.total_amount");
+            $this->db->from('emp a');
+        }else{
+            $this->db->select("CONCAT('A', a.invoice_id) AS invoice_id,a.total_amount");
+            $this->db->from('invoice a');
+        }
+        // $this->db->join('customer_information b', 'b.customer_id = a.customer_id');
         $this->db->where('a.date >=', $from_date);
         $this->db->where('a.date <=', $to_date);
-        $this->db->order_by('a.date', 'desc');
+        $this->db->order_by('a.invoice_id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();
         }
-        return false;
+        return null;
     }
 
     //Retrieve todays_purchase_report

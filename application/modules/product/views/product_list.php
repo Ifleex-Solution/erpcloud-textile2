@@ -24,10 +24,10 @@
                                     <tr>
                                         <th><?php echo display('sl') ?></th>
                                         <th><?php echo display('product_name') ?></th>
-                                        <th>Category</th>
-                                        <th><?php echo display('product_model') ?></th>
+                                        <th>Group</th>
+                                        <th>Brand</th>
+                                        <th>Counter</th>
                                         <th><?php echo display('price') ?></th>
-                                        <th><?php echo display('image') ?>s</th>
                                         <th><?php echo display('action') ?> 
                                         </th>
                                     </tr>
@@ -101,9 +101,10 @@
              { data: 'sl' },
              { data: 'product_name' },
              { data: 'category'},
-             { data: 'product_model'},
+             { data: 'brandcode'},
+             { data: 'countercode'},
+
              { data: 'price' },
-             { data: 'image'},
              { data: 'button'},
           ],
 

@@ -12,6 +12,14 @@
 
                  <input type="hidden" name="category_id" id="category_id" value="<?php echo $category->category_id ?>">
                  <div class="form-group row">
+                     <label for="category_code" class="col-sm-2 text-right col-form-label">Group Code <i class="text-danger"> * </i>:</label>
+                     <div class="col-sm-4">
+
+
+                         <input type="text" name="category_code" class="form-control" id="category_code" placeholder="Group Code" value="<?php echo $category->category_code ?>">
+                     </div>
+                 </div>
+                 <div class="form-group row">
                      <label for="category_name" class="col-sm-2 text-right col-form-label"><?php echo display('category_name') ?> <i class="text-danger"> * </i>:</label>
                      <div class="col-sm-4">
 

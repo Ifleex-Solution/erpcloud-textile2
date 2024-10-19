@@ -12,7 +12,9 @@
                                 <thead>
                         <tr>
                             <th><?php echo display('sl')?></th>
-                            <th class="text-center">Countercode Name</th>
+                            <th class="text-center">Counter Code</th>
+
+                            <th class="text-center">Counter Name</th>
                             <th class="text-center"><?php echo display('status') ?></th>
                             <th class="text-center"><?php echo display('action') ?></th>
                         </tr>
@@ -26,6 +28,8 @@
                                     
                                         <tr>
                                    <td><?php echo $sl++;?></td>
+                                   <td class="text-center"><?php echo $countercodes->counter_code?></td>
+
                                     <td class="text-center"><?php echo $countercodes->countercode_name?></td>
                                   <td class="text-center"><?php if($countercodes->status ==1){echo display('active');}else{
                                   	echo display('inactive');
@@ -49,7 +53,7 @@
                                 }else{?>
 
                                 	<tr>
-                                		<td colspan="4" class="text-center"><?php echo display('no_record_found')?></td>
+                                		<td colspan="5" class="text-center"><?php echo display('no_record_found')?></td>
                                 	</tr>
                                 <?php }?>
                                 </tbody>

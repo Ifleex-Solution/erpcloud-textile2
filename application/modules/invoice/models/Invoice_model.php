@@ -392,6 +392,8 @@ class Invoice_model extends CI_Model
             <i class="fa fa-window-restore" aria-hidden="true"></i>
         </a>';
 
+
+
             // $button .= '  <a href="' . $base_url . 'invoice_pad_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pad_print') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
 
             // $button .= '  <a href="' . $base_url . 'pos_print/' . $record->invoice_id . 'q' . $type . '" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('pos_invoice') . '"><i class="fa fa-fax" aria-hidden="true"></i></a>';
@@ -404,8 +406,14 @@ class Invoice_model extends CI_Model
             //         }
             //     }
             // }
-
-            // $button .= ' <a href="' . $base_url . 'invoice_edit/' . $record->invoice_id . 'q' . $type . '" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('update') . '"><i class="fa fa-pencil" aria-hidden="true"></i></a> ';
+            $today = new DateTime();
+            $recorddate = new DateTime($record->date);
+            if ($recorddate->format('Y-m-d') === $today->format('Y-m-d')) {
+                $button .= '          <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="left" title="' . display('update') . '" 
+                onclick="editInvoice(' . $record->id . ', \'' . $type . '\')">
+                <i class="fa fa-pencil" ></i>
+            </button>';
+            }
 
 
 
@@ -1546,7 +1554,7 @@ class Invoice_model extends CI_Model
         $this->db->join('invoice_details c', 'c.invoice_id = a.id');
         // $this->db->join('employee_history b', 'b.id = a.employee_id');
         $this->db->join('product_information d', 'd.product_id = c.product_id');
-        $this->db->where('a.invoice_id', $invoice_id);
+        $this->db->where('a.id', $invoice_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();
@@ -1738,7 +1746,6 @@ class Invoice_model extends CI_Model
     public function bdtask_invoice_pos_print_direct($invoice_id = null, $empid = null)
     {
         $invoice_detail = $empid == 'god' ? $this->retrieve_emp_html_data($invoice_id) : $this->retrieve_invoice_html_data($invoice_id);
-   
         $txregname = '';
         $subTotal_quantity  = 0;
         $subTotal_cartoon   = 0;

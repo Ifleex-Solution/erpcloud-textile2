@@ -332,9 +332,15 @@ class Product_model extends CI_Model
                    a.product_model, 
                    a.product_vat, 
                    a.image, 
-                   ps.category_name");
+                    CONCAT(   ps.category_code, ' ',   ps.category_name) AS category_name,
+                   CONCAT( bc.brand_code, ' ',  bc.brandcode_name) AS brandcode_name,
+                  CONCAT( cc.counter_code, ' ', cc.countercode_name) AS countercode_name   ");
         $this->db->from('product_information a');
         $this->db->join('product_category ps', 'ps.category_id = a.category_id', 'left');
+        $this->db->join('brandcode bc', 'bc.brandcode_id = a.brandcode_id', 'left');
+        $this->db->join('countercode cc', 'cc.countercode_id = a.countercode_id', 'left');
+
+
         if ($searchValue != '')
             $this->db->where($searchQuery);
         $this->db->order_by($columnName, $columnSortOrder);
@@ -371,10 +377,13 @@ class Product_model extends CI_Model
 
             $data[] = array(
                 'sl'               => $sl,
-                'product_name'     => $product_name,
+                'product_name'     => $record->product_name,
                 'product_model'    => $record->product_model,
                 'price'            => $record->price,
                 'category'         => $record->category_name,
+                'countercode'         => $record->countercode_name,
+                'brandcode'         => $record->brandcode_name,
+
                 'image'            => $image,
                 'button'           => $button,
 

@@ -12,14 +12,14 @@
                 <?php echo form_open_multipart('employee_form/' . $employee->id, 'id="validate"') ?>
                 <input type="hidden" name="id" id="id" value="<?php echo $employee->id ?>">
                 <div class="form-group row">
-                    <label for="first_name" class="col-sm-2 col-form-div"><?php echo display('first_name') ?> <i class="text-danger">*</i></label>
+                    <label for="first_name" class="col-sm-2 col-form-div">Employee Id <i class="text-danger">*</i></label>
                     <div class="col-sm-4">
-                        <input name="first_name" class="form-control" type="text" placeholder="<?php echo display('first_name') ?>" required id="first_name" value="<?php echo $employee->first_name ?>">
+                        <input name="first_name" class="form-control" type="text" placeholder="Employee Id" required id="first_name" value="<?php echo $employee->first_name ?>">
                         <input type="hidden" name="old_first_name" value="<?php echo $employee->first_name ?>">
                     </div>
-                    <label for="last_name" class="col-sm-2 col-form-div"><?php echo display('last_name') ?></label>
+                    <label for="last_name" class="col-sm-2 col-form-div">Employee Name</label>
                     <div class="col-sm-4">
-                        <input name="last_name" class="form-control" type="text" placeholder="<?php echo display('last_name') ?>" id="last_name" value="<?php echo $employee->last_name ?>">
+                        <input name="last_name" class="form-control" type="text" placeholder="Employee Name" id="last_name" value="<?php echo $employee->last_name ?>">
                         <input type="hidden" name="old_last_name" value="<?php echo $employee->last_name ?>">
                     </div>
                 </div>
