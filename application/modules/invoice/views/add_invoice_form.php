@@ -75,6 +75,8 @@
 
                                         <th class="text-center invoice_fields"><?php echo display('quantity') ?> <i class="text-danger">*</i>
                                         </th>
+                                        <th class="text-center invoice_fields">Meter
+                                        </th>
                                         <th class="text-center product_field"><?php echo display('rate') ?> <i class="text-danger">*</i></th>
                                         <th class="text-center product_field">Discount type </th>
 
@@ -100,6 +102,8 @@
                                         <th>Description</th>
                                         <th>S/B</th>
                                         <th>Qty</th>
+                                        <th>Meter</th>
+
                                         <th>Rate</th>
                                         <th>Dis T</th>
                                         <th>Dis L/ P</th>
@@ -114,7 +118,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="8" class="text-right"><b><?php echo display('grand_total') ?>:</b></td>
+                                        <td colspan="9" class="text-right"><b><?php echo display('grand_total') ?>:</b></td>
                                         <td class="text-right">
                                             <input type="text" id="grandTotal" class="form-control text-right grandTotalamnt" name="grand_total_price" value="0.00" />
                                         </td>
@@ -509,6 +513,9 @@
             <td style="padding: 2px; height: 20px;width:50px;">
                 <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;'>
             </td>
+             <td style="padding: 2px; height: 20px;width:50px;">
+                <input type='number' name='meter[]' class="form-control" value='${item.meter}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;'>
+            </td>
             <td style="padding: 2px; height: 20px;width:120px;">
                 <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;'>
             </td>
@@ -521,7 +528,7 @@
             <td style="padding: 2px; height: 20px;width:100px;">
                 <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:120px;">
+            <td style="padding: 2px; height: 20px;width:100px;">
                 <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;  '>
             </td> `;
                     if (invoice_ID == 0) {
@@ -548,6 +555,9 @@
             <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
                 <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
             </td>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
+                <input type='number' name='meter[]' class="form-control" value='${item.meter}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            </td>
             <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
                 <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#f9f9c1;'>
             </td>
@@ -560,7 +570,7 @@
             <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
                 <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
                 <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#f9f9c1;  '>
             </td>
                     `;
@@ -590,6 +600,9 @@
             <td style="padding: 2px; height: 20px;width:50px;background-color:#b2e0b2;">
                 <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#b2e0b2;'>
             </td>
+             <td style="padding: 2px; height: 20px;width:50px;background-color:#b2e0b2;">
+                <input type='number' name='meter[]' class="form-control" value='${item.meter}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#b2e0b2;'>
+            </td>
             <td style="padding: 2px; height: 20px;width:120px;background-color:#b2e0b2;">
                 <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#b2e0b2;'>
             </td>
@@ -602,7 +615,7 @@
             <td style="padding: 2px; height: 20px;width:100px;background-color:#b2e0b2;">
                 <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#b2e0b2;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:120px;background-color:#b2e0b2;">
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#b2e0b2;">
                 <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#b2e0b2;  '>
             </td> `;
                     if (invoice_ID == 0) {
@@ -629,6 +642,9 @@
             <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
                 <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
             </td>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
+                <input type='number' name='meter[]' class="form-control" value='${item.meter}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            </td>
             <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
                 <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#f9f9c1;'>
             </td>
@@ -641,7 +657,7 @@
             <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
                 <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
                 <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#f9f9c1;  '>
             </td>
                     `;
@@ -685,6 +701,9 @@
     </td>
     <td style="padding: 2px; height: 20px; width:50px;">
         <input type='number' name='qty[]' class='form-control' readonly min='0' style='height: 20px; font-size: 12px; padding: 2px;'>
+    </td>
+    <td style="padding: 2px; height: 20px; width:50px;">
+        <input type='number' name='meter[]' class='form-control' readonly min='0' style='height: 20px; font-size: 12px; padding: 2px;'>
     </td>
     <td style="padding: 2px; height: 20px;width:120px;">
         <input type='number' name='rate[]' class='form-control' readonly min='0' style='height: 20px; font-size: 12px; padding: 2px;'>
@@ -890,14 +909,25 @@
             tabindex = tabindex + 9;
 
             if (mode === "+") {
-                e.innerHTML = "<td '><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
+                var row1 = "<td '><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
                     "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
                     "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
                     " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
                     "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='  width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
-                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
-                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
+                debugger
+                if (data.unit == "m") {
+                    row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
+                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td>";
+
+                } else {
+                    row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='0.0' required='required'  readonly='readonly' onkeyup='bdtask_invoice_quantitycalculate(" +
+                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
+
+                }
+
+                row1 = row1 + "<td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
                     count + " form-control text-right' required placeholder='0.00' min='0' /></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab4 +
@@ -905,17 +935,28 @@
                     "' class='form-control text-right common_discount' placeholder='0.00' min='0' readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
                     count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
                     "' class='total_discount dppr' name='discount_amount[]'/><button  style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
-                    document.getElementById(t).appendChild(e);
+                    e.innerHTML = row1;
+                document.getElementById(t).appendChild(e);
 
             } else {
-                e.innerHTML = "<td '><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
+                var row2 = "<td '><input type='text' name='product_name' class='form-control' placeholder='Product Name' id='" + "product_name_" + count +
                     "' required tabindex='" + tab1 + "' readonly='readonly'><input type='hidden' class='common_product autocomplete_hidden_value  product_id_" + count +
                     "' name='product_id[]'  id='product_id_" + count + "'/></td><td><input class='form-control text-right common_name unit_" + count +
                     " valid'  id='unit_type_" + count + "' value='None' readonly='' aria-invalid='false' type='text'></td>" +
                     "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
-                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" +
-                    count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td><td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
+                if (data.unit == "m") {
+                    row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
+                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td>";
+
+                } else {
+                    row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='0.0' required='required'  readonly='readonly' onkeyup='bdtask_invoice_quantitycalculate(" +
+                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
+
+                }
+
+                row2 = row2 + "<td><input type='text' readonly='readonly' name='product_rate[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='price_item_" + count + "' class='common_rate price_item" +
                     count + " form-control text-right' required placeholder='0.00' min='0' /></td><td><input type='text' name='discount_type[]' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);'  id='discount_type_" + count + "' class='form-control'  tabindex='" + tab4 +
@@ -923,7 +964,9 @@
                     "' class='form-control text-right common_discount' placeholder='0.00' min='0'  readonly /></td><td class='text-right'><input class='common_total_price total_price form-control text-right' type='text' name='total_price[]' id='total_price_" +
                     count + "' value='0.00' readonly='readonly'/></td>" + tbfild + "<input type='hidden' id='all_discount_" + count +
                     "' class='total_discount dppr' name='discount_amount[]'/><button  style='text-align: right;' class='btn btn-danger' type='button' value='Delete' onclick='deleteRow_invoice(this," + count + ")'><i class='fa fa-close'></i></button></td>",
-                    document.getElementById(t).appendChild(e);
+
+                    e.innerHTML = row2;
+                document.getElementById(t).appendChild(e);
 
             }
 
@@ -1018,6 +1061,8 @@
                 empId: $("#employeeId_" + item).val(),
                 commisionmode: commisionmode ? "yes" : "no",
                 qty: $("#total_qntt_" + item).val(),
+                meter: $("#product_quantitymeter_" + item).val(),
+
                 rate: parseFloat($("#price_item_" + item).val()).toFixed(2),
                 discount_type: $("#discount_type_" + item).val() === "Percentage" ? "P" : "A",
                 discount: parseFloat($("#discount_" + item).val()).toFixed(2),
@@ -1034,7 +1079,14 @@
             tableBody.innerHTML = '';
             updateTable(arrItem)
         } else {
-            var quantity = $("#total_qntt_" + item).val();
+            var quantity = '';
+            if ($("#unit_type_" + item).val() == "Meter") {
+                quantity = $("#product_quantitymeter_" + item).val()
+            } else {
+                quantity = $("#total_qntt_" + item).val()
+
+            }
+            // var quantity = $("#total_qntt_" + item).val();
             var price_item = $("#price_item_" + item).val();
             var invoice_discount = $("#invoice_discount").val();
             var discount = $("#discount_" + item).val();
@@ -1310,6 +1362,11 @@
         });
 
 
+
+    }
+
+    function printJobComplete() {
+        location.reload()
 
     }
 

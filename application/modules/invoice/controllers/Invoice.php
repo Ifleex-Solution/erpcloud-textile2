@@ -851,6 +851,8 @@ class Invoice extends MX_Controller
                 'product_id'         => $item['productid'],
                 'quantity'           => $item['qty'],
                 'rate'               => $item['rate'],
+                'meter'               => $item['meter'],
+
                 'discount'           => $item['discount'],
                 'dis_type'           => $item['discount_type'],
                 'discount_per'       => $item['discount_value'],
@@ -863,6 +865,7 @@ class Invoice extends MX_Controller
         }
 
         $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($inv_insert_id, "a");
+
         $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
         echo json_encode($data);
     }
@@ -874,12 +877,13 @@ class Invoice extends MX_Controller
             $data1 = array(
                 'employeeId'     => $item['empId'],
             );
-            
+
             $this->db->where('id', $item['id']);
             $this->db->update('invoice_details', $data1);
         }
-        
+
         $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($items[0]['invoice_id'], "a");
+        
         $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
         echo json_encode($data);
     }
@@ -891,11 +895,11 @@ class Invoice extends MX_Controller
             $data1 = array(
                 'employeeId'     => $item['empId'],
             );
-            
+
             $this->db->where('id', $item['id']);
             $this->db->update('emp_details', $data1);
         }
-        
+
         $printdata       = $this->invoice_model->bdtask_invoice_pos_print_direct($items[0]['invoice_id'], "god");
         $data['details'] = $this->load->view('invoice/pos_print', $printdata, true);
         echo json_encode($data);
@@ -914,7 +918,9 @@ class Invoice extends MX_Controller
         p.product_name AS productname,
         id.employeeId AS empId, 
         CONCAT(emp.first_name, " ", emp.last_name) AS sb,
-        id.quantity AS qty,  
+ROUND(id.quantity, 0) AS qty,
+                id.meter AS meter,  
+
         id.rate, 
         id.discount AS discount, 
         id.dis_type AS discount_type, 
@@ -942,7 +948,9 @@ class Invoice extends MX_Controller
         p.product_name AS productname,
         id.employeeId AS empId, 
         CONCAT(emp.first_name, " ", emp.last_name) AS sb,
-        id.quantity AS qty,  
+ROUND(id.quantity, 0) AS qty,
+        id.meter AS meter,  
+
         id.rate, 
         id.discount AS discount, 
         id.dis_type AS discount_type, 
@@ -984,6 +992,8 @@ class Invoice extends MX_Controller
                 'product_id'         => $item['productid'],
                 'quantity'           => $item['qty'],
                 'rate'               => $item['rate'],
+                'meter'               => $item['meter'],
+
                 'discount'           => $item['discount'],
                 'dis_type'           => $item['discount_type'],
                 'discount_per'       => $item['discount_value'],

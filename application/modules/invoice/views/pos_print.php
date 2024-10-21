@@ -1,280 +1,163 @@
-<link
-    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
-    rel="stylesheet">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-*,
-::after,
-::before {
-    box-sizing: border-box;
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Page Example</title>
+    <style>
+        @media print {
+            button {
+                display: none;
+            }
 
-body {
-    padding: 0;
-    font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
-}
-</style>
+            body {
+
+                line-height: 1.5;
 
 
-<div class="row">
-    <div class="col-sm-5">
-        <div class="panel panel-bd">
-            <div id="printableArea">
-                <div class="panel-body">
-                    <div class="invoice-wrap"
-                        style="max-width:272.12598425px;background:#fff;margin-right:auto;margin-left:auto;font-size:14px;color:#5b5b5b">
-                        <div style="text-align: center; margin-bottom: 10px;">
-                            <div style="border: 1px solid #000;font-weight: 700;font-size: 17px;color: #000;">
-                                <?php echo $company_info[0]['company_name']?></div>
-                        </div>
+            }
+        }
 
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center"
-                            style="color: #000;font-size: 11px;margin-bottom: 10px;">
+        td {
+            width: 5px;
+            height: 20px;
+            overflow: hidden;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0);
+            /* border: 1px solid #000; */
+        }
 
-                            <tbody>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo display('date');?></th>
-                                    <th style="text-align: right;"><?php echo  $final_date; ?></th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo display('invoice_no');?></th>
-                                    <th style="text-align: right;"><?php echo $invoice_no;?></th>
-                                </tr>
-                              
+        .fixed-width2 {
+            display: inline-block;
+            width: 38px;
+            height: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 11px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Open Sans', sans-serif;
 
-                            </tbody>
-                        </table>
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center"
-                            style="color: #000;font-size: 11px;border-collapse: collapse;margin-bottom: 10px;">
-                            <thead>
-                                <tr>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('item'); ?></div>
+        }
 
-                                    </th>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('qty2'); ?></div>
+        .fixed-width1 {
+            display: inline-block;
+            width: 135px;
+            height: 15px;
+            overflow: hidden;
+            /* text-overflow: ellipsis; */
+            /* white-space: nowrap; */
+            font-size: 10px;
+            text-align: left;
+            font-weight: bold;
+            font-family: 'Verdana', sans-serif;
 
-                                    </th>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('batch'); ?></div>
 
-                                    </th>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('price'); ?></div>
+        }
 
-                                    </th>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('disc'); ?></div>
+        .fixed-width3 {
+            display: inline-block;
+            width: 62px;
+            height: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 11px;
+            text-align: right;
+            font-weight: bold;
+            font-family: 'Open Sans', sans-serif;
 
-                                    </th>
-                                    <?php if(!empty($invoice_all_data[0]['vat_amnt'] )){?>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('vat'); ?></div>
 
-                                    </th>
-                                    <?php }?>
-                                    <th style="background-color: #ccc;border: 1px solid #000;">
-                                        <div><?php echo display('tot_price'); ?></div>
 
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th colspan="7" style="border: 1px solid #000;">
-                                        <div style="position: relative;">
-                                            <div style="height: 3px;background-color: #000;width: 99%;margin: auto;">
-                                            </div>
-                                            <div
-                                                style="height: 1px;background-color: #fff;width: 100%;position: absolute;z-index: 9;top: 1px;left: 0;">
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                $sl =1;
-                $s_total = 0;
-                $itemrow = 0;
-                $total_price_with_dis = 0;  
-                foreach($invoice_all_data as $invoice_data){?>
-                                <tr>
-                                    <th style="border: 1px solid #000;">
-                                        <?php echo html_escape($invoice_data['product_name']);?></th>
-                                    <th style="border: 1px solid #000;">
-                                        <?php echo html_escape($invoice_data['quantity']);?></th>
-                                    <th style="border: 1px solid #000;">
-                                        <?php echo html_escape($invoice_data['batch_id']);?></th>
-                                    <th style="border: 1px solid #000;"><?php echo html_escape($invoice_data['rate']);?>
-                                    </th>
-                                    <th style="border: 1px solid #000;">
-                                        <?php echo html_escape($invoice_data['discount']);?></th>
-                                    <?php if(!empty($invoice_data['vat_amnt'] )){?>
-                                    <th style="border: 1px solid #000;">
-                                        <?php echo html_escape($invoice_data['vat_amnt'] );?>
-                                    </th>
-                                    <?php }?>
+        }
 
-                                    <th style="border: 1px solid #000;">
-                                        <?php echo html_escape($invoice_data['total_price']);?></th>
-                                </tr>
-                                <?php 
-                                $itemrow += $invoice_data['rate'] * $invoice_data['quantity'];
-                                $total_price_with_dis +=$invoice_data['total_price'];
-                                
-                                ?>
-                                <tr>
-                                    <th colspan="7" style="border: 1px solid #000;text-align: center;">
+        .text-item {
+            display: block;
+            margin-left: 310px;
+            /* Left margin for all items */
+            font-size: 11px;
+            /* Font size for all items */
+            letter-spacing: 1px;
+            /* Letter spacing for all items */
+            margin-bottom: 1px;
+            /* Bottom margin for spacing */
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
 
-                                        <div>
-                                            <?php echo html_escape($invoice_data['product_name']).'('.html_escape($invoice_data['product_model']).')';?>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th colspan="7" style="border: 1px solid #000;">
-                                        <div style="position: relative;">
-                                            <div style="height: 3px;background-color: #000;width: 99%;margin: auto;">
-                                            </div>
-                                            <div
-                                                style="height: 1px;background-color: #fff;width: 100%;position: absolute;z-index: 9;top: 1px;left: 0;">
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
+</head>
 
-                                <?php $sl++; } ?>
+<body>
+    <button onclick="window.print()">Print This Page</button>
 
-                            </tbody>
-                        </table>
+    <!-- <p
+        style="margin-top: 112px; margin-left: 60px;  font-size: 10px; line-height: 1.2; letter-spacing: 1px; font-family: 'Verdana', sans-serif;">
+        <b>0123456789</b>
+    </p> -->
+    <table style="margin-left: 60px;margin-top: 101px;">
+        <tr>
+            <td style="font-family: 'Open Sans', sans-serif;width: 154px;"><span
+                    style=" font-size: 11px; line-height: 1.2; letter-spacing: 1px; "><b><?php echo $invoice_id; ?></b></span></td>
+            <td style="font-family: 'Open Sans', sans-serif;width: 170px;"><span
+                    style=" font-size:11px; line-height: 1.2; letter-spacing: 1px; "><b>
+                        <?php echo date('d/m/Y', strtotime($final_date)); ?> </b></span></td>
 
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center"
-                            style="color: #000;font-size: 11px;margin-bottom: 20px;">
-                            <tbody>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo number_format($itemrow, 2, '.', ',');?>
-                                    </th>
-                                    <th style="text-align: right;padding: 3px 10px 3px 0px">
-                                        <?php echo display('tot_before_dis'); ?></th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo $all_discount?></th>
-                                    <th style="text-align: right;padding: 3px 10px 3px 0px">
-                                        <?php echo display('discounts'); ?></th>
-                                </tr>
-                                <tr>
-                                    <th style="text-align: left;">
-                                        <?php echo number_format($itemrow -$all_discount, 2, '.', ',')?></th>
-                                    <th style="text-align: right;padding: 3px 10px 3px 0px">
-                                        <?php echo display('tot_with_dis'); ?></th>
-                                </tr>
-                                <?php if($total_vat > 0){?>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo $total_vat?></th>
-                                    <th style="text-align: right;padding: 3px 10px 3px 0px">
-                                        <?php echo display('vat_val'); ?></th>
-                                </tr>
-                                <?php } 
-                                if($total_tax > 0){?>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo $total_tax?></th>
-                                    <th style="text-align: right;padding: 3px 10px 3px 0px">
-                                        <?php echo display('tax_vat'); ?></th>
-                                </tr>
-                                <?php } ?>
-                                <tr>
-                                    <th style="text-align: left;"><span
-                                            style="font-size: 16px;font-weight: 900;"><?php echo $grand_total?></span>
-                                    </th>
-                                    <th style="text-align: right;padding: 3px 10px 3px 0px">
-                                        <?php echo display('grand_total'); ?></th>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div style="margin-bottom: 12px;">
-                            <div
-                                style="font-size: 11px;font-weight: 700;color: #000;text-align: center;margin-bottom: 15px;">
-                                <?php echo display('return_receipt_text'); ?> </div>
-                            <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center"
-                                style="color: #000;font-size: 13px;">
-                                <thead>
-                                    <tr align="center">
-                                        <?php foreach($p_method_list as $method_list){?>
-                                        <th style="border-bottom: 1px solid #000;width: 12%;text-align: center;">
-                                            <?php echo $method_list->HeadName?></th>
-                                        <?php }?>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <?php foreach($p_method_list as $method_list){
-                                       
-                                        ?>
-                                        <th style="text-align: center;">
-                                            <?php if($method_list->Debit !=null){echo $method_list->Debit;}else{echo '0.00';}?>
-                                        </th>
-                                        <?php }
-                                        ?>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style="text-align: left;">
+        </tr>
+    </table>
+    <!-- <span style="margin-left: 270px; font-size: 10px; letter-spacing: 1px;"><b>18/11/2024</b></span> -->
+    <br />
+    <div style="height: 281px;">
+        <?php
+        $sl = 1;
+        $s_total = 0;
+        $itemrow = 0;
+        $total_price_with_dis = 0;
+        $total_discount = 0;
+        foreach ($invoice_all_data as $invoice_data) { ?>
+            <table>
+                <tbody>
+                    <tr>
 
-                            <ul style="font-size: 11px;color: #000;font-weight: 700;">
-                                <?php if (!empty($terms_list)) {
-                                foreach($terms_list as $terms){?>
-                                <li><?php echo $terms->description?></li>
-                                <?php } }?>
-                            </ul>
-                        </div>
-                        <?php $web_setting = $this->db->select("*")->from("web_setting")->get()->row();
-                            if ($web_setting->is_qr == 1) { ?>
-                        <div style="text-align: center;">
-                            <?php  $text = base64_encode(display('invoice_no').': '.$invoice_no.' ');
-                            ?>
-                            <img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=L|4&chl=<?php echo $text?>"
-                                alt="">
-                        </div>
-                        <?php }?>
-                        <table width="70%" border="0" cellpadding="0" cellspacing="0" align="center"
-                            style="color: #000;font-size: 13px;margin-top: 20px;">
-                            <tbody>
-                                <tr>
-                                    <th style="text-align: left;"><?php echo $users_name;?> </th>
-                                    <th style="text-align: right;"><?php echo display('order_by') ?></th>
-
-                                </tr>
-                                <tr>
-                                    <?php $create_at = $this->db->select('CreateDate')
-                                            ->from('acc_vaucher')
-                                            ->where('referenceNo',$invoice_no)
-                                            ->get()
-                                            ->row();
-                                            
-                                           ?>
-                                    <th style="text-align: left;">
-                                        <?php echo date("H:i:s",strtotime($create_at->CreateDate));?></th>
-
-                                    <th style="text-align: right;"><?php echo display('order_time');
-                    
-                    ?></th>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer text-left">
-                
-                <a class="btn btn-info poolprint-btn" href="#" onclick="printDivnew('printableArea')"><span
-                        class="fa fa-print"></span></a>
-
-            </div>
-        </div>
+                        <td style="width: 135px;">
+                            <span class="fixed-width1"><?php echo html_escape($invoice_data['product_id']); ?> <?php echo html_escape($invoice_data['category_name']); ?></span>
+                        </td>
+                        <td style="width: 38px;">
+                            <span class="fixed-width2"><?php echo html_escape($invoice_data['first_name']); ?></span>
+                        </td>
+                        <td style="width: 38px;">
+                            <span class="fixed-width2"><?php echo html_escape(number_format($invoice_data['quantity'], 0)); ?></span>
+                        </td>
+                        <td style="width: 38px;">
+                            <span class="fixed-width2"><?php echo html_escape($invoice_data['meter']); ?></span>
+                        </td>
+                        <td style="width: 6px;">
+                            <span class="fixed-width3"><?php echo html_escape(number_format($invoice_data['rate'], 2, '.', ',')); ?></span>
+                        </td>
+                        <td style="width: 62px;">
+                            <span class="fixed-width3"><?php echo html_escape(number_format($invoice_data['total_price'], 2, '.', ',')); ?></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <?php
+            $dis = is_numeric($invoice_data['discount_per']) ? $invoice_data['discount_per'] : 0;
+            $total_discount = $total_discount + (float)$dis;
+            $sl++;
+        }
+        $total_am = $total_discount + $grand_total;
+        ?>
     </div>
-</div>
+
+    <footer>
+
+        <span class="text-item"><b><?php echo number_format($total_am, 2, '.', ',') ?></b></span>
+        <span class="text-item"><b><?php echo number_format($total_discount, 2, '.', ',') ?></b></span>
+        <span class="text-item"><b><?php echo number_format($grand_total, 2, '.', ',') ?></b></span>
+    </footer>
+
+
+</body>
+
+</html>

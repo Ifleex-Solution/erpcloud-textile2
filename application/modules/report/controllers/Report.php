@@ -312,15 +312,26 @@ class Report extends MX_Controller
         $pdf->SetFont('helvetica', 'B', 20);
         $pdf->Cell(100, 20, "Employee Sales Report", 0, 0, 'L', 0, '', 1);
         $pdf->Ln(30);
-        $pdf->SetFont('', 'B', 12);
-
+       
+        if (isset($_SESSION['emp_istype']) && $_SESSION['emp_istype'] === "false") {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(23, $row_height, "FROM DATE: ", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height,  $_SESSION['empfrom_date'], 0, 0, 'L', 0, '', 1);
+            $pdf->Cell(23, $row_height, "TO DATE:", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height, $_SESSION['empto_date'], 0, 0, 'L', 0, '', 1);    
+        } else {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(23, $row_height, "DATE: ", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height,  $_SESSION['empfrom_date'], 0, 0, 'L', 0, '', 1);
+        }
+        $pdf->Ln(10);
         $pdf->Cell(50, 10, 'Emp No', 0, 0, 'L', 0, '', 1);
         $pdf->Cell(70, 10, 'Name', 0, 0, 'L', 0, '', 1);
         $pdf->Cell(30, 10, 'Amount', 0, 0, 'R', 0, '', 1);
         $pdf->Ln(10);
 
 
-        $prevDate = null;
+        // $prevDate = null;
 
 
         $maxY = 275;
@@ -337,19 +348,31 @@ class Report extends MX_Controller
                 $pdf->SetFont('helvetica', 'B', 20);
                 $pdf->Cell(100, 20, "Employee Sales Report", 0, 0, 'L', 0, '', 1);
                 $pdf->Ln(30);
+                if (isset($_SESSION['emp_istype']) && $_SESSION['emp_istype'] === "false") {
+                    $pdf->SetFont('', 'B', 10);
+                    $pdf->Cell(23, $row_height, "FROM DATE: ", 0, 0, 'R', 0, '', 1);
+                    $pdf->Cell(30, $row_height,  $_SESSION['empfrom_date'], 0, 0, 'L', 0, '', 1);
+                    $pdf->Cell(23, $row_height, "TO DATE:", 0, 0, 'R', 0, '', 1);
+                    $pdf->Cell(30, $row_height, $_SESSION['empto_date'], 0, 0, 'L', 0, '', 1);    
+                } else {
+                    $pdf->SetFont('', 'B', 10);
+                    $pdf->Cell(23, $row_height, "DATE: ", 0, 0, 'R', 0, '', 1);
+                    $pdf->Cell(30, $row_height,  $_SESSION['empfrom_date'], 0, 0, 'L', 0, '', 1);
+                }
+                $pdf->Ln(10);
                 $pdf->Cell(50, 10, 'Emp No', 0, 0, 'L', 0, '', 1);
                 $pdf->Cell(70, 10, 'Name', 0, 0, 'L', 0, '', 1);
                 $pdf->Cell(30, 10, 'Amount', 0, 0, 'R', 0, '', 1);
                 $pdf->Ln(10);
             }
-            if ($prevDate !== $row['date']) {
-                if ($prevDate !== null) {
-                    $pdf->Ln(5);
-                }
-                $pdf->SetFont('', 'B', 12);
-                $pdf->Cell(0, 10, 'Date: ' . $row['date'], 0, 1, 'L');
-                $prevDate = $row['date'];
-            }
+            // if ($prevDate !== $row['date']) {
+            //     if ($prevDate !== null) {
+            //         $pdf->Ln(5);
+            //     }
+            //     $pdf->SetFont('', 'B', 12);
+            //     // $pdf->Cell(0, 10, 'Date: ' . $row['date'], 0, 1, 'L');
+            //     $prevDate = $row['date'];
+            // }
             $pdf->SetFont('', '', 10);
             $pdf->Cell(50, 10, $row['first_name'], 0, 0, 'L');
             $pdf->Cell(70, 10,  $row['last_name'], 0, 0, 'L');
@@ -377,19 +400,19 @@ class Report extends MX_Controller
 
 
         if ($empid == "All") {
-            $sql = "SELECT id,first_name, last_name, SUM(total_price_sum) as total_price_sum, date FROM ( " .
-                "SELECT emp.id,emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date " .
+            $sql = "SELECT id, first_name, last_name, SUM(total_price_sum) AS total_price_sum, MAX(date) AS date FROM ( " .
+                "SELECT emp.id, emp.first_name, emp.last_name, SUM(id.total_price) AS total_price_sum, i.date " .
                 "FROM invoice_details id " .
                 "LEFT JOIN employee_history emp ON emp.id = id.employeeId " .
                 "LEFT JOIN invoice i ON i.id = id.invoice_id " .
-                "GROUP BY i.date, emp.id " .
+                "GROUP BY emp.id, emp.first_name, emp.last_name " .  // Group by employee details only
                 "UNION ALL " .
-                "SELECT emp.id,emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date " .
+                "SELECT emp.id, emp.first_name, emp.last_name, SUM(id.total_price) AS total_price_sum, i.date " .
                 "FROM emp_details id " .
                 "LEFT JOIN employee_history emp ON emp.id = id.employeeId " .
                 "LEFT JOIN emp i ON i.id = id.invoice_id " .
-                "GROUP BY i.date, emp.id " .
-                ") as subquery ";
+                "GROUP BY emp.id, emp.first_name, emp.last_name " .  // Group by employee details only
+                ") AS subquery ";
 
             $conditions = array();
             if (!empty($from_date) && !empty($to_date)) {
@@ -406,11 +429,11 @@ class Report extends MX_Controller
                 $sql .= " WHERE " . implode(' AND ', $conditions);
             }
 
-            $sql .= "GROUP BY first_name, date " .
-                "ORDER BY date DESC;";
+            $sql .= " GROUP BY id, first_name, last_name";  // Group by employee details only
+
         } else {
 
-            $sql = "SELECT emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum, i.date ";
+            $sql = "SELECT emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum ";
 
             if ($empid == "A") {
                 $sql .= "FROM invoice_details id "
@@ -439,7 +462,7 @@ class Report extends MX_Controller
                 $sql .= " WHERE " . implode(' AND ', $conditions);
             }
 
-            $sql .= "GROUP BY i.date, emp.id ORDER BY i.date DESC";
+            $sql .= "GROUP BY  emp.id ";
         }
 
 

@@ -1540,20 +1540,23 @@ class Invoice_model extends CI_Model
     public function retrieve_invoice_html_data($invoice_id)
     {
         $this->db->select('
-
+        a.invoice_id as invoice_id1,
     a.*,
-    
+    b.*,
     c.*,
     d.product_id,
     d.product_name,
     d.product_details,
     d.unit,
-    d.product_model
+    d.product_model,
+    pc.category_name
 ');
         $this->db->from('invoice a');
         $this->db->join('invoice_details c', 'c.invoice_id = a.id');
-        // $this->db->join('employee_history b', 'b.id = a.employee_id');
+        $this->db->join('employee_history b', 'b.id = c.employeeId');
         $this->db->join('product_information d', 'd.product_id = c.product_id');
+        $this->db->join('product_category pc', 'pc.category_id = d.category_id');
+
         $this->db->where('a.id', $invoice_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -1565,8 +1568,10 @@ class Invoice_model extends CI_Model
     public function retrieve_empinvoice_html_data($invoice_id)
     {
         $this->db->select('
-    a.total_tax,
+        a.invoice_id as invoice_id1,
     a.*,
+        b.*,
+
     c.*,
     d.product_id,
     d.product_name,
@@ -1574,12 +1579,15 @@ class Invoice_model extends CI_Model
     d.unit,
     d.product_model,
     a.paid_amount AS paid_amount,
-    a.due_amount AS due_amount
+    a.due_amount AS due_amount,
+    pc.category_name
 ');
         $this->db->from('emp a');
         $this->db->join('emp_details c', 'c.invoice_id = a.id');
-        // $this->db->join('employee_history b', 'b.id = a.employee_id');
+        $this->db->join('employee_history b', 'b.id = c.employeeId');
         $this->db->join('product_information d', 'd.product_id = c.product_id');
+        $this->db->join('product_category pc', 'pc.category_id = d.category_id');
+
         $this->db->where('a.invoice_id', $invoice_id);
         $this->db->where('c.quantity >', 0);
         $query = $this->db->get();
@@ -1592,24 +1600,27 @@ class Invoice_model extends CI_Model
 
     public function retrieve_emp_html_data($invoice_id)
     {
+
         $this->db->select('
-    a.total_tax,
-    a.*,
-    b.*,
-    c.*,
-    d.product_id,
-    d.product_name,
-    d.product_details,
-    d.unit,
-    d.product_model,
-    a.paid_amount AS paid_amount,
-    a.due_amount AS due_amount
+    a.invoice_id AS invoice_id1,
+    a.*, 
+    b.*, 
+    c.*, 
+    d.product_id, 
+    d.product_name, 
+    d.product_details, 
+    d.unit, 
+    d.product_model, 
+    a.paid_amount AS paid_amount, 
+    a.due_amount AS due_amount,
+    pc.category_name
 ');
         $this->db->from('emp a');
         $this->db->join('emp_details c', 'c.invoice_id = a.id');
-        $this->db->join('employee_history b', 'b.id = a.employee_id');
+        $this->db->join('employee_history b', 'b.id = c.employeeId');
         $this->db->join('product_information d', 'd.product_id = c.product_id');
-        $this->db->where('a.invoice_id', $invoice_id);
+        $this->db->join('product_category pc', 'pc.category_id = d.category_id');
+        $this->db->where('a.id', $invoice_id);
         $this->db->where('c.quantity >', 0);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -1746,6 +1757,7 @@ class Invoice_model extends CI_Model
     public function bdtask_invoice_pos_print_direct($invoice_id = null, $empid = null)
     {
         $invoice_detail = $empid == 'god' ? $this->retrieve_emp_html_data($invoice_id) : $this->retrieve_invoice_html_data($invoice_id);
+
         $txregname = '';
         $subTotal_quantity  = 0;
         $subTotal_cartoon   = 0;
@@ -1786,7 +1798,7 @@ class Invoice_model extends CI_Model
         $users    = $this->user_invoice_data($user_id);
         $data = array(
             'title'                => display('pos_print'),
-            'invoice_id'           => $invoice_detail[0]['invoice_id'],
+            'invoice_id'           => $invoice_detail[0]['invoice_id1'],
             'invoice_no'           => $invoice_detail[0]['invoice'],
             'first_name'     => $invoice_detail[0]['first_name'],
             'last_name'  => $invoice_detail[0]['last_name'],
