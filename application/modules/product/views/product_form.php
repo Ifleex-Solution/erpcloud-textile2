@@ -11,18 +11,16 @@
             <div class="panel-body">
                
 
-                <?php if (empty($id)) { ?>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group row">
                                 <label for="barcode_or_qrcode" class="col-sm-2 col-form-label"><?php echo display('barcode_or_qrcode') ?> <i class="text-danger"></i></label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" name="product_id" type="text" id="product_id" placeholder="<?php echo display('barcode_or_qrcode') ?>" tabindex="1">
+                                    <input class="form-control" name="product_id" type="text" id="product_id" placeholder="<?php echo display('barcode_or_qrcode') ?>" tabindex="1" value="<?php echo $product->product_id ?>">
                                 </div>
                             </div>
                         </div>
                     </div>
-                <?php } ?>
 
 
                 <div class="row">

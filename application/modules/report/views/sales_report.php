@@ -39,7 +39,7 @@
 
 
                 <div class="form-group">
-                    <?php if ($this->session->userdata('email') !== null && strpos($this->session->userdata('email'), 'god') !== false) { ?>
+                    <?php if ($this->permission1->method('todays_sales_report', 'view')->access()) { ?>
                         <label for="empid" class="mr-2 mb-0">Emp Id</label>
                         <div class="input-group mr-4" style="width: 200px;">
                             <select tabindex="4" class="form-control" name="empid" id="empid" style="width: 100%;">
@@ -67,13 +67,13 @@
 
 <script src="<?php echo base_url('my-assets/js/admin_js/sales_report.js') ?>" type="text/javascript"></script>
 <script>
-    function onFilterButtonClick() {        
+    function onFilterButtonClick() {
         $.ajax({
             type: "post",
             url: $('#baseUrl2').val() + 'report/report/sales_report',
             data: {
                 from_date: $('#from_date').val(),
-                to_date: document.getElementById('single_date_checkbox').checked?$('#from_date').val():$('#to_date').val(),
+                to_date: document.getElementById('single_date_checkbox').checked ? $('#from_date').val() : $('#to_date').val(),
                 empid: $('#empid').val(),
                 istype: document.getElementById('single_date_checkbox').checked
 
@@ -108,6 +108,4 @@
             toDateContainer.style.display = 'block';
         }
     });
-
-    
 </script>

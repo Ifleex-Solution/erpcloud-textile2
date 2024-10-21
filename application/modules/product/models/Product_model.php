@@ -272,7 +272,7 @@ class Product_model extends CI_Model
     {
         return $this->db->select('*')
             ->from('product_information')
-            ->where('product_id', $id)
+            ->where('id', $id)
             ->get()
             ->row();
     }
@@ -283,9 +283,9 @@ class Product_model extends CI_Model
     }
 
 
-    public function update_product($data = [])
+    public function update_product($data = [],$id =null)
     {
-        return $this->db->where('product_id', $data['product_id'])
+        return $this->db->where('id', $id )
             ->update('product_information', $data);
     }
 
@@ -369,7 +369,7 @@ class Product_model extends CI_Model
 
             //$button .= '  <a href="' . $base_url . 'barcode/' . $record->product_id . '" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('barcode') . '"><i class="fa fa-barcode" aria-hidden="true"></i></a>';
             if ($this->permission1->method('manage_product', 'update')->access()) {
-                $button .= ' <a href="' . $base_url . 'product_form/' . $record->product_id . '" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('update') . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+                $button .= ' <a href="' . $base_url . 'product_form/' . $record->id . '" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('update') . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
             }
 
             $product_name = '<a href="' . $base_url . 'product_details/' . $record->product_id . '">' . $record->product_name . '</a>';

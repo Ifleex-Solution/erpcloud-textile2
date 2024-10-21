@@ -152,7 +152,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <input type="number" name="cqty" class="form-control"  id="cqty" style="width: 200px; margin-left:20px;">
+                                        <input type="number" name="cqty" class="form-control" value="1"  id="cqty" style="width: 200px; margin-left:20px;">
                                     </div>
                                     <div class="col-sm-2">
                                         <button type="button" class="btn btn-success" onclick="generateLabels()">Generate</button>

@@ -409,7 +409,7 @@ class Product extends MX_Controller
                 redirect("product_list");
             } else {
 
-                if ($this->product_model->update_product($postData)) {
+                if ($this->product_model->update_product($postData,$id)) {
                     // $this->db->where('product_id', $id)
                     //          ->delete("supplier_product");
                     // for ($i = 0, $n = count($s_id); $i < $n; $i++) {

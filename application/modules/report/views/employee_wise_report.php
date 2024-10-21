@@ -56,8 +56,8 @@
 
 
                 <div class="form-group">
-                    <?php if ($this->session->userdata('email') !== null && strpos($this->session->userdata('email'), 'god') !== false) { ?>
-                        <label for="empid" class="mr-2 mb-0">Emp Id</label>
+                <?php if ($this->permission1->method('sales_report_employee_wise', 'view')->access()) { ?>
+                    <label for="empid" class="mr-2 mb-0">Emp Id</label>
                         <div class="input-group mr-4" style="width: 200px;">
                             <select tabindex="4" class="form-control" name="empid" id="empid" style="width: 100%;">
                                 <option value="">Select Employee ID</option>

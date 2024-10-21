@@ -916,7 +916,6 @@
                     "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='  width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
-                debugger
                 if (data.unit == "m") {
                     row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                         count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td>";
@@ -946,12 +945,12 @@
                     "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
-                if (data.unit == "m") {
-                    row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    if (data.unit == "m") {
+                    row2 = row2 + "<td> <input type='text' name='product_quantitymeter[]' value='-1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                         count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td>";
 
                 } else {
-                    row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='0.0' required='required'  readonly='readonly' onkeyup='bdtask_invoice_quantitycalculate(" +
+                    row2 = row2 + "<td> <input type='text' name='product_quantitymeter[]' value='0.0' required='required'  readonly='readonly' onkeyup='bdtask_invoice_quantitycalculate(" +
                         count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
 
                 }
@@ -997,20 +996,9 @@
     }
 
     function deleteRow_invoice(t, count) {
-        var e = t.parentNode.parentNode;
-        e.parentNode.removeChild(e);
-        let index = arr.indexOf(count);
-        if (index !== -1) {
-            arr.splice(index, 1);
-        }
+        var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
 
-
-        var total = 0;
-        arr.forEach(function(element) {
-            total = parseFloat($("#total_price_" + element).val()) + total;
-        });
-
-        $("#grandTotal").val(total);
 
     }
     // $('#add_item_m').keydown(function(e) {
@@ -1175,8 +1163,13 @@
             $("#dueAmmount").val(0);
         }
         if (mode === "-") {
+            
             if ($("#total_qntt_" + item).val() === "")
                 $("#total_qntt_" + item).val("-")
+            else if(!$("#total_qntt_" + item).val().includes("-")){
+                $("#total_qntt_" + item).val("-"+$("#total_qntt_" + item).val())
+            }
+
         }
 
 
