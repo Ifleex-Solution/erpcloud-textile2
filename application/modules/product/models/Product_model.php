@@ -365,9 +365,9 @@ class Product_model extends CI_Model
                 $button .= '<a href="' . $base_url . 'product/product/bdtask_deleteproduct/' . $record->product_id . '" class="btn btn-xs btn-danger "  onclick="' . $jsaction . '"><i class="fa fa-trash"></i></a>';
             }
 
-            $button .= '  <a href="' . $base_url . 'qrcode/' . $record->product_id . '" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('qr_code') . '"><i class="fa fa-qrcode" aria-hidden="true"></i></a>';
+          //  $button .= '  <a href="' . $base_url . 'qrcode/' . $record->product_id . '" class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('qr_code') . '"><i class="fa fa-qrcode" aria-hidden="true"></i></a>';
 
-            $button .= '  <a href="' . $base_url . 'barcode/' . $record->product_id . '" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('barcode') . '"><i class="fa fa-barcode" aria-hidden="true"></i></a>';
+            //$button .= '  <a href="' . $base_url . 'barcode/' . $record->product_id . '" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('barcode') . '"><i class="fa fa-barcode" aria-hidden="true"></i></a>';
             if ($this->permission1->method('manage_product', 'update')->access()) {
                 $button .= ' <a href="' . $base_url . 'product_form/' . $record->product_id . '" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="' . display('update') . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
             }
@@ -376,7 +376,7 @@ class Product_model extends CI_Model
             $supplier = '<a href="' . $base_url . 'supplier_ledgerinfo/' . $record->supplier_id . '">' . $record->supplier_name . '</a>';
 
             $data[] = array(
-                'sl'               => $sl,
+                'sl'               =>  $record->product_id,
                 'product_name'     => $record->product_name,
                 'product_model'    => $record->product_model,
                 'price'            => $record->price,
@@ -384,6 +384,126 @@ class Product_model extends CI_Model
                 'countercode'         => $record->countercode_name,
                 'brandcode'         => $record->brandcode_name,
 
+                'image'            => $image,
+                'button'           => $button,
+
+            );
+
+            $sl++;
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecordwithFilter,
+            "iTotalDisplayRecords" => $totalRecords,
+            "aaData" => $data
+        );
+        return $response;
+    }
+
+
+    public function getProductListForLabelPrint($postData = null,$category=null,$brand=null)
+    {
+
+        $response = array();
+
+        ## Read value
+        $draw = $postData['draw'];
+        $start = $postData['start'];
+        $rowperpage = $postData['length']; // Rows display per page
+        $columnIndex = $postData['order'][0]['column']; // Column index
+        $columnName = $postData['columns'][$columnIndex]['data']; // Column name
+        $columnSortOrder = $postData['order'][0]['dir']; // asc or desc
+        $searchValue = $postData['search']['value']; // Search value
+
+       
+        ## Search 
+        $searchQuery = "";
+        if ($category != null && $brand != null) {
+            // Use AND to combine both conditions if both category and brand are provided
+            $searchQuery = "(a.category_id = " . $category . " AND a.brandcode_id = " . $brand . ")";
+        } elseif ($category != null) {
+            // Only category condition
+            $searchQuery = "(a.category_id = " . $category . ")";
+        } elseif ($brand != null) {
+            // Only brand condition
+            $searchQuery = "(a.brandcode_id = " . $brand . ")";
+        } 
+        ## Total number of records without filtering
+        $this->db->select('count(*) as allcount');
+        $this->db->from('product_information a');
+        if ($searchQuery != '')
+            $this->db->where($searchQuery);
+        $records = $this->db->get()->result();
+        $totalRecords = $records[0]->allcount;
+
+        ## Total number of record with filtering
+        $this->db->select('count(*) as allcount');
+        $this->db->from('product_information a');
+        if ($searchQuery != '')
+            $this->db->where($searchQuery);
+        $records = $this->db->get()->result();
+        $totalRecordwithFilter = $records[0]->allcount;
+
+        ## Fetch records
+        $this->db->select("a.*, 
+  ROUND(a.price, 2) as price,
+                   a.product_name, 
+                   a.product_id, 
+                   a.product_model, 
+                   a.product_vat, 
+                   a.image, 
+                    ps.category_name AS category_name,
+                  bc.brandcode_name AS brandcode_name,
+                 cc.countercode_name AS countercode_name   ");
+        $this->db->from('product_information a');
+        $this->db->join('product_category ps', 'ps.category_id = a.category_id', 'left');
+        $this->db->join('brandcode bc', 'bc.brandcode_id = a.brandcode_id', 'left');
+        $this->db->join('countercode cc', 'cc.countercode_id = a.countercode_id', 'left');
+
+
+        if ($searchQuery != '')
+            $this->db->where($searchQuery);
+        $this->db->order_by($columnName, $columnSortOrder);
+        $this->db->limit($rowperpage, $start);
+        $records = $this->db->get()->result();
+
+
+
+
+        $data = array();
+        $sl = 1;
+
+        foreach ($records as $record) {
+
+
+            $button = '';
+            $base_url = base_url();
+            $jsaction = "return confirm('Are You Sure ?')";
+            $image = '<img src="' . $base_url . $record->image . '" class="img img-responsive" height="50" width="50">';
+            $button .= '<button style="margin-left 20px;" class="btn btn-info btn-xs" 
+            onclick=\'openLabelCount(' .  $record->id . ', ' .
+                json_encode($record->product_id) . ', ' .
+                json_encode($record->product_name) . ', ' .
+                json_encode($record->category_name) . ', ' .
+                json_encode($record->brandcode_name) . ', ' .
+                $record->price . ')\'
+            data-toggle="tooltip" 
+            data-placement="left" 
+            title="Add product">
+            <i class="fa fa-plus" aria-hidden="true"></i> 
+          </button>';
+
+
+            $data[] = array(
+                'sl'               =>  $record->product_id,
+                'product_name'     => $record->product_name,
+                'product_model'    => $record->product_model,
+                'price'            => $record->price,
+                'category'         => $record->category_name,
+                'countercode'         => $record->countercode_name,
+                'brandcode'         => $record->brandcode_name,
                 'image'            => $image,
                 'button'           => $button,
 

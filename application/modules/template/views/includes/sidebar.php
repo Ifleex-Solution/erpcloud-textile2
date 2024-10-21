@@ -53,8 +53,8 @@
        
 
         <!-- product menu part -->
-        <?php if ($this->permission1->method('create_product', 'create')->access() || $this->permission1->method('add_product_csv', 'create')->access() || $this->permission1->method('manage_product', 'read')->access() || $this->permission1->method('create_category', 'create')->access() || $this->permission1->method('manage_category', 'read')->access() || $this->permission1->method('add_unit', 'create')->access() || $this->permission1->method('manage_unit', 'read')->access()||$this->permission1->method('add_brancode', 'create')->access() || $this->permission1->method('manage_brandcode', 'read')->access()||$this->permission1->method('add_countercode', 'create')->access() || $this->permission1->method('manage_countercode', 'read')->access()) { ?>
-            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "brandcode_form" || $this->uri->segment(1) == "brandcode_list"||$this->uri->segment(1) == "countercode_form" || $this->uri->segment(1) == "countercode_list" ||$this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list"  || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode" || $this->uri->segment(1) == "bulk_products" || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
+        <?php if ($this->permission1->method('create_product', 'create')->access() || $this->permission1->method('add_product_csv', 'create')->access() || $this->permission1->method('manage_product', 'read')->access() || $this->permission1->method('create_category', 'create')->access() || $this->permission1->method('manage_category', 'read')->access() || $this->permission1->method('add_unit', 'create')->access() || $this->permission1->method('manage_unit', 'read')->access()||$this->permission1->method('add_brancode', 'create')->access() || $this->permission1->method('manage_brandcode', 'read')->access()||$this->permission1->method('add_countercode', 'create')->access() || $this->permission1->method('manage_countercode', 'read')->access()||$this->permission1->method('labelprint', 'read')->access()) { ?>
+            <li class="treeview <?php echo (($this->uri->segment(1) == "category_form" || $this->uri->segment(1) == "category_list" || $this->uri->segment(1) == "brandcode_form" || $this->uri->segment(1) == "brandcode_list"||$this->uri->segment(1) == "countercode_form"||$this->uri->segment(1) == "labelprint" || $this->uri->segment(1) == "countercode_list" ||$this->uri->segment(1) == "unit_form" || $this->uri->segment(1) == "unit_list"  || $this->uri->segment(1) == "product_form" || $this->uri->segment(1) == "product_list" || $this->uri->segment(1) == "barcode" || $this->uri->segment(1) == "qrcode" || $this->uri->segment(1) == "bulk_products" || $this->uri->segment(1) == "product_details") ? "active" : '') ?>">
 
                 <a href="javascript:void(0)">
 
@@ -163,6 +163,16 @@
                             <a href="<?php echo base_url('product_list') ?>">
 
                                 <?php echo display('manage_product') ?>
+
+                            </a>
+
+                        </li>
+                    <?php } ?>
+                    <?php if ($this->permission1->method('labelprint', 'read')->access()) { ?>
+                        <li class="<?php echo (($this->uri->segment(1) == "labelprint") ? "active" : '') ?>">
+                            <a href="<?php echo base_url('labelprint') ?>">
+
+                                <?php echo display('labelprint') ?>
 
                             </a>
 

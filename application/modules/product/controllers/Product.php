@@ -486,6 +486,25 @@ class Product extends MX_Controller
         echo json_encode($data);
     }
 
+    public function single_product_data($id)
+    {
+        return $this->db->select('*')
+            ->from('product_information')
+            ->where('product_id', $id)
+            ->get()
+            ->row();
+
+            echo json_encode($data);
+    }
+
+    public function CheckProductListForLabelPrint()
+    {
+        $postData = $this->input->post();
+        $data = $this->product_model->getProductListForLabelPrint($postData,$this->input->post('category'),$this->input->post('brand'));
+        echo json_encode($data);
+    }
+
+    
     public function bdtask_deleteproduct($id = null)
     {
         $check_calculation = $this->product_model->check_product($id);
@@ -725,23 +744,36 @@ class Product extends MX_Controller
 
 
     // bar code part
-    public function barcode_print($product_id)
+    public function barcode_print()
     {
-        $product_info = $this->product_model->bdtask_barcode_productdata($product_id);
-
         $data = array(
-            'title'           => display('barcode'),
-            'product_id'      => $product_id,
-            'product_name'    => $product_info[0]['product_name'],
-            'product_model'   => $product_info[0]['product_model'],
-            'price'           => $product_info[0]['price'],
-            'product_details' => $product_info[0]['product_details'],
-
+            'title'           => display('labelprint'),
         );
-
         $data['module']        = "product";
         $data['page']          = "barcode_print_page";
         echo modules::run('template/layout', $data);
+    }
+
+
+    public function label_print()
+    {
+        $data = array(
+            'title'           => display('labelprint'),
+        );
+        $data['category_list'] = $this->product_model->active_category();
+        $data['brandcode_list'] = $this->product_model->active_brandcode();
+
+        $data['module']        = "product";
+        $data['page']          = "label_print";
+        echo modules::run('template/layout', $data);
+    }
+
+    public function printlabel()
+    {
+        $_SESSION['barcodelabels'] =   $this->input->post('labels');
+        $_SESSION['cqty'] =   $this->input->post('cqty');
+
+        echo json_encode($_SESSION['barcodelabels']);
     }
 
 

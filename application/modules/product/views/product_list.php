@@ -22,7 +22,7 @@
                             <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="productList"> 
                                 <thead>
                                     <tr>
-                                        <th><?php echo display('sl') ?></th>
+                                        <th>Product Code</th>
                                         <th><?php echo display('product_name') ?></th>
                                         <th>Group</th>
                                         <th>Brand</th>

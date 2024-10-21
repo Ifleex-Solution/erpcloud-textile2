@@ -9,16 +9,20 @@
             </div>
             <?php echo form_open_multipart('product_form/' . $id, array('class' => 'form-vertical', 'id' => 'insert_product', 'name' => 'insert_product', 'onsubmit' => 'return validateForm()')) ?>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group row">
-                            <label for="barcode_or_qrcode" class="col-sm-2 col-form-label"><?php echo display('barcode_or_qrcode') ?> <i class="text-danger"></i></label>
-                            <div class="col-sm-10">
-                                <input class="form-control" name="product_id" type="text" id="product_id" placeholder="<?php echo display('barcode_or_qrcode') ?>" value="<?php echo $product->product_id ?>" tabindex="1">
+               
+
+                <?php if (empty($id)) { ?>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group row">
+                                <label for="barcode_or_qrcode" class="col-sm-2 col-form-label"><?php echo display('barcode_or_qrcode') ?> <i class="text-danger"></i></label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="product_id" type="text" id="product_id" placeholder="<?php echo display('barcode_or_qrcode') ?>" tabindex="1">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
 
 
                 <div class="row">
@@ -46,7 +50,7 @@
                                             <option value="<?php echo $categories['countercode_id'] ?>" <?php if ($product->countercode_id == $categories['countercode_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['counter_code'].'-'.$categories['countercode_name'] ?></option>
+                                                <?php echo $categories['counter_code'] . '-' . $categories['countercode_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -70,7 +74,7 @@
                                             <option value="<?php echo $categories['category_id'] ?>" <?php if ($product->category_id == $categories['category_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['category_code'].'-'.$categories['category_name'] ?></option>
+                                                <?php echo $categories['category_code'] . '-' . $categories['category_name'] ?></option>
 
                                     <?php }
                                     } ?>
@@ -147,7 +151,7 @@
                                             <option value="<?php echo $categories['brandcode_id'] ?>" <?php if ($product->brandcode_id == $categories['brandcode_id']) {
                                                                                                             echo 'selected';
                                                                                                         } ?>>
-                                                <?php echo $categories['brand_code'].'-'.$categories['brandcode_name'] ?></option>
+                                                <?php echo $categories['brand_code'] . '-' . $categories['brandcode_name'] ?></option>
 
                                     <?php }
                                     } ?>

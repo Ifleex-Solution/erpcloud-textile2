@@ -29,7 +29,11 @@ $route['unit_list']            = "product/product/bdtask_unit_list";
 $route['product_form']         = "product/product/bdtask_product_form";
 $route['product_form/(:any)']  = "product/product/bdtask_product_form/$1";
 $route['product_list']         = "product/product/bdtask_product_list";
-$route['barcode/(:any)']       = "product/product/barcode_print/$1";
+$route['barcode']       = "product/product/barcode_print";
+
+$route['labelprint']       = "product/product/label_print";
+
+
 $route['qrcode/(:any)']        = "product/product/qrgenerator/$1";
 $route['bulk_products']        = "product/product/bdtask_csv_product";
 $route['product_details/(:any)']= "product/product/bdtask_product_details/$1";
