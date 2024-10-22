@@ -312,13 +312,13 @@ class Report extends MX_Controller
         $pdf->SetFont('helvetica', 'B', 20);
         $pdf->Cell(100, 20, "Employee Sales Report", 0, 0, 'L', 0, '', 1);
         $pdf->Ln(30);
-       
+
         if (isset($_SESSION['emp_istype']) && $_SESSION['emp_istype'] === "false") {
             $pdf->SetFont('', 'B', 10);
             $pdf->Cell(23, $row_height, "FROM DATE: ", 0, 0, 'R', 0, '', 1);
             $pdf->Cell(30, $row_height,  $_SESSION['empfrom_date'], 0, 0, 'L', 0, '', 1);
             $pdf->Cell(23, $row_height, "TO DATE:", 0, 0, 'R', 0, '', 1);
-            $pdf->Cell(30, $row_height, $_SESSION['empto_date'], 0, 0, 'L', 0, '', 1);    
+            $pdf->Cell(30, $row_height, $_SESSION['empto_date'], 0, 0, 'L', 0, '', 1);
         } else {
             $pdf->SetFont('', 'B', 10);
             $pdf->Cell(23, $row_height, "DATE: ", 0, 0, 'R', 0, '', 1);
@@ -353,7 +353,7 @@ class Report extends MX_Controller
                     $pdf->Cell(23, $row_height, "FROM DATE: ", 0, 0, 'R', 0, '', 1);
                     $pdf->Cell(30, $row_height,  $_SESSION['empfrom_date'], 0, 0, 'L', 0, '', 1);
                     $pdf->Cell(23, $row_height, "TO DATE:", 0, 0, 'R', 0, '', 1);
-                    $pdf->Cell(30, $row_height, $_SESSION['empto_date'], 0, 0, 'L', 0, '', 1);    
+                    $pdf->Cell(30, $row_height, $_SESSION['empto_date'], 0, 0, 'L', 0, '', 1);
                 } else {
                     $pdf->SetFont('', 'B', 10);
                     $pdf->Cell(23, $row_height, "DATE: ", 0, 0, 'R', 0, '', 1);
@@ -541,6 +541,19 @@ class Report extends MX_Controller
         echo modules::run('template/layout', $data);
     }
 
+    public function bdtask_cashbalance()
+    {
+        $sales_report = $this->report_model->todays_sales_report();
+        $sales_amount = 0;
+        $data = array(
+            'title'        => display('sales_report'),
+            'sales_amount' => number_format($sales_amount, 2, '.', ','),
+        );
+        $data['module']   = "report";
+        $data['page']     = "cash_balance_report";
+        echo modules::run('template/layout', $data);
+    }
+
     public function bdtask_datewise_sales_report()
     {
         $from_date = $this->input->get('from_date');
@@ -600,6 +613,119 @@ class Report extends MX_Controller
 
 
         echo json_encode($_SESSION['invoice_summary']);
+    }
+
+
+
+    public function cashbalance_report()
+    {
+        $from_date = $this->input->post('from_date');
+        $to_date  = $this->input->post('to_date');
+        $empid = $this->input->post('empid');
+
+
+        if ($empid == "All") {
+            
+            $data1     = $this->report_model->net_earning($from_date, $to_date, "A");
+            $data2     = $this->report_model->net_deduction($from_date, $to_date, "A");
+            $data3     = $this->report_model->net_earning($from_date, $to_date,  "B");
+            $data4     = $this->report_model->net_deduction($from_date, $to_date, "B");
+            $report_data = array_merge($data1, $data2, $data3, $data4);
+        } else {
+            $data1     = $this->report_model->net_earning($from_date, $to_date, $empid);
+            $data2     = $this->report_model->net_deduction($from_date, $to_date, $empid);
+            $report_data = array_merge($data1, $data2);
+        }
+
+
+
+        $_SESSION['cash_balance'] =  $report_data;
+        $_SESSION['cb_istype'] =   $this->input->post('istype');
+        $_SESSION['cb_empid'] =   $empid;
+
+        $_SESSION['cbfrom_date'] = $from_date;
+        $_SESSION['cbto_date'] =  $to_date;
+
+
+        echo json_encode($_SESSION['cash_balance']);
+    }
+
+   
+
+    public function generate_cashbalance()
+    {
+
+        $data = $_SESSION['cash_balance'];
+        require_once('tcpdf/tcpdf.php');
+
+        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Name');
+        $pdf->SetTitle('Cash Balance Report');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, columns, example');
+        $top_margin = 5;
+        $pdf->SetMargins(15, $top_margin, 10);
+        $pdf->SetFooterMargin(10);
+        $pdf->SetAutoPageBreak(TRUE, 20);
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+
+        $page = 1;
+        $pdf->SetFont('', 'B', 50);
+        $pdf->Cell(40, 10, $page, 0, 0, 'L', 0, '', 1);
+        $pdf->SetFont('helvetica', 'B', 20);
+        $pdf->Cell(100, 20, "Cash Balance Report", 0, 0, 'L', 0, '', 1);
+        $pdf->Ln(30);
+
+        if (isset($_SESSION['cb_istype']) && $_SESSION['cb_istype'] === "false") {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(23, $row_height, "FROM DATE: ", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height,  $_SESSION['cbfrom_date'], 0, 0, 'L', 0, '', 1);
+            $pdf->Cell(23, $row_height, "TO DATE:", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height, $_SESSION['cbto_date'], 0, 0, 'L', 0, '', 1);
+        } else {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(23, $row_height, "DATE: ", 0, 0, 'R', 0, '', 1);
+            $pdf->Cell(30, $row_height,  $_SESSION['cbfrom_date'], 0, 0, 'L', 0, '', 1);
+        }
+        $pdf->Ln(10);
+
+        if ($_SESSION['cb_empid'] == "All") {
+            $total = (float)$data[1]['totalamount'] + (float)$data[0]['totalamount'] + (float)$data[2]['totalamount'] + (float)$data[3]['totalamount'];
+            $earning = (float)$data[0]['totalamount'] + (float)$data[2]['totalamount'];
+            $deduction = (float)$data[1]['totalamount'] + (float)$data[3]['totalamount'];
+
+
+            $pdf->Cell(50, 10, 'Net Earning', 1, 0, 'L', 0, '', 1);
+            $pdf->Cell(50, 10, number_format($earning, 2), 1, 0, 'R', 0, '', 1);
+            $pdf->Ln(10);
+
+            $pdf->Cell(50, 10, 'Net Deduction', 1, 0, 'L', 0, '', 1);
+            $pdf->Cell(50, 10, number_format($deduction, 2), 1, 0, 'R', 0, '', 1);
+            $pdf->Ln(10);
+
+            $pdf->Cell(50, 10,  "Total", 1, 0, 'L');
+            $pdf->Cell(50, 10,   number_format($total, 2), 1, 0, 'R');
+        } else {
+            $pdf->Cell(50, 10, 'Net Earning', 1, 0, 'L', 0, '', 1);
+            $pdf->Cell(50, 10, number_format($data[0]['totalamount'], 2), 1, 0, 'R', 0, '', 1);
+            $pdf->Ln(10);
+
+            $pdf->Cell(50, 10, 'Net Deduction', 1, 0, 'L', 0, '', 1);
+            $pdf->Cell(50, 10, number_format($data[1]['totalamount'], 2), 1, 0, 'R', 0, '', 1);
+            $pdf->Ln(10);
+
+            $total = (float)$data[1]['totalamount'] + (float)$data[0]['totalamount'];
+            $pdf->Cell(50, 10,  "Total", 1, 0, 'L');
+            $pdf->Cell(50, 10,   number_format($total, 2), 1, 0, 'R');
+        }
+
+        // Output PDF
+        $pdf->Output('cash_balance.pdf', 'I');
     }
 
     public function bdtask_userwise_sales_report()

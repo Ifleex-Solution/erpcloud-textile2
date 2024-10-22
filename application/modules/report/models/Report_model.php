@@ -482,6 +482,46 @@ class Report_model extends CI_Model
         return null;
     }
 
+    public function net_earning($from_date, $to_date, $empid)
+    {
+        $this->db->select('sum(id2.total_price) as totalamount, i2.date');
+        if ($empid == "B") {
+            $this->db->from('emp_details id2');
+            $this->db->join('emp i2', 'i2.id = id2.invoice_id');
+        } else {
+            $this->db->from('invoice_details id2');
+            $this->db->join('invoice i2', 'i2.id = id2.invoice_id');
+        }
+        $this->db->where('id2.total_price >', 0);
+        $this->db->where('i2.date >=', $from_date);
+        $this->db->where('i2.date <=', $to_date);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return  $query->result_array();
+        }
+        return null;
+    }
+
+    public function net_deduction($from_date, $to_date, $empid)
+    {
+        $this->db->select('sum(id2.total_price) as totalamount, i2.date');
+        if ($empid == "B") {
+            $this->db->from('emp_details id2');
+            $this->db->join('emp i2', 'i2.id = id2.invoice_id');
+        } else {
+            $this->db->from('invoice_details id2');
+            $this->db->join('invoice i2', 'i2.id = id2.invoice_id');
+        }
+        $this->db->where('id2.total_price <', 0);
+        $this->db->where('i2.date >=', $from_date);
+        $this->db->where('i2.date <=', $to_date);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return  $query->result_array();
+        }
+        return null;
+    }
+
     //Retrieve todays_purchase_report
     public function todays_purchase_report()
     {

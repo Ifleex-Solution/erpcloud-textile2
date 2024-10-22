@@ -18,17 +18,7 @@
         <span class="sr-only">Toggle navigation</span>
         <span class="pe-7s-keypad"></span>
     </a>
-<span class="top-fixed-link">
-      <?php
-         
-           if($this->permission1->method('new_invoice','create')->access()){
-           ?>
-           <a href="<?php echo base_url('add_invoice')?>" class="btn btn-success btn-outline"><i class="fa fa-balance-scale"></i> <?php  echo display('invoice') ?></a>
-     <?php }?>
 
-     
-    
-</span>
 
     <div class="navbar-custom-menu">
 

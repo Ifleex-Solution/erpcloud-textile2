@@ -195,9 +195,9 @@
 
 
         <!-- Report menu start -->
-        <?php if ($this->permission1->method('add_closing', 'create')->access() || $this->permission1->method('closing_report', 'read')->access() || $this->permission1->method('todays_report', 'read')->access() || $this->permission1->method('todays_customer_receipt', 'read')->access() || $this->permission1->method('todays_sales_report', 'read')->access() || $this->permission1->method('due_report', 'read')->access() || $this->permission1->method('todays_purchase_report', 'read')->access() || $this->permission1->method('purchase_report_category_wise', 'read')->access() || $this->permission1->method('product_sales_reports_date_wise', 'read')->access() || $this->permission1->method('sales_report_category_wise', 'read')->access() || $this->permission1->method('shipping_cost_report', 'read')->access()) { ?>
+        <?php if ($this->permission1->method('add_closing', 'create')->access() || $this->permission1->method('closing_report', 'read')->access() || $this->permission1->method('todays_report', 'read')->access() || $this->permission1->method('todays_customer_receipt', 'read')->access() || $this->permission1->method('todays_sales_report', 'read')->access() || $this->permission1->method('cash_balance_report', 'read')->access() || $this->permission1->method('due_report', 'read')->access() || $this->permission1->method('todays_purchase_report', 'read')->access() || $this->permission1->method('purchase_report_category_wise', 'read')->access() || $this->permission1->method('product_sales_reports_date_wise', 'read')->access() || $this->permission1->method('sales_report_category_wise', 'read')->access() || $this->permission1->method('shipping_cost_report', 'read')->access()) { ?>
             <li class="treeview <?php
-                                if ($this->uri->segment('1') == ("closing_form") || $this->uri->segment('1') == ("closing_report") || $this->uri->segment('1') == ("closing_report_search") || $this->uri->segment('1') == ("todays_report") || $this->uri->segment('1') == ("todays_customer_received") || $this->uri->segment('1') == ("todays_customerwise_received") || $this->uri->segment('1') == ("sales_report") || $this->uri->segment('1') == ("datewise_sales_report") || $this->uri->segment('1') == ("userwise_sales_report") || $this->uri->segment('1') == ("invoice_wise_due_report") || $this->uri->segment('1') == ("shipping_cost_report") || $this->uri->segment('1') == ("purchase_report") || $this->uri->segment('1') == ("purchase_report_categorywise") || $this->uri->segment('1') == ("product_wise_sales_report") || $this->uri->segment('1') == ("category_sales_report") || $this->uri->segment('1') == ("sales_return") || $this->uri->segment('1') == ("supplier_returns") || $this->uri->segment('1') == ("tax_report") || $this->uri->segment('1') == ("profit_report")||$this->uri->segment('1') == ("employee_wise_report")) {
+                                if ($this->uri->segment('1') == ("closing_form") || $this->uri->segment('1') == ("closing_report") || $this->uri->segment('1') == ("closing_report_search") || $this->uri->segment('1') == ("todays_report") || $this->uri->segment('1') == ("todays_customer_received") || $this->uri->segment('1') == ("cash_balance_report")  || $this->uri->segment('1') == ("todays_customerwise_received") || $this->uri->segment('1') == ("sales_report") || $this->uri->segment('1') == ("datewise_sales_report") || $this->uri->segment('1') == ("userwise_sales_report") || $this->uri->segment('1') == ("invoice_wise_due_report") || $this->uri->segment('1') == ("shipping_cost_report") || $this->uri->segment('1') == ("purchase_report") || $this->uri->segment('1') == ("purchase_report_categorywise") || $this->uri->segment('1') == ("product_wise_sales_report") || $this->uri->segment('1') == ("category_sales_report") || $this->uri->segment('1') == ("sales_return") || $this->uri->segment('1') == ("supplier_returns") || $this->uri->segment('1') == ("tax_report") || $this->uri->segment('1') == ("profit_report")||$this->uri->segment('1') == ("employee_wise_report")) {
                                     echo "active";
                                 } else {
                                     echo " ";
@@ -219,23 +219,7 @@
                                             } ?>"><a href="<?php echo base_url('sales_report') ?>"><?php echo display('sales_report') ?></a>
                         </li>
                     <?php } ?>
-                    <?php if ($this->permission1->method('user_wise_sales_report', 'read')->access()) { ?>
-                        <li class="treeview <?php if ($this->uri->segment('1') == ("userwise_sales_report")) {
-                                                echo "active";
-                                            } else {
-                                                echo " ";
-                                            } ?>"><a href="<?php echo base_url('userwise_sales_report') ?>"><?php echo display('user_wise_sales_report') ?></a>
-                        </li>
-                    <?php } ?>
                    
-                    <?php if ($this->permission1->method('sales_report_product_wise', 'read')->access()) { ?>
-                        <li class="treeview <?php if ($this->uri->segment('1') == ("product_wise_sales_report")) {
-                                                echo "active";
-                                            } else {
-                                                echo " ";
-                                            } ?>"><a href="<?php echo base_url('product_wise_sales_report') ?>"><?php echo display('sales_report_product_wise') ?></a>
-                        </li>
-                    <?php } ?>
                     <?php if ($this->permission1->method('sales_report_category_wise', 'read')->access()) { ?>
                         <li class="treeview <?php if ($this->uri->segment('1') == ("category_sales_report")) {
                                                 echo "active";
@@ -250,6 +234,15 @@
                                             } else {
                                                 echo " ";
                                             } ?>"><a href="<?php echo base_url('employee_wise_report') ?>"><?php echo display('sales_report_employee_wise') ?></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($this->permission1->method('cash_balance_report', 'read')->access()) { ?>
+                        <li class="treeview <?php if ($this->uri->segment('1') == ("cash_balance_report")) {
+                                                echo "active";
+                                            } else {
+                                                echo " ";
+                                            } ?>"><a href="<?php echo base_url('cash_balance_report') ?>"><?php echo display('cash_balance_report') ?></a>
                         </li>
                     <?php } ?>
                 </ul>

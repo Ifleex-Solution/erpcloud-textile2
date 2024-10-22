@@ -305,8 +305,9 @@ class Product_model extends CI_Model
 
         ## Search 
         $searchQuery = "";
+      
         if ($searchValue != '') {
-            $searchQuery = " (a.product_name like '%" . $searchValue . "%' or a.product_model like '%" . $searchValue . "%' or a.price like'%" . $searchValue . "%' ) ";
+            $searchQuery = " (a.product_id like '%" . $searchValue . "%' or a.product_name like '%" . $searchValue . "%' or a.product_model like '%" . $searchValue . "%' or a.price like'%" . $searchValue . "%' ) ";
         }
 
         ## Total number of records without filtering
@@ -422,14 +423,26 @@ class Product_model extends CI_Model
         $searchQuery = "";
         if ($category != null && $brand != null) {
             // Use AND to combine both conditions if both category and brand are provided
-            $searchQuery = "(a.category_id = " . $category . " AND a.brandcode_id = " . $brand . ")";
+            $searchQuery = " a.category_id = " . $category . " AND a.brandcode_id = " . $brand . "";
         } elseif ($category != null) {
             // Only category condition
-            $searchQuery = "(a.category_id = " . $category . ")";
+            $searchQuery = " a.category_id = " . $category . "";
         } elseif ($brand != null) {
             // Only brand condition
-            $searchQuery = "(a.brandcode_id = " . $brand . ")";
+            $searchQuery = " a.brandcode_id = " . $brand . "";
         } 
+
+      
+        if ($searchValue != '') {
+            if($searchQuery==""){
+                $searchQuery = " (a.product_id like '%" . $searchValue . "%' or a.product_name like '%" . $searchValue . "%' or a.product_model like '%" . $searchValue . "%' or a.price like'%" . $searchValue . "%' ) ";
+
+            }else{
+                $searchQuery =$searchQuery. " and a.product_id like '%" . $searchValue . "%' or a.product_name like '%" . $searchValue . "%' or a.product_model like '%" . $searchValue . "%' or a.price like'%" . $searchValue . "%'  ";
+
+            }
+        }
+
         ## Total number of records without filtering
         $this->db->select('count(*) as allcount');
         $this->db->from('product_information a');

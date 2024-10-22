@@ -9,6 +9,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['todays_report']  = "report/report/bdtask_todays_report";
 $route['generate_invoicesummary']  = "report/report/generate_invoicesummary";
 $route['generate_employeesales']  = "report/report/generate_employeesales";
+$route['generate_cashbalance']  = "report/report/generate_cashbalance";
+
 
 
 // $route['todays_customer_received']  = "report/report/bdtask_todays_customer_received";
@@ -23,6 +25,8 @@ $route['userwise_sales_report']  = "report/report/bdtask_userwise_sales_report";
 $route['product_wise_sales_report']= "report/report/bdtask_sale_report_productwise";
 $route['category_sales_report']= "report/report/bdtask_categorywise_sales_report";
 $route['employee_wise_report']= "report/report/bdtask_sale_report_employeewise";
+$route['cash_balance_report']= "report/report/bdtask_cashbalance";
+
 
 
 // $route['sales_return']         = "report/report/bdtask_sales_return";

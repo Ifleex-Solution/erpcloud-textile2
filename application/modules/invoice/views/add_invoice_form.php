@@ -465,7 +465,12 @@
             },
             success: function(data) {
                 if (data != "") {
-                    addinvoice('addinvoiceItem', JSON.parse(data));
+                    if(arrItem.length<14){
+                        addinvoice('addinvoiceItem', JSON.parse(data));
+
+                    }else{
+                        alert("You Can't add more thn 14 items")
+                    }
                 }
 
 
@@ -1451,7 +1456,7 @@
                 {
                     data: 'total_amount',
                     class: "total_sale text-right",
-                    render: $.fn.dataTable.render.number(',', '.', 2, currency)
+                    render: $.fn.dataTable.render.number(',', '.', 2, '', ' Rs') 
                 },
                 {
                     data: 'button'
