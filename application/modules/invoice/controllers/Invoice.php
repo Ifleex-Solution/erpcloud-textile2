@@ -999,7 +999,7 @@ ROUND(id.quantity, 0) AS qty,
                 'discount_per'       => $item['discount_value'],
                 'commisionmode'     =>  $item['commisionmode'],
                 'total_price'        => $item['total'],
-                'employeeId'         => $item['sb'],
+                'employeeId'         => $item['empId'],
                 'status'             => 1
             );
             $this->db->insert('emp_details', $data1);

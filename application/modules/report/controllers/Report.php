@@ -400,49 +400,66 @@ class Report extends MX_Controller
 
 
         if ($empid == "All") {
-            $sql = "SELECT id, first_name, last_name, SUM(total_price_sum) AS total_price_sum, MAX(date) AS date FROM ( " .
-                "SELECT emp.id, emp.first_name, emp.last_name, SUM(id.total_price) AS total_price_sum, i.date " .
-                "FROM invoice_details id " .
-                "LEFT JOIN employee_history emp ON emp.id = id.employeeId " .
-                "LEFT JOIN invoice i ON i.id = id.invoice_id " .
-                "GROUP BY emp.id, emp.first_name, emp.last_name " .  // Group by employee details only
-                "UNION ALL " .
-                "SELECT emp.id, emp.first_name, emp.last_name, SUM(id.total_price) AS total_price_sum, i.date " .
-                "FROM emp_details id " .
-                "LEFT JOIN employee_history emp ON emp.id = id.employeeId " .
-                "LEFT JOIN emp i ON i.id = id.invoice_id " .
-                "GROUP BY emp.id, emp.first_name, emp.last_name " .  // Group by employee details only
-                ") AS subquery ";
+            $sql = "SELECT id, first_name, last_name, MAX(date) AS date, 
+               SUM(total_price_sum) AS total_price_sum
+        FROM (
+            SELECT emp.id, emp.first_name, emp.last_name, 
+                   SUM(id.total_price) AS total_price_sum, 
+                   i.date 
+            FROM invoice_details id 
+            LEFT JOIN employee_history emp ON emp.id = id.employeeId 
+            LEFT JOIN invoice i ON i.id = id.invoice_id 
+            WHERE i.date BETWEEN '$from_date' AND '$to_date'
+            GROUP BY emp.id, emp.first_name, emp.last_name, i.date
 
-            $conditions = array();
-            if (!empty($from_date) && !empty($to_date)) {
-                $conditions[] = "subquery.date BETWEEN '$from_date' AND '$to_date'";
-            } elseif (!empty($from_date)) {
-                $conditions[] = "subquery.date >= '$from_date'";
-            } elseif (!empty($to_date)) {
-                $conditions[] = "subquery.date <= '$to_date'";
-            }
+            UNION ALL
+
+            SELECT emp.id, emp.first_name, emp.last_name, 
+                   SUM(id.total_price) AS total_price_sum, 
+                   i.date 
+            FROM emp_details id 
+            LEFT JOIN employee_history emp ON emp.id = id.employeeId 
+            LEFT JOIN emp i ON i.id = id.invoice_id 
+            WHERE i.date BETWEEN '$from_date' AND '$to_date'
+            GROUP BY emp.id, emp.first_name, emp.last_name, i.date
+        ) AS subquery ";
+
             if (!empty($employeeid)) {
-                $conditions[] = "subquery.id = '$employeeid'";
+                $sql .= "where subquery.id = '$employeeid'";
             }
-            if (!empty($conditions)) {
-                $sql .= " WHERE " . implode(' AND ', $conditions);
-            }
+            $sql .=  "GROUP BY id, first_name, last_name;";
 
-            $sql .= " GROUP BY id, first_name, last_name";  // Group by employee details only
+
+            // $conditions = array();
+            // if (!empty($from_date) && !empty($to_date)) {
+            //     $conditions[] = "subquery.date BETWEEN '$from_date' AND '$to_date'";
+            // } elseif (!empty($from_date)) {
+            //     $conditions[] = "subquery.date >= '$from_date'";
+            // } elseif (!empty($to_date)) {
+            //     $conditions[] = "subquery.date <= '$to_date'";
+            // }
+            // if (!empty($employeeid)) {
+            //     $conditions[] = "subquery.id = '$employeeid'";
+            // }
+            // if (!empty($conditions)) {
+            //     $sql .= " WHERE " . implode(' AND ', $conditions);
+            // }
+
+            // $sql .= " GROUP BY id ";  // Group by employee details only
 
         } else {
 
             $sql = "SELECT emp.first_name, emp.last_name, SUM(id.total_price) as total_price_sum ";
 
-            if ($empid == "A") {
+            if ($empid == "B") {
+                    $sql .= "FROM emp_details id "
+                    . "LEFT JOIN employee_history emp ON emp.id = id.employeeId "
+                    . "LEFT JOIN emp i ON i.id = id.invoice_id ";
+            } else {
                 $sql .= "FROM invoice_details id "
                     . "LEFT JOIN employee_history emp ON emp.id = id.employeeId "
                     . "LEFT JOIN invoice i ON i.id = id.invoice_id ";
-            } else {
-                $sql .= "FROM emp_details id "
-                    . "LEFT JOIN employee_history emp ON emp.id = id.employeeId "
-                    . "LEFT JOIN emp i ON i.id = id.invoice_id ";
+
             }
 
 
@@ -625,7 +642,7 @@ class Report extends MX_Controller
 
 
         if ($empid == "All") {
-            
+
             $data1     = $this->report_model->net_earning($from_date, $to_date, "A");
             $data2     = $this->report_model->net_deduction($from_date, $to_date, "A");
             $data3     = $this->report_model->net_earning($from_date, $to_date,  "B");
@@ -650,7 +667,7 @@ class Report extends MX_Controller
         echo json_encode($_SESSION['cash_balance']);
     }
 
-   
+
 
     public function generate_cashbalance()
     {

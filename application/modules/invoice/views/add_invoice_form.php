@@ -35,8 +35,9 @@
                     <form class="form-inline" style="display: flex; align-items: center; width: 100%;">
                         <div class="col-sm-1">
 
-                            <label for="date" class="col-sm-3 col-form-label"><?php echo display('date') ?> <i class="text-danger">*</i></label>
+                            <label for="date" class="col-form-label"><?php echo display('date') ?> <i class="text-danger">*</i></label>
                         </div>
+
                         <div class="col-sm-2">
 
                             <?php
@@ -62,6 +63,8 @@
                         </div> -->
                     </form>
                 </div>
+
+                <br />
 
                 <div class="table-responsive">
                     <div class="row">
@@ -465,10 +468,10 @@
             },
             success: function(data) {
                 if (data != "") {
-                    if(arrItem.length<14){
+                    if (arrItem.length < 14) {
                         addinvoice('addinvoiceItem', JSON.parse(data));
 
-                    }else{
+                    } else {
                         alert("You Can't add more thn 14 items")
                     }
                 }
@@ -635,35 +638,35 @@
                 } else {
 
                     row.innerHTML = `
-            <td style="padding: 2px; height: 20px;width:80px;background-color:#f9c1c1;">
-                <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:80px;background-color:#ed7988;">
+                <input type='text' value='${item.productid}' readonly class='form-control' style='height: 20px; font-size: 12px; padding: 2px;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:140px;background-color:#f9f9c1;">
-                <input type='text'  name='description[]' class='form-control' value='${item.productname}' readonly style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:140px;background-color:#ed7988;">
+                <input type='text'  name='description[]' class='form-control' value='${item.productname}' readonly style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
-                <input type='text' name='sb[]' class='form-control' value='${item.sb}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#ed7988;">
+                <input type='text' name='sb[]' class='form-control' value='${item.sb}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
-                <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#ed7988;">
+                <input type='number' name='qty[]' class="form-control" value='${item.qty}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:50px;background-color:#f9f9c1;">
-                <input type='number' name='meter[]' class="form-control" value='${item.meter}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:50px;background-color:#ed7988;">
+                <input type='number' name='meter[]' class="form-control" value='${item.meter}' readonly  min='0' style='height: 20px;  font-size: 12px; padding: 2px;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:120px;background-color:#f9f9c1;">
-                <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:120px;background-color:#ed7988;">
+                <input type='number' name='rate[]' class="form-control" value='${item.rate}' readonly   min='0' style='height: 20px; font-size: 12px; text-align: right;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:40px;background-color:#f9f9c1;">
-                <input type='text' name='discount_type[]' class='form-control' value='${item.discount_type}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#f9f9c1; '>
+            <td style="padding: 2px; height: 20px;width:40px;background-color:#ed7988;">
+                <input type='text' name='discount_type[]' class='form-control' value='${item.discount_type}' readonly  style='height: 20px;  font-size: 12px;  padding: 2px;background-color:#ed7988; '>
             </td>
-            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
-                <input type='text' name='discount_lkr[]' class="form-control" value='${item.discount}'  readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#ed7988;">
+                <input type='text' name='discount_lkr[]' class="form-control" value='${item.discount}'  readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
-                <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#f9f9c1;'>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#ed7988;">
+                <input type='number' name='discount_value[]' class="form-control" value='${item.discount_value}' readonly style='height: 20px;  font-size: 12px;  text-align: right;background-color:#ed7988;'>
             </td>
-            <td style="padding: 2px; height: 20px;width:100px;background-color:#f9f9c1;">
-                <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#f9f9c1;  '>
+            <td style="padding: 2px; height: 20px;width:100px;background-color:#ed7988;">
+                <input type='number' name='total[]' class="form-control"  value='${item.total}'   readonly style='height: 20px;  font-size: 12px; text-align: right;background-color:#ed7988;  '>
             </td>
                     `;
 
@@ -846,7 +849,18 @@
 
                     datas = JSON.parse(data1);
                     if (confirm("Do You Want To Print?")) {
-                        dataTableForSale()
+                        dataTableForSale();
+                        var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+                        tableBody.innerHTML = '';
+                        arrItem = [];
+                        updateTable(arrItem);
+                        $('#grandTotal').val("0.00");
+                         mode = "+"
+                         commisionmode = false;
+                        let element2 = document.getElementById("barcodeInput");
+                        element2.focus();
+                        element2.select();
+
 
                         printRawHtml(datas.details);
                     }
@@ -866,6 +880,18 @@
                     datas = JSON.parse(data1);
                     if (confirm("Do You Want To Print?")) {
                         dataTableForSale()
+                        var tableBody = document.getElementById('normalinvoice').getElementsByTagName('tbody')[0];
+                        tableBody.innerHTML = '';
+                        arrItem = [];
+                        mode = "+"
+                        commisionmode = false;
+                        updateTable(arrItem)
+                        $('#grandTotal').val("0.00")
+                        invoice_ID = 0;
+                        let element2 = document.getElementById("barcodeInput");
+                        element2.focus();
+                        element2.select();
+
 
                         printRawHtml(datas.details);
                     }
@@ -921,14 +947,14 @@
                     "<td><div style='position: relative; display: inline-block;'><input class='form-control' type='text' id='searchInput_" + count + "' tabindex='" + tab3 + "' placeholder='Employee Id...' onkeyup='handleEmployeeKeyPress(event," + count + ")'  autocomplete='off' /><input type='text' name='employee_id[]' id='employeeId_" + count + "' hidden /><div id='searchResults_" + count + "' style='  width: 100%;  max-height: 150px;  overflow-y: auto; border: 1px solid #ddd; position: absolute;  top: 100%;  left: 0;  z-index: 1000;  background-color: #fff;border-radius: 4px;'></div></div></td>" +
                     "<td> <input type='text' name='product_quantity[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                     count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='total_qntt_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
-                
+
                 if (data.unit == "m") {
                     row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='1' required='required' onkeyup='bdtask_invoice_quantitycalculate(" +
                         count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab4 + "'/></td>";
 
                 } else {
                     row1 = row1 + "<td> <input type='text' name='product_quantitymeter[]' value='0.0' required='required'  readonly='readonly' onkeyup='bdtask_invoice_quantitycalculate(" +
-                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
+                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' /></td>";
 
                 }
 
@@ -957,7 +983,7 @@
 
                 } else {
                     row2 = row2 + "<td> <input type='text' name='product_quantitymeter[]' value='0.0' required='required'  readonly='readonly' onkeyup='bdtask_invoice_quantitycalculate(" +
-                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' tabindex='" + tab3 + "'/></td>";
+                        count + ",event);' onchange='bdtask_invoice_quantitycalculate(" + count + ",event);' id='product_quantitymeter_" + count + "' class='common_qnt total_qntt_" + count + " form-control text-right'  placeholder='0.00' min='0' /></td>";
 
                 }
 
@@ -1088,13 +1114,12 @@
             updateTable(arrItem)
         } else {
             var quantity = '';
-            if ($("#unit_type_" + item).val() == "Meter") {
+            if ($("#unit_type_" + item).val() == "m") {
                 quantity = $("#product_quantitymeter_" + item).val()
             } else {
                 quantity = $("#total_qntt_" + item).val()
 
             }
-            // var quantity = $("#total_qntt_" + item).val();
             var price_item = $("#price_item_" + item).val();
             var invoice_discount = $("#invoice_discount").val();
             var discount = $("#discount_" + item).val();
@@ -1139,6 +1164,7 @@
                     if (commisionmode) {
                         if (mode == "-") {
                             var temp = parseFloat(price) - parseFloat(dis);
+                            $("#discount_value_" + item).val("-" + dis);
                             $("#total_price_" + item).val(temp);
                             $("#discount_type_" + item).val("Amount");
                         } else {
@@ -1150,6 +1176,7 @@
                         if (mode == "-") {
                             var temp = parseFloat(price) + parseFloat(dis);
                             $("#total_price_" + item).val(temp);
+                            $("#discount_value_" + item).val("-" + dis);
                             $("#discount_type_" + item).val("Amount");
                         } else {
                             var temp = parseFloat(price) - parseFloat(dis);
@@ -1185,11 +1212,19 @@
 
 
         if (mode === "-") {
-            debugger
             if ($("#total_qntt_" + item).val() === "")
                 $("#total_qntt_" + item).val("-")
-            else if(!$("#total_qntt_" + item).val().includes("-")){
-                $("#total_qntt_" + item).val("-"+$("#total_qntt_" + item).val())
+            else if (!$("#total_qntt_" + item).val().includes("-")) {
+                $("#total_qntt_" + item).val("-" + $("#total_qntt_" + item).val())
+            }
+
+            if ($("#unit_type_" + item).val() == "m") {
+                if ($("#product_quantitymeter_" + item).val() === "") {
+                    $("#product_quantitymeter_" + item).val("-")
+                } else if (!$("#product_quantitymeter_" + item).val().includes("-")) {
+                    $("#product_quantitymeter_" + item).val("-" + $("#product_quantitymeter_" + item).val())
+
+                }
             }
 
         }
@@ -1372,7 +1407,7 @@
             type: 'raw-html',
             onPrintDialogClose: function() {
                 printJobComplete(); // Call the function you need to execute after the print dialog closes
-                location.reload(); // Reload the page
+                // location.reload(); // Reload the page
             }
         });
 
@@ -1381,7 +1416,7 @@
     }
 
     function printJobComplete() {
-        location.reload()
+        // location.reload()
 
     }
 
@@ -1456,7 +1491,7 @@
                 {
                     data: 'total_amount',
                     class: "total_sale text-right",
-                    render: $.fn.dataTable.render.number(',', '.', 2, '', ' Rs') 
+                    render: $.fn.dataTable.render.number(',', '.', 2, '', ' Rs')
                 },
                 {
                     data: 'button'
@@ -1521,6 +1556,7 @@
                 var totalAmount = parseFloat(decodedSummary.total_amount) || 0.00;
                 $('#InvListTotalSales').DataTable({
                     responsive: true,
+                    searching: false,
                     data: [{
                         "total_invoice_count": invoiceCount,
                         "total_amount": totalAmount
@@ -1534,7 +1570,7 @@
                         {
                             data: 'total_amount',
                             class: "text-right",
-                            render: $.fn.dataTable.render.number(',', '.', 2, currency) // Format the amount
+                            render: $.fn.dataTable.render.number(',', '.', 2, '', ' Rs') // Format the amount
                         }
                     ]
                 });

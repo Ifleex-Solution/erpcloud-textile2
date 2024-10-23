@@ -311,7 +311,7 @@ class Invoice_model extends CI_Model
         ## Search 
         $searchQuery = "";
         if ($searchValue != '') {
-            $searchQuery = " (b.customer_name like '%" . $searchValue . "%' or a.invoice like '%" . $searchValue . "%' or a.date like'%" . $searchValue . "%' or a.invoice_id like'%" . $searchValue . "%' or u.first_name like'%" . $searchValue . "%'or u.last_name like'%" . $searchValue . "%')";
+            $searchQuery = " ( a.invoice like '%" . $searchValue . "%' or a.date like'%" . $searchValue . "%' or a.invoice_id like'%" . $searchValue . "%' or u.first_name like'%" . $searchValue . "%'or u.last_name like'%" . $searchValue . "%')";
         }
 
         ## Total number of records without filtering
@@ -388,9 +388,9 @@ class Invoice_model extends CI_Model
             $base_url = base_url();
             $jsaction = "return confirm('Are You Sure ?')";
 
-            $button .= '<a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" target="_blank" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . $type . display('invoice') . '">
-            <i class="fa fa-window-restore" aria-hidden="true"></i>
-        </a>';
+        //     $button .= '<a href="' . $base_url . 'invoice_details/' . $record->invoice_id . 'q' . $type . '" target="_blank" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="left" title="' . $type . display('invoice') . '">
+        //     <i class="fa fa-window-restore" aria-hidden="true"></i>
+        // </a>';
 
 
 
@@ -422,7 +422,7 @@ class Invoice_model extends CI_Model
 
             $data[] = array(
                 'sl'               => $sl,
-                'invoice'          => $details,
+                'invoice'          => $type . $record->invoice_id,
                 'salesman'         => $record->first_name . ' ' . $record->last_name,
                 // 'customer_name'    => $record->customer_name,
                 'final_date'       => date("d-M-Y", strtotime($record->date)),
