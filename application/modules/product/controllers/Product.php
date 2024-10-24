@@ -26,7 +26,7 @@ class Product extends MX_Controller
     // category part
     function bdtask_category_list()
     {
-        $data['title']      ="Manage Group";
+        $data['title']      = "Manage Group";
         $data['module']     = "product";
         $data['page']       = "category_list";
         $data["category_list"] = $this->product_model->category_list();
@@ -257,6 +257,87 @@ class Product extends MX_Controller
         redirect("countercode_list");
     }
 
+
+
+    // floorwisecounter part
+    function bdtask_floorwisecounter_list()
+    {
+        $data['title']      = "Manage Floorwise";
+        $data['module']     = "product";
+        $data['page']       = "floorwisecounter_list";
+        $data["floorwisecounter_list"] = $this->product_model->floorwisecounter_list();
+        echo modules::run('template/layout', $data);
+    }
+
+    public function bdtask_floorwisecounter_form($id = null)
+    {
+        $data['title'] = 'Add Floorwise Counter';
+        #-------------------------------#
+        $this->form_validation->set_rules('floorwise_name', display('floorwise_name'), 'required|max_length[200]');
+        $this->form_validation->set_rules('status', display('status'), 'max_length[2]');
+        #-------------------------------#
+        $data['floorwisecounter'] = (object)$postData = [
+            'floorwisecounter_id'      => $id,
+            'floorwise_name'    => $this->input->post('floorwise_name', true),
+            'status'           => $this->input->post('status', true),
+        ];
+        #-------------------------------#
+        if ($this->form_validation->run() === true) {
+
+            #if empty $id then insert data
+            if (empty($id)) {
+                if ($this->product_model->create_floorwisecounter($postData)) {
+                    #set success message
+                    $this->session->set_flashdata('message', display('save_successfully'));
+                } else {
+                    $this->session->set_flashdata('exception', display('please_try_again'));
+                }
+                if (isset($_POST['add-another'])) {
+                    redirect(base_url('floorwisecounter_form'));
+                    exit;
+                } else {
+                    redirect("floorwisecounter_list");
+                }
+            } else {
+                if ($this->product_model->update_floorwisecounter($postData)) {
+                    $this->session->set_flashdata('message', display('update_successfully'));
+                } else {
+                    $this->session->set_flashdata('exception', display('please_try_again'));
+                }
+                if (isset($_POST['add-another'])) {
+                    redirect(base_url('floorwisecounter_form'));
+                    exit;
+                } else {
+                    redirect("floorwisecounter_list");
+                }
+            }
+        } else {
+            if (!empty($id)) {
+                $data['title']    = "Edit Floorwise Counter";
+               $data['floorwisecounter'] = $this->product_model->single_floorwisecounter_data($id);
+            }
+            $data['module']   = "product";
+            $data['page']     = "floorwisecounter_form";
+            echo Modules::run('template/layout', $data);
+        }
+    }
+
+
+
+
+    public function bdtask_deletefloorwisecounter($id = null)
+    {
+        if ($this->product_model->delete_floorwisecounter($id)) {
+            $this->session->set_flashdata('message', display('delete_successfully'));
+        } else {
+            $this->session->set_flashdata('exception', display('please_try_again'));
+        }
+
+        redirect("floorwisecounter_list");
+    }
+
+
+
     // unit part
     function bdtask_unit_list()
     {
@@ -368,6 +449,7 @@ class Product extends MX_Controller
             'status'         => 1,
             'countercode_id'      => $this->input->post('countercode_id', TRUE),
             'brandcode_id'      => $this->input->post('brandcode_id', TRUE),
+            'floorwisecounter_id'=> $this->input->post('floorwisecounter_id', TRUE)
 
         ];
 
@@ -409,7 +491,7 @@ class Product extends MX_Controller
                 redirect("product_list");
             } else {
 
-                if ($this->product_model->update_product($postData,$id)) {
+                if ($this->product_model->update_product($postData, $id)) {
                     // $this->db->where('product_id', $id)
                     //          ->delete("supplier_product");
                     // for ($i = 0, $n = count($s_id); $i < $n; $i++) {
@@ -455,6 +537,8 @@ class Product extends MX_Controller
             $data['category_list'] = $this->product_model->active_category();
             $data['brandcode_list'] = $this->product_model->active_brandcode();
             $data['countercode_list'] = $this->product_model->active_countercode();
+            $data['floorwisecounter_list'] = $this->product_model->active_floorwisecounter();
+
 
 
             $data['unit_list']     = $this->product_model->active_unit();
@@ -494,17 +578,17 @@ class Product extends MX_Controller
             ->get()
             ->row();
 
-            echo json_encode($data);
+        echo json_encode($data);
     }
 
     public function CheckProductListForLabelPrint()
     {
         $postData = $this->input->post();
-        $data = $this->product_model->getProductListForLabelPrint($postData,$this->input->post('category'),$this->input->post('brand'));
+        $data = $this->product_model->getProductListForLabelPrint($postData, $this->input->post('category'), $this->input->post('brand'));
         echo json_encode($data);
     }
 
-    
+
     public function bdtask_deleteproduct($id = null)
     {
         $check_calculation = $this->product_model->check_product($id);

@@ -22,6 +22,10 @@ $route['category_form']        = "product/product/bdtask_category_form";
 $route['category_form/(:num)'] = 'product/product/bdtask_category_form/$1';
 $route['category_list']        = "product/product/bdtask_category_list";
 
+$route['floorwisecounter_form']        = "product/product/bdtask_floorwisecounter_form";
+$route['floorwisecounter_form/(:num)'] = 'product/product/bdtask_floorwisecounter_form/$1';
+$route['floorwisecounter_list']        = "product/product/bdtask_floorwisecounter_list";
+
 $route['unit_form']            = "product/product/bdtask_unit_form";
 $route['unit_form/(:num)']     = 'product/product/bdtask_unit_form/$1';
 $route['unit_list']            = "product/product/bdtask_unit_list";

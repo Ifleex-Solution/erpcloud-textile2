@@ -34,6 +34,14 @@ class Product_model extends CI_Model
             ->result();
     }
 
+    public function floorwisecounter_list()
+    {
+        return $this->db->select('*')
+            ->from('floorwisecounter')
+            ->get()
+            ->result();
+    }
+
 
     public function create_category($data = [])
     {
@@ -48,6 +56,11 @@ class Product_model extends CI_Model
     public function create_countercode($data = [])
     {
         return $this->db->insert('countercode', $data);
+    }
+
+    public function create_floorwisecounter($data = [])
+    {
+        return $this->db->insert('floorwisecounter', $data);
     }
 
     public function vat_tax_setting()
@@ -77,6 +90,12 @@ class Product_model extends CI_Model
             ->update('countercode', $data);
     }
 
+    public function update_floorwisecounter($data = [])
+    {
+        return $this->db->where('floorwisecounter_id', $data['floorwisecounter_id'])
+            ->update('floorwisecounter', $data);
+    }
+
     public function single_category_data($id)
     {
         return $this->db->select('*')
@@ -100,6 +119,15 @@ class Product_model extends CI_Model
         return $this->db->select('*')
             ->from('countercode')
             ->where('countercode_id', $id)
+            ->get()
+            ->row();
+    }
+
+    public function single_floorwisecounter_data($id)
+    {
+        return $this->db->select('*')
+            ->from('floorwisecounter')
+            ->where('floorwisecounter_id', $id)
             ->get()
             ->row();
     }
@@ -129,6 +157,17 @@ class Product_model extends CI_Model
     {
         $this->db->where('countercode_id', $id)
             ->delete("countercode");
+        if ($this->db->affected_rows()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function delete_floorwisecounter($id)
+    {
+        $this->db->where('floorwisecounter_id', $id)
+            ->delete("floorwisecounter");
         if ($this->db->affected_rows()) {
             return true;
         } else {
@@ -219,6 +258,18 @@ class Product_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('countercode');
+        $this->db->where('status', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return false;
+    }
+
+    public function active_floorwisecounter()
+    {
+        $this->db->select('*');
+        $this->db->from('floorwisecounter');
         $this->db->where('status', 1);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {

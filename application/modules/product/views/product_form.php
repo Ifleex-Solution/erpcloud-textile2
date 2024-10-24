@@ -190,6 +190,30 @@
                         </div>
                     </div>
 
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label for="brandcode_id" class="col-sm-4 col-form-label">Floorwise Counter
+                                <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="floorwisecounter_id" required name="floorwisecounter_id" tabindex="9">
+                                    <option value=""></option>
+
+                                    <?php if ($floorwisecounter_list) { ?>
+                                        <?php foreach ($floorwisecounter_list as $categories) { ?>
+
+
+                                            <option value="<?php echo $categories['floorwisecounter_id'] ?>" <?php if ($product->floorwisecounter_id == $categories['floorwisecounter_id']) {
+                                                                                                            echo 'selected';
+                                                                                                        } ?>>
+                                                <?php echo  $categories['floorwise_name'] ?></option>
+
+                                    <?php }
+                                    } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
 
 
                     <?php
