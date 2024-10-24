@@ -863,6 +863,8 @@
                         element2.select();
 
                         printRawHtml(datas.details);
+                    }else{
+                        location.reload();
                     }
                 }
             });
@@ -892,6 +894,8 @@
                         element2.select();
 
                         printRawHtml(datas.details);
+                    } else{
+                        location.reload();
                     }
                 }
             });

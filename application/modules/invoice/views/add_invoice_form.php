@@ -863,6 +863,8 @@
 
 
                         printRawHtml(datas.details);
+                    }else{
+                        location.reload();
                     }
                 }
             });
@@ -894,6 +896,8 @@
 
 
                         printRawHtml(datas.details);
+                    }else{
+                        location.reload();
                     }
                 }
             });
